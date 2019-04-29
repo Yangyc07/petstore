@@ -7,11 +7,11 @@
         <!--jdbc的数据库连接 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/miaosha"
+                connectionURL="jdbc:mysql://localhost:3306/petstore"
                 userId="root"
                 password="admin">
         </jdbcConnection>
-        <javaModelGenerator targetPackage="com.yang.miaoshaproject.dataobject" targetProject="./src/main/java">
+        <javaModelGenerator targetPackage="com.yang.petstore.dataobject" targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -20,21 +20,17 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- targetPackage：mapper接口dao生成的位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yang.miaoshaproject.dao" targetProject="./src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yang.petstore.dao" targetProject="./src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
         <!--生成表及类名-->
-        <!--
-        <table tableName="user_info" domainObjectName="UserDO" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-                enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="user_password" domainObjectName="UserPasswordDO" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"></table>
-               -->
 
-        <table tableName="promo" domainObjectName="PromoDO" enableCountByExample="false"
+        <!--<table tableName="user_info" domainObjectName="UserDO" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+        <table tableName="user_password" domainObjectName="UserPasswordDo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
