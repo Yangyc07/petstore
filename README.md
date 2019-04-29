@@ -19,5 +19,3 @@ petstore/user/login?id=1
         "registerDate": "2019-04-02T08:52:01.000+0000"
     }
 }
-
-
