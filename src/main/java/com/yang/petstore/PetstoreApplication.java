@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(scanBasePackages = {"com.yang.petstore"})
-@MapperScan("com.yang.")
+@MapperScan("com.yang.petstore.dao")
 @RestController
 public class PetstoreApplication {
 
