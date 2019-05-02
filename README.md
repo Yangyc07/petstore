@@ -19,3 +19,19 @@ petstore/user/login?id=1
         "registerDate": "2019-04-02T08:52:01.000+0000"
     }
 }
+
+4月30 完成登陆接口
+/petstore/user/login?telphone=123&encrptPassword=123
+
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "name": "2",
+        "age": 0,
+        "telphone": "123",
+        "email": "2",
+        "registerDate": "2019-04-02T08:52:01.000+0000",
+        "encrptPassword": "123"
+    }
+}
