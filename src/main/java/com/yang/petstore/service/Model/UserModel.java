@@ -1,8 +1,9 @@
 package com.yang.petstore.service.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     private Integer id;
 
@@ -73,4 +74,18 @@ public class UserModel {
     public void setEncrptPassword(String encrptPassword) {
         this.encrptPassword = encrptPassword;
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", telphone='" + telphone + '\'' +
+                ", email='" + email + '\'' +
+                ", registerDate=" + registerDate +
+                ", encrptPassword='" + encrptPassword + '\'' +
+                '}';
+    }
+
 }
