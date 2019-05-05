@@ -5,7 +5,11 @@ import java.util.Date;
 
 public class UserModel implements Serializable {
 
+    private static final long serialVersionUID = -7248153408990849870L;
+
     private Integer id;
+
+    private Integer gender;
 
     private String name;
 
@@ -25,6 +29,14 @@ public class UserModel implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     public String getName() {
@@ -79,6 +91,7 @@ public class UserModel implements Serializable {
     public String toString() {
         return "UserModel{" +
                 "id=" + id +
+                ", gender=" + gender +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", telphone='" + telphone + '\'' +
@@ -87,5 +100,4 @@ public class UserModel implements Serializable {
                 ", encrptPassword='" + encrptPassword + '\'' +
                 '}';
     }
-
 }

@@ -1,16 +1,11 @@
-import java.util.HashSet;
-import java.util.Set;
+import com.yang.petstore.dao.UserDOMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class Test {
 
+
     public static void main(String []args){
-        Set<Integer> set = new HashSet<>();
-        set.add(11);
-        set.add(22);
-        set.add(33);
-        for (Integer integer:
-             set) {
-            System.out.println(integer);
-        }
+
     }
 }
