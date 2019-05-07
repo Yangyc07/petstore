@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
@@ -19,12 +20,16 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller("user")
 @RequestMapping("/user")
 @CrossOrigin(allowCredentials = "true",allowedHeaders = "*",origins = {"*"}) // 支持跨域
 public class UserController extends BaseController{
 
+
+    private static final Logger lg = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -47,6 +52,8 @@ public class UserController extends BaseController{
         //将登陆凭证加入用户登陆成功的session中
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+
+        lg.info("自动生成session [{}]", httpServletRequest.getSession().getAttribute("LOGIN_USER").toString());
         return CommonReturnType.create(null);
     }
 
@@ -96,8 +103,6 @@ public class UserController extends BaseController{
         return  CommonReturnType.create(null);
     }
 
-
-
     //删除用户
     @RequestMapping(value = "/deleteUser",method = {RequestMethod.POST})
     @ResponseBody
@@ -105,7 +110,6 @@ public class UserController extends BaseController{
         userService.deleteUser(id);
         return CommonReturnType.create(null);
     }
-
 
     //MD5加密
     public String EnCodeByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {

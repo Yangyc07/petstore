@@ -30,7 +30,7 @@
                <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
                <!--enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
-        <table tableName="user_password" domainObjectName="UserPasswordDo" enableCountByExample="false"
+        <table tableName="cart" domainObjectName="CartDO" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>

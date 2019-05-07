@@ -2,9 +2,9 @@ package com.yang.petstore.service.Impl;
 
 import com.sun.tools.internal.ws.wsdl.framework.DuplicateEntityException;
 import com.yang.petstore.dao.UserDOMapper;
-import com.yang.petstore.dao.UserPasswordDoMapper;
+import com.yang.petstore.dao.UserPasswordDOMapper;
 import com.yang.petstore.dataobject.UserDO;
-import com.yang.petstore.dataobject.UserPasswordDo;
+import com.yang.petstore.dataobject.UserPasswordDO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.service.Model.UserModel;
@@ -26,14 +26,21 @@ public class UserServiceImpl implements UserService {
     private UserDOMapper userDOMapper;
 
     @Autowired
-    private UserPasswordDoMapper userPasswordDoMapper;
+    private UserPasswordDOMapper userPasswordDOMapper;
 
     @Autowired
     private ValidatorImpl validator;
 
     @Override
     public UserModel getUserById(Integer id) {
-        return null;
+        //调用usermapper获取对应的dataobject
+        UserDO userDO = userDOMapper.selectByPrimaryKey(id);
+        if (userDO == null) {
+            return null;
+        }
+        //通过用户id获取对应的加密密码信息
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(id);
+        return  convertFromDataObject(userDO,userPasswordDO);
     }
 
     @Override
@@ -55,17 +62,17 @@ public class UserServiceImpl implements UserService {
         }
 
         userModel.setId(userDO.getId());
-        UserPasswordDo userPasswordDO = convertPasswordFromModel(userModel);
-        userPasswordDoMapper.insertSelective(userPasswordDO);
+        UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
+        userPasswordDOMapper.insertSelective(userPasswordDO);
         return;
     }
 
     //将Model转化为dataobject
-    private UserPasswordDo convertPasswordFromModel(UserModel userModel) {
+    private UserPasswordDO convertPasswordFromModel(UserModel userModel) {
         if(userModel == null){
             return null;
         }
-        UserPasswordDo userPasswordDO = new UserPasswordDo();
+        UserPasswordDO userPasswordDO = new UserPasswordDO();
         userPasswordDO.setEncrptPassword(userModel.getEncrptPassword());
         userPasswordDO.setUserId(userModel.getId());
         return  userPasswordDO;
@@ -137,7 +144,7 @@ public class UserServiceImpl implements UserService {
         if(userDO == null){
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
-        UserPasswordDo userPasswordDO = userPasswordDoMapper.selectByPrimaryKey(userDO.getId());
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByPrimaryKey(userDO.getId());
         UserModel userModel = convertFromDataObject(userDO,userPasswordDO);
         //然后比较
         if(!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())){
@@ -160,13 +167,13 @@ public class UserServiceImpl implements UserService {
     }
 
     //将object转化为Model对象
-    private UserModel convertFromDataObject(UserDO userDO,UserPasswordDo userPasswordDo) {
-        if(userDO == null || userPasswordDo == null){
+    private UserModel convertFromDataObject(UserDO userDO,UserPasswordDO userPasswordDO) {
+        if(userDO == null || userPasswordDO == null){
             return null;
         }
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(userDO,userModel);
-        BeanUtils.copyProperties(userPasswordDo,userModel);
+        BeanUtils.copyProperties(userPasswordDO,userModel);
         return userModel;
     }
 }

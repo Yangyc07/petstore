@@ -13,6 +13,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +24,7 @@ import java.io.Serializable;
 
 @SpringBootApplication(scanBasePackages = {"com.yang.petstore"})
 @MapperScan("com.yang.petstore.dao")
-@RestController
+@Controller
 @EnableCaching //开启缓存
 
 
@@ -32,13 +34,18 @@ import java.io.Serializable;
  *  2.引入redis的starter
  *  3.配置redis
  *
- *
  */
 public class PetstoreApplication {
 
 	@Autowired
 	public UserDOMapper userDOMapper;
 
+
+	@RequestMapping("/hello")
+	public String index(Model model){
+		model.addAttribute("name", "Dear");
+		return "login";
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(PetstoreApplication.class, args);
 	}
