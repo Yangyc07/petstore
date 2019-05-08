@@ -1,86 +1,36 @@
 package com.yang.petstore.controller.ViewObject;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+//购物车信息
 public class CartVO {
 
-    private Integer id;
+    private List<CartItemVO> cartItemVOList;
 
-    private Integer userId;
+    private BigDecimal cartTotal;
 
-    private Integer itemId;
-
-    private Integer quantity;
-
-    private Integer checked;
-
-    private BigDecimal price;
-
-    private BigDecimal total;
-
-    private String img_url;
-
-    public Integer getId() {
-        return id;
+    public List<CartItemVO> getCartItemVOList() {
+        return cartItemVOList;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCartItemVOList(List<CartItemVO> cartItemVOList) {
+        this.cartItemVOList = cartItemVOList;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public BigDecimal getCartTotal() {
+        return cartTotal;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCartTotal(BigDecimal cartTotal) {
+        this.cartTotal = cartTotal;
     }
 
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getChecked() {
-        return checked;
-    }
-
-    public void setChecked(Integer checked) {
-        this.checked = checked;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public String getImg_url() {
-        return img_url;
-    }
-
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
+    @Override
+    public String toString() {
+        return "CartVO{" +
+                "cartItemVOList=" + cartItemVOList +
+                ", cartTotal=" + cartTotal +
+                '}';
     }
 }

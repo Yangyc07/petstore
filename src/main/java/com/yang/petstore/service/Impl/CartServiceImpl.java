@@ -1,7 +1,11 @@
 package com.yang.petstore.service.Impl;
 
+import com.yang.petstore.controller.ViewObject.CartItemVO;
+import com.yang.petstore.controller.ViewObject.CartVO;
 import com.yang.petstore.dao.CartDOMapper;
+import com.yang.petstore.dao.ItemDOMapper;
 import com.yang.petstore.dataobject.CartDO;
+import com.yang.petstore.dataobject.ItemDO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.service.CartService;
@@ -14,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +27,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartDOMapper cartDOMapper;
+
+    @Autowired
+    private ItemDOMapper itemDOMapper;
 
     @Autowired
     private ItemService itemService;
@@ -64,13 +73,49 @@ public class CartServiceImpl implements CartService {
         return true;
     }
 
+    //查询购物车详细信息
     @Override
     @Transactional
-    public List<ItemModel> myCart(Integer userId) {
+    public CartVO myCart(Integer userId) {
         //1.根据userId关联查询Cart表中的购物车信息
-        List<CartDO> cartDOList = cartDOMapper.ListCart(userId);
-
+        List<CartDO> cartDOList = cartDOMapper.listCart(userId);
         //2.计算购物车内商品的价格，并将其封装成VO
-        return null;
+        List<CartItemVO> cartItemVOList = new ArrayList<CartItemVO>();
+        BigDecimal cartTotal = new BigDecimal("0");
+        CartVO cartVO = new CartVO();
+        for (CartDO cartDO:cartDOList) {
+            //设置购物车的详细商品信息
+            BigDecimal total = new BigDecimal("0");
+            CartItemVO cartItemVO = new CartItemVO();
+            cartItemVO.setId(cartDO.getId());
+            cartItemVO.setUserId(cartDO.getUserId());
+            cartItemVO.setItemId(cartDO.getItemId());
+            cartItemVO.setQuantity(cartDO.getQuantity());
+            cartItemVO.setChecked(cartDO.getChecked());
+            //根据itemId查询商品的信息
+            ItemDO itemDO = itemDOMapper.selectByPrimaryKey(cartDO.getItemId());
+            cartItemVO.setPrice(itemDO.getPrice());
+            cartItemVO.setImg_url(itemDO.getImgUrl());
+            cartItemVO.setName(itemDO.getTitle());
+
+            //根据商品是否选中设置购物车的价格信息
+            total = itemDO.getPrice().
+                    multiply(new BigDecimal(cartDO.getQuantity()).
+                    multiply(new BigDecimal(cartDO.getChecked())));
+            cartItemVO.setTotal(total);
+            //购物车总价格
+            cartTotal = cartTotal.add(total);
+            //加入购物车
+            cartItemVOList.add(cartItemVO);
+        }
+        //设置CartVO
+        cartVO.setCartItemVOList(cartItemVOList);
+        cartVO.setCartTotal(cartTotal);
+        return cartVO;
+    }
+
+    @Override
+    public boolean deleteItem(Integer itemId) {
+        return cartDOMapper.deleteByItemId(itemId) > 0;
     }
 }

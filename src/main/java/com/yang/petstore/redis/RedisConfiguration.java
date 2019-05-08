@@ -28,7 +28,6 @@ import java.time.Duration;
 
 
 @Configuration
-// 必须加，使配置生效
 @EnableCaching
 public class RedisConfiguration extends CachingConfigurerSupport {
 

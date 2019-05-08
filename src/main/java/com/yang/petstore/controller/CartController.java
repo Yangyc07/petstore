@@ -1,6 +1,7 @@
 package com.yang.petstore.controller;
 
 
+import com.yang.petstore.controller.ViewObject.CartVO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.response.CommonReturnType;
@@ -44,9 +45,13 @@ public class CartController extends BaseController {
     @RequestMapping(value = "/myCart",method = {RequestMethod.POST})//Content type 'null' not supported
     @ResponseBody
     CommonReturnType myCart(Integer userId)throws BusinessException{
-        //1.根据userId获取我的购物车信息
-        return null;
+//       //判断用户是否存在
+//        UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
+//        if(userModel == null){
+//            throw new BusinessException(EmBusinessError.USER_NOT_LOGIN);
+//        }
+        //2.根据userId获取我的购物车信息
+       CartVO cartVO = cartService.myCart(userId);
+       return CommonReturnType.create(cartVO);
     }
-
-
 }
