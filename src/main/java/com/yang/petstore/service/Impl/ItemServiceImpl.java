@@ -1,5 +1,7 @@
 package com.yang.petstore.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yang.petstore.dao.ItemDOMapper;
 import com.yang.petstore.dao.ItemStockDOMapper;
 import com.yang.petstore.dataobject.ItemDO;
@@ -75,15 +77,13 @@ public class ItemServiceImpl implements ItemService{
         return this.getItemById(itemModel.getId());
     }
 
+
     @Override
-    public List<ItemModel> listItem() {
+    public PageInfo<ItemDO> listItem(int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo,pageSize);//页数 和 行数
         List<ItemDO> itemDOList = itemDOMapper.listItem();
-        List<ItemModel> itemModelList = itemDOList.stream().map(itemDO->{
-            ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
-            ItemModel itemModel = this.convertModelFromDataObject(itemDO,itemStockDO);
-            return itemModel;
-        }).collect(Collectors.toList());
-        return  itemModelList;
+        PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
+        return pageInfo;
     }
 
     @Override

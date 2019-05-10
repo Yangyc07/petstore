@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
             cartDO.setUserId(userId);
             cartDO.setItemId(itemId);
             cartDO.setQuantity(amount);
-            cartDO.setChecked(0);
+            cartDO.setChecked(1);
             cartDO.setCreateTime(DateTime.now().toDate());
             cartDO.setUpdateTime(DateTime.now().toDate());
             cartDOMapper.insert(cartDO);

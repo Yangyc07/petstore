@@ -297,4 +297,17 @@ public class UserAddressDO {
     public void setReceiverZip(String receiverZip) {
         this.receiverZip = receiverZip == null ? null : receiverZip.trim();
     }
+
+    @Override
+    public String toString() {
+        return "UserAddressDO{" +
+                "receiverName='" + receiverName + '\'' +
+                ", receiverPhone='" + receiverPhone + '\'' +
+                ", receiverProvince='" + receiverProvince + '\'' +
+                ", receiverCity='" + receiverCity + '\'' +
+                ", receiverDistrict='" + receiverDistrict + '\'' +
+                ", receiverAddress='" + receiverAddress + '\'' +
+                ", receiverZip='" + receiverZip + '\'' +
+                '}';
+    }
 }

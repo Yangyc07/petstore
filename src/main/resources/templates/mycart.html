@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>米乐宠物商城</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(238, 242, 245);
+        }
+        .left{
+            width:188px;
+            float:left;
+            background: #f7fcff;
+
+        }
+        .right{
+            background: #fbfffc;
+        }
+        .footer{
+            height:100px;
+            background: #fcfcff;
+            width:100%;
+            position:absolute;
+            bottom:0;
+            left:0;
+        }
+    </style>
+</head>
+
+<nav class="navbar navbar-default" >
+    <div class="container-fluid" >
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/order/createOrder(userId=${session.LOGIN_USER.getId()},addressId=1)}"><span class="	glyphicon glyphicon-usd"></span>结账</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span>我的购物车</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+        </ul>
+        <div class="navbar-header" style="margin-left: 10%;margin-right: 10%">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">米乐宠物商城</a>
+            <img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar" >
+            <ul class="nav navbar-nav">
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        狗狗 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">狗粮</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">狗狗玩具</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">出行装备</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        猫咪 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">猫粮</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">猫猫玩具</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">出行装备</a></li>
+                    </ul>
+                </li>
+
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="left">
+    <img th:src="@{/assets/global/img/left.jpg}" th:width="200" th:height="400">
+</div>
+<div class="right">
+    <div class="panel panel-default" style="width: 70%;margin-left: 20%">
+        <div class="panel-heading" style="background-color: #f2f9ff">
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>商品名称</th>
+                    <th>商品图片</th>
+                    <th>商品价格</th>
+                    <th>商品数量</th>
+                    <th>商品销量</th>
+                </tr>
+                <tr  th:each="cartItemVO,cartItemVO : ${session.carVO.cartItemVOList}">
+                    <td th:text="${cartItemVO.current.getName()}"></td>
+                    <td ><img th:src="@{${cartItemVO.current.getImg_url()}}" width="100" height="100" /></td>
+                    <td th:text="${cartItemVO.current.getPrice()}"></td>
+                    <td th:text="${cartItemVO.current.getQuantity()}"></td>
+                    <td th:text="${cartItemVO.current.getTotal()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="footer" align="center">
+    <p>© 2017 No rights reserved.</p>
+    <p>Made with ♥ by an anonymous pastafarian.</p>
+</div>
+</body>
+</html>

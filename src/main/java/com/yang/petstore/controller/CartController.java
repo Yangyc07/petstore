@@ -42,9 +42,8 @@ public class CartController extends BaseController {
     }
 
     //获取我的购物车信息
-    @RequestMapping(value = "/myCart",method = {RequestMethod.POST})//Content type 'null' not supported
-    @ResponseBody
-    CommonReturnType myCart(Integer userId)throws BusinessException{
+    @RequestMapping(value = "/myCart",method = {RequestMethod.GET})//Content type 'null' not supported
+    String myCart(Integer userId)throws BusinessException{
 //       //判断用户是否存在
 //        UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
 //        if(userModel == null){
@@ -52,6 +51,7 @@ public class CartController extends BaseController {
 //        }
         //2.根据userId获取我的购物车信息
        CartVO cartVO = cartService.myCart(userId);
-       return CommonReturnType.create(cartVO);
+       httpServletRequest.getSession().setAttribute("carVO",cartVO);
+       return "mycart";
     }
 }
