@@ -56,6 +56,8 @@ public interface ItemDOMapper {
 
     List<ItemDO> listItem();
 
+    List<ItemDO> selectByCategory(int categoty);
+
     int increaseSales(@Param("id") Integer id, @Param("amount")Integer amount);
 
 

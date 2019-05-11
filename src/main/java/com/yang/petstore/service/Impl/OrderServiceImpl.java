@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
             cartService.deleteItem(cartItemVO.getItemId());
         }
         //4.根据Userid查找地址信息
-        UserAddressDO userAddressDO  = userAddressDOMapper.selectByUserId(userId);
+        UserAddressDO userAddressDO  = userAddressDOMapper.selectByUserId(userId).get(0);
         orderVO.setUserAddressDO(userAddressDO);
 
         //5.将商品放入OrderVO

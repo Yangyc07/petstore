@@ -31,10 +31,17 @@ public class ItemController extends BaseController{
     private static final Logger lg = LoggerFactory.getLogger(ItemController.class);
     //商品页表浏览
     @RequestMapping(value = "/list")//Content type 'null' not supported
-    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize, Model model){
+    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize){
         PageInfo<ItemDO> page = itemService.listItem(pageNo,pageSize);
         httpServletRequest.getSession().setAttribute("pageInfo",page);
         lg.info("xxoooooooooooooooooooooooooooooooooo",page.getTotal());
+        return "listitem";
+    }
+
+    @RequestMapping(value = "/listByCategory")//Content type 'null' not supported
+    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize, int category) {
+        PageInfo<ItemDO> page = itemService.selectByCategory(pageNo, pageSize, category);
+        httpServletRequest.getSession().setAttribute("pageInfo", page);
         return "listitem";
     }
 

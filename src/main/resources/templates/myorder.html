@@ -45,7 +45,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">米乐宠物商城</a>
+            <a class="navbar-brand" th:href="@{/item/listItem}">米乐宠物商城</a>
             <img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
         </div>
         <div class="collapse navbar-collapse" id="myNavbar" >
@@ -55,11 +55,11 @@
                         狗狗 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">狗粮</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=1)}">狗粮</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">狗狗玩具</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">出行装备</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=3)}">出行装备</a></li>
                     </ul>
                 </li>
                 <li class="dropdown" >
@@ -67,14 +67,13 @@
                         猫咪 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">猫粮</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=4)}">猫粮</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">猫猫玩具</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=5)}">猫猫玩具</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">出行装备</a></li>
+                        <li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
                     </ul>
                 </li>
-
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search">

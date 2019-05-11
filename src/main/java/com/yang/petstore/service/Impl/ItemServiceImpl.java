@@ -102,6 +102,14 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
+    public PageInfo<ItemDO> selectByCategory(int pageNo, int pageSize, int category) {
+        PageHelper.startPage(pageNo,pageSize);//页数 和 行数
+        List<ItemDO> itemDOList = itemDOMapper.selectByCategory(category);
+        PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
+        return pageInfo;
+    }
+
+    @Override
     @Transactional
     public boolean decreaseStock(Integer itemId, Integer amount) throws BusinessException {
         int affectedRow = itemStockDOMapper.decreaseStock(itemId, amount);
