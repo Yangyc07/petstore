@@ -16,4 +16,7 @@ public interface UserService {
     //删除用户
     boolean deleteUser(Integer id);
 
+    //修改密码
+    boolean modifyPassword(String telphone,String password) throws BusinessException;
+
 }

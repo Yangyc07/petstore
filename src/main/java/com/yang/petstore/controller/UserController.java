@@ -48,8 +48,8 @@ public class UserController extends BaseController{
         UserModel userModel = userService.validationLogin(telphone,this.EnCodeByMd5(password));
 
         //将登陆凭证加入用户登陆成功的session中
-        this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
-        this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+        this.httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
+        this.httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
 
         lg.info("自动生成session [{}]", httpServletRequest.getSession().getAttribute("LOGIN_USER").toString());
         return CommonReturnType.create(null);
@@ -57,7 +57,7 @@ public class UserController extends BaseController{
 
 
     //用户注册接口
-    @RequestMapping(value = "/register",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "/doRegister",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType register(@RequestParam(name="telphone") String telphone,
                                      @RequestParam(name="optCode")  String optCode,
@@ -68,6 +68,7 @@ public class UserController extends BaseController{
                                      @RequestParam(name="password")  String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //验证手机号和optCode是否符合
         String inSessinOptCode = (String)this.httpServletRequest.getSession().getAttribute(telphone);
+        System.out.println(inSessinOptCode  + optCode);
         if(com.alibaba.druid.util.StringUtils.equals(optCode,inSessinOptCode)){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不匹配");
         }
@@ -84,10 +85,10 @@ public class UserController extends BaseController{
         return  CommonReturnType.create(null);
     }
 
-    //用户获取otp短信接口
-    @RequestMapping(value = "/getopt",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+    //生成otp短信接口
+    @RequestMapping(value = "/createOpt",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType getOtp(@RequestParam(name="telphone")String telphone){
+    public CommonReturnType createOtp(@RequestParam(name="telphone")String telphone){
         //需要按照一定的规则生成OTP验证码
         Random random = new Random();
         int randomInt = random.nextInt(99999);
@@ -99,6 +100,17 @@ public class UserController extends BaseController{
         //将OPT验证码通过短信通道发送给用户（暂时不做）
         System.out.println("telphone="+telphone +"optCode="+optCode);
         return  CommonReturnType.create(null);
+    }
+    //用户获取otp短信接口
+    @RequestMapping(value = "/getopt",method = {RequestMethod.GET})
+    public String getOtp() {
+        return "getopt";
+    }
+
+    //用户获取otp短信接口
+    @RequestMapping(value = "/register",method = {RequestMethod.GET})
+    public String register() {
+        return "register";
     }
 
     //删除用户
@@ -117,5 +129,30 @@ public class UserController extends BaseController{
         //加密字符串
         String newstr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));
         return newstr;
+    }
+    //退出登录
+    @RequestMapping(value = "/logOut")
+    @ResponseBody
+    public String logOut(){
+        httpServletRequest.getSession().removeAttribute("LOGIN_USER");
+        httpServletRequest.getSession().removeAttribute("IS_LOGIN");
+        return "login";
+    }
+
+    //修改个人密码
+    @RequestMapping(value = "/modifyPassword")
+    public String modifyPassword(){
+        return "modifypass";
+    }
+
+    //修改个人密码
+    @RequestMapping(value = "/doModifyPassword",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType doModifyPassword(@RequestParam(name="password") String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, BusinessException {
+        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        if (userService.modifyPassword(userModel.getTelphone(), EnCodeByMd5(password))) {
+            return CommonReturnType.create(null);
+        }
+        return null;
     }
 }

@@ -34,13 +34,24 @@ public class ItemController extends BaseController{
     public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize){
         PageInfo<ItemDO> page = itemService.listItem(pageNo,pageSize);
         httpServletRequest.getSession().setAttribute("pageInfo",page);
-        lg.info("xxoooooooooooooooooooooooooooooooooo",page.getTotal());
         return "listitem";
     }
 
+    //根据分类查询商品
     @RequestMapping(value = "/listByCategory")//Content type 'null' not supported
     public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize, int category) {
         PageInfo<ItemDO> page = itemService.selectByCategory(pageNo, pageSize, category);
+        httpServletRequest.getSession().setAttribute("pageInfo", page);
+        return "listitem";
+    }
+
+
+    //根据关键字搜索
+    @RequestMapping(value = "/selectByKey")//Content type 'null' not supported
+    public String selectByKey(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize) {
+        String key = httpServletRequest.getParameter("key");
+        lg.info("key-----------------------------------------",key);
+        PageInfo<ItemDO> page = itemService.selectByKey(pageNo, pageSize, key);
         httpServletRequest.getSession().setAttribute("pageInfo", page);
         return "listitem";
     }
@@ -62,4 +73,6 @@ public class ItemController extends BaseController{
         BeanUtils.copyProperties(itemModel,itemVO);
         return itemVO;
     }
+
+
 }

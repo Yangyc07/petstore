@@ -12,6 +12,14 @@
     from item
     ORDER BY sales DESC
   </select>
+  <select id="selectByKey"  resultMap="BaseResultMap">
+
+    SELECT * FROM item
+    WHERE item.title like '%${key}%'
+  </select>
+
+
+
   <select id="selectByCategory"  resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated

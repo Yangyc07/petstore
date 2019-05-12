@@ -7,8 +7,10 @@ import com.yang.petstore.dao.OrderInfoDOMapper;
 import com.yang.petstore.dao.SequenceDOMapper;
 import com.yang.petstore.dao.UserAddressDOMapper;
 import com.yang.petstore.dataobject.*;
+import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.redis.RedisConfiguration;
 import com.yang.petstore.service.CartService;
+import com.yang.petstore.service.ItemService;
 import com.yang.petstore.service.OrderService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -43,6 +45,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDOMapper orderDOMapper;
+
+    @Autowired
+    private ItemService itemService;
 
     @Override
     @Transactional
@@ -86,14 +91,40 @@ public class OrderServiceImpl implements OrderService {
         orderDO.setOrderNo(orderNo);
         orderDO.setUserId(userId);
         orderDO.setPayment(payment);
+        orderDO.setShippingId(shippingId);
         orderDO.setPostage(0);
-        orderDO.setPostage(10);
+        orderDO.setStatus(10);
         orderDO.setCreateTime(DateTime.now().toDate());
         orderDO.setUpdateTime(DateTime.now().toDate());
 
         lg.info("xxxxxxxxxxxxxxxxx",orderDO.toString());
         orderDOMapper.insert(orderDO);
         return orderVO;
+    }
+
+
+    //完成支付
+    @Override
+    public boolean completePay(String orderNo) throws BusinessException {
+        //1.更新支付状态，首先根据订单号查询订单，然后更新
+        OrderDO orderDO = orderDOMapper.selectByOrderNo(orderNo);
+        //支付宝支付
+        orderDO.setPaymentType(1);
+        //已支付
+        orderDO.setStatus(20);
+        //设置时间
+        orderDO.setUpdateTime(DateTime.now().toDate());
+        orderDO.setPaymentTime(DateTime.now().toDate());
+        //更新
+        orderDOMapper.updateByPrimaryKey(orderDO);
+        //2.落单减库存
+        //根据订单信息查询出所购买商品的数量
+        List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByOrderNo(orderNo);
+        //减库存
+        for (OrderInfoDO orderInfoDo: orderInfoDOList) {
+            itemService.decreaseStock(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
+        }
+        return true;
     }
 
     /**
@@ -147,4 +178,6 @@ public class OrderServiceImpl implements OrderService {
         stringBuilder.append("11");
         return stringBuilder.toString();
     }
+
+
 }

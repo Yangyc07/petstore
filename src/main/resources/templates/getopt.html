@@ -9,9 +9,9 @@
 </head>
 
 
-<body class="login">
+<body class="login"  th:style="'background:url('+ '/petstore/assets/global/img/bg.jpg'+ ');'">
 	<div class="content">
-		<h3 class="form-title">获取opt信息</h3>
+		<h3 class="form-title">获取短信验证</h3>
 	<div class="form-group">
 		<label class="control-label">手机号</label>
 		<div>
@@ -20,7 +20,7 @@
 	</div>
 	<div class="form-actions">
 		<button class="btn blue" id="getopt" type="submit">
-			获取opt短信
+			获取短信验证码
 		</button>
 	</div>
 	</div>
@@ -38,7 +38,7 @@
 			$.ajax({
 				type:"POST",
 				contentType:"application/x-www-form-urlencoded",
-				url:"http://localhost:8090/petstore/user/getopt",
+				url:"http://localhost:8090/petstore/user/createOpt",
 				data:{
 					"telphone":$("#telphone").val(),
 				},
@@ -46,7 +46,7 @@
 				success:function(data){
 					if(data.status == "success"){
 						alert("opt发送成功");
-						window.location.href="file:///C:/Users/yang/IdeaProjects/register.html"
+						window.location.href="/petstore/user/register"
 					}else{
 						alert("opt发送失败，原因是"+data.data.errMsg);
 					}

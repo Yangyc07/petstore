@@ -22,8 +22,16 @@
 	<nav class="navbar navbar-default" >
 	<div class="container-fluid" >
 		<ul class="nav navbar-nav navbar-right">
+			<li class="dropdown" >
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+				</ul>
+			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
-			<li><a href="mycart.html"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+			<li><a th:href="@{/hello}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
 		</ul>
 		<div class="navbar-header" style="margin-left: 10%;margin-right: 10%" >
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -31,7 +39,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" th:href="@{/item/listItem}">米乐宠物商城</a>
+			<a class="navbar-brand" th:href="@{/item/list}">米乐宠物商城</a>
 			<img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar" >
@@ -60,11 +68,11 @@
 						<li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
 					</ul>
 				</li>
-				<form class="navbar-form navbar-right" role="search">
+				<form class="navbar-form navbar-right" action="selectByKey"  role="search">
 				<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
+				<input type="text" class="form-control" placeholder="Search" name="key">
 				</div>
-				<button type="submit" class="btn btn-default">搜索</button>
+				<button type="submit" id="search" class="btn btn-default">搜索</button>
 				</form>
 			</ul>
 		</div>
@@ -147,4 +155,11 @@
 	</h5>
 </div>
 </body>
+<script>
+    	function search() {
+            var key = document.getElementById("key").value;
+            window.location.href="/petstore/item/selectByKey?key="+key;
+        }
+
+</script>
 </html>

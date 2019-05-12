@@ -60,5 +60,7 @@ public interface ItemDOMapper {
 
     int increaseSales(@Param("id") Integer id, @Param("amount")Integer amount);
 
+    List<ItemDO> selectByKey(@Param(value="key") String key);
+
 
 }

@@ -25,6 +25,14 @@
         .myright{
             float: right;
         }
+        .myfoot{
+            margin-left: 10%;
+            width: 80%;
+            height: 70px;
+            position: absolute;
+            bottom:0;
+            left: 0;
+        }
 
     </style>
 </head>
@@ -34,7 +42,7 @@
         <div class="container-fluid" >
             <ul class="nav navbar-nav navbar-right">
                 <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
-                <li><a href="mycart.html"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+                <li><a th:href="@{/user/logOut}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
             </ul>
             <div class="navbar-header" style="margin-left: 10%;margin-right: 10%" >
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -42,7 +50,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" th:href="@{/item/listItem}">米乐宠物商城</a>
+                <a class="navbar-brand" th:href="@{/item/list}">米乐宠物商城</a>
                 <img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
             </div>
             <div class="collapse navbar-collapse" id="myNavbar" >
@@ -73,7 +81,7 @@
                     </li>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" action="/item/selectByKey"class="form-control" placeholder="Search">
                         </div>
                         <button type="submit" class="btn btn-default">搜索</button>
                     </form>
@@ -128,12 +136,19 @@
             </div>
     </div>
 </div>
+<div class="myfoot">
+    <h5 align="center">
+    <p>© 2019 No rights reserved.</p>
+    <p>Made with ♥ by an anonymous pastafarian.</p>
+</h5>
+</div>
 </body>
 
 <script>
+
     function createOrder() {
-       var value = $('#programme_view option:selected') .val();//选中的值
-        console.log(value);
+        var addressId = $('#programme_view option:selected') .val();
+        window.location.href="/petstore/order/createOrder?addressId="+addressId;
     }
     jQuery(document).ready(function() {
         $.ajax({

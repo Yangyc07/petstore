@@ -9,7 +9,7 @@
 </head>
 
 
-<body class="login">
+<body class="login" th:style="'background:url('+ '/petstore/assets/global/img/bg.jpg'+ ');'">
 	<div class="content">
 		<h3 class="form-title">用户注册</h3>
 	<div class="form-group">
@@ -32,9 +32,10 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">性别</label>
-		<div>
-			<input class="form-control" type="text"  name="gender" id="gender">
-		</div>
+		<select id="gender" name="gender" class="form-control">
+			<option value="0">男</option>
+			<option value="1">女</option>
+		</select>
 	</div>
 	<div class="form-group">
 		<label class="control-label">年龄</label>
@@ -104,7 +105,7 @@
 			$.ajax({
 				type:"POST",
 				contentType:"application/x-www-form-urlencoded",
-				url:"http://localhost:8090/petstore/user/register",
+				url:"http://localhost:8090/petstore/user/doRegister",
 				data:{
 					"telphone":$("#telphone").val(),
 					"password":password,
@@ -118,7 +119,7 @@
 				success:function(data){
 					if(data.status == "success"){
 						alert("注册成功");
-						window.location.href="login.html"
+						window.location.href="/petstore/hello"
 					}else{
 						alert("注册失败"+data.data.errMsg);
 					}
@@ -133,15 +134,3 @@
 </script>
 
 </html>
-
-<div>当前页号：<span th:text="${session.pageInfo.pageNum}"></span></div>
-<div>每页条数：<span th:text="${session.pageInfo.pageSize}"></span></div>
-<div>起始行号：<span th:text="${session.pageInfo.startRow}"></span></div>
-<div>终止行号：<span th:text="${session.pageInfo.endRow}"></span></div>
-<div>总结果数：<span th:text="${session.pageInfo.total}"></span></div>
-<div>总页数：<span th:text="${session.pageInfo.pages}"></span></div>
-<hr />
-<div>是否为第一页：<span th:text="${session.pageInfo.isFirstPage}"></span></div>
-<div>是否为最后一页：<span th:text="${session.pageInfo.isLastPage}"></span></div>
-<div>是否有前一页：<span th:text="${session.pageInfo.hasPreviousPage}"></span></div>
-<div>是否有下一页：<span th:text="${session.pageInfo.hasNextPage}"></span></div>

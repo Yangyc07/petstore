@@ -128,6 +128,14 @@ public class ItemServiceImpl implements ItemService{
         itemDOMapper.increaseSales(itemId,amount);
     }
 
+    @Override
+    public PageInfo<ItemDO> selectByKey(int pageNo, int pageSize,String key) {
+        PageHelper.startPage(pageNo,pageSize);//页数 和 行数
+        List<ItemDO> itemDOList = itemDOMapper.selectByKey(key);
+        PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
+        return pageInfo;
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO){
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(itemDO,itemModel);

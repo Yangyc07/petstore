@@ -300,14 +300,8 @@ public class UserAddressDO {
 
     @Override
     public String toString() {
-        return "UserAddressDO{" +
-                "receiverName='" + receiverName + '\'' +
-                ", receiverPhone='" + receiverPhone + '\'' +
-                ", receiverProvince='" + receiverProvince + '\'' +
-                ", receiverCity='" + receiverCity + '\'' +
-                ", receiverDistrict='" + receiverDistrict + '\'' +
-                ", receiverAddress='" + receiverAddress + '\'' +
-                ", receiverZip='" + receiverZip + '\'' +
-                '}';
+        return   receiverProvince +  receiverCity
+                + receiverDistrict  +
+                receiverAddress;
     }
 }

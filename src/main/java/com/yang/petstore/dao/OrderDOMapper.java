@@ -50,4 +50,6 @@ public interface OrderDOMapper {
      * @mbg.generated Wed May 08 22:13:08 CST 2019
      */
     int updateByPrimaryKey(OrderDO record);
+
+    OrderDO selectByOrderNo(String orderNo);
 }

@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         if(userDO == null){
             throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
         }
-        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByPrimaryKey(userDO.getId());
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
         UserModel userModel = convertFromDataObject(userDO,userPasswordDO);
         //然后比较
         if(!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())){
@@ -164,6 +164,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(Integer id) {
        return userDOMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    @Override
+    public boolean modifyPassword(String telphone, String password) throws BusinessException {
+        UserDO userDO = userDOMapper.selectByTelphone(telphone);
+        if(userDO == null){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
+        }
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
+        userPasswordDO.setEncrptPassword(password);
+        return userPasswordDOMapper.updateByPrimaryKey(userPasswordDO) > 0;
     }
 
     //将object转化为Model对象
