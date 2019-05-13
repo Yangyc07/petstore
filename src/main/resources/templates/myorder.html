@@ -52,7 +52,15 @@
 <nav class="navbar navbar-default" >
     <div class="container-fluid" >
         <ul class="nav navbar-nav navbar-right">
-            <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>支付</a></li>
+        <li class="dropdown" >
+        				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
+        				</a>
+        				<ul class="dropdown-menu">
+        					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+        				</ul>
+        			</li>
+            <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
             <li><a th:href="@{/user/logOut}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
         </ul>
         <div class="navbar-header" style="margin-left: 10%;margin-right: 10%">
@@ -105,9 +113,6 @@
 <div class="storecontent" >
     <div class="storecontentleft">
         <img th:src="@{/img/zhifu.png}" th:width="300" th:height="300" th:align="center">
-        <h4 align="center">
-            请扫码完成支付
-        </h4>
     </div>
     <div class="storecontentright">
         <h5>
@@ -145,11 +150,6 @@
 </div>
 
 </div>
-<div class="myfoot">
-    <h5 align="center">
-    <p>© 2019 No rights reserved.</p>
-    <p>Made with ♥ by an anonymous pastafarian.</p>
-</h5>
 </div>
 </body>
 <script>

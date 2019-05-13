@@ -34,6 +34,15 @@
 			width:90%;
 			background-color: #fff7f3;
 		}
+		 .myfoot{
+                    margin-left: 10%;
+                    width: 80%;
+                    height: 70px;
+                    position: absolute;
+                    bottom:0;
+                    left: 0;
+                }
+
 		.gw_num{border: 1px solid #dbdbdb;width: 110px;line-height: 26px;overflow: hidden;}
 		.gw_num em{display: block;height: 26px;width: 26px;float: left;color: #7A7979;border-right: 1px solid #dbdbdb;text-align: center;cursor: pointer;}
 		.gw_num .num{display: block;float: left;text-align: center;width: 52px;font-style: normal;font-size: 14px;line-height: 24px;border: 0;}
@@ -45,6 +54,14 @@
 <nav class="navbar navbar-default" >
 	<div class="container-fluid" >
 		<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown" >
+        				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
+        				</a>
+        				<ul class="dropdown-menu">
+        					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+        				</ul>
+        </li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
 			<li><a th:href="@{/user/logOut}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
 		</ul>
@@ -136,12 +153,7 @@
 		</button>
 	</div>
 	</div>
-	<div class="m"
-<h5 align="center">
-	<p>© 2019 No rights reserved.</p>
-	<p>Made with ♥ by an anonymous pastafarian.</p>
-</h5>
-</div>
+
 </body>
 <script>
     var lable = document.getElementById("itemId");

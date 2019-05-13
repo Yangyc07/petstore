@@ -10,7 +10,6 @@
     -->
     select *
     from item
-    ORDER BY sales DESC
   </select>
   <select id="selectByKey"  resultMap="BaseResultMap">
 
@@ -18,6 +17,10 @@
     WHERE item.title like '%${key}%'
   </select>
 
+  <select id="selectByPrice"  resultMap="BaseResultMap">
+    SELECT * FROM item
+    WHERE category=#{category,jdbcType=INTEGER} AND price BETWEEN #{lowPrice,jdbcType=INTEGER} AND #{highPrice,jdbcType=INTEGER}
+  </select>
 
 
   <select id="selectByCategory"  resultMap="BaseResultMap">

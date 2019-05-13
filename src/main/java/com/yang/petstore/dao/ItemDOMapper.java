@@ -62,5 +62,6 @@ public interface ItemDOMapper {
 
     List<ItemDO> selectByKey(@Param(value="key") String key);
 
+    List<ItemDO> selectByPrice(@Param(value="category") int category,@Param(value="lowPrice")int lowPrice,@Param(value="highPrice") int highPrice);
 
 }

@@ -5,7 +5,7 @@ import com.yang.petstore.dao.UserAddressDOMapper;
 import com.yang.petstore.dataobject.UserAddressDO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.response.CommonReturnType;
-import com.yang.petstore.service.Model.AddressService;
+import com.yang.petstore.service.AddressService;
 import com.yang.petstore.service.Model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

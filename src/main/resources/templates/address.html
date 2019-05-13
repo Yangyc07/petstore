@@ -48,7 +48,7 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-					<li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+					<li><a href="/petstore/user/address">修改密码</a></li>
 				</ul>
 			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
@@ -108,85 +108,37 @@
 
         <!--向右对齐-->
         <ul class="nav navbar-nav navbar-left">
-         <form class="navbar-form navbar-left" action="selectByPrice">
-           <p class="navbar-text ">选择价格区间</p>
-           <input class="navbar-text"   placeholder="¥" style="width: 30px" name="lowPirce"/>
-            <p class="navbar-text " style="width: 10px">-</p>
-            <input class="navbar-text" placeholder="¥" style="width: 30px" name="highPrice"/>
+           <p class="navbar-text ">管理我的地址</p>
 
-            <button type="submit" class="btn btn-default" style="margin-top: 6px">
-                        确认
-             </button>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+                <a th:href="@{/user/addAddress}" ><span class="navbar-text ">新增地址</span></a>
 
-           </form>
         </ul>
     </div>
     </div>
 </nav>
-
-
 
 	<div class="contentfooter">
 	<div class="panel panel-default" style="width: 100%">
 		<div class="panel-body">
 		<table class="table table-hover">
 			<tr>
-				<th>商品名称</th>
-				<th>商品图片</th>
-				<th>商品描述</th>
-				<th>商品价格</th>
-				<th>商品销量</th>
+				<th>收获人</th>
+				<th>地址</th>
+				<th>电话</th>
 			</tr>
-			<tr  th:each="itemDO:${session.pageInfo.list}">
-				<td th:text="${itemDO.title}"></td>
-				<td ><img th:src="@{${itemDO.imgUrl}}" width="100" height="100" /></td>
-				<td th:text="${itemDO.description}"></td>
-				<td th:text="${itemDO.price}"></td>
-				<td th:text="${itemDO.sales}"></td>
-				<td><a th:href="@{get(id=${itemDO.getId()})}">商品详情</a></td>
+			<tr  th:each="myaddress:${session.address}">
+				<td th:text="${myaddress.receiverName}"></td>
+				<td th:text="${myaddress.receiverProvince}+${myaddress.receiverCity}+${myaddress.receiverDistrict}+${myaddress.receiverAddress}"+ /></td>
+				<td th:text="${myaddress.receiverPhone}"></td>
+                <td><a th:href="@{/user/editAddress(id=${myaddress.id})}"> <button type="button" class="btn btn-info" />编辑</a></td>
+			    <td><a th:href="@{/user/deleteAddress(id=${myaddress.id})}"><button type="button" class="btn btn-warning" id="deleteAddress" />删除</a></td>
 			</tr>
 		</table>
-		<nav aria-label="Page navigation" th:align="center">
-          <ul class="pagination">
-
-			<li><span width="10%" th:if="${session.pageInfo.hasPreviousPage}">
-				<a th:href="'?pageNo=1'">首页</a>
-				</span>
-			</li>
-             <li>
-			<span width="10%" th:if="${session.pageInfo.hasPreviousPage}">
-				<a th:href="'?pageNo='+${session.pageInfo.prePage}">上一页</a>
-			</span>
-			</li>
-			<li>
-			<span width="10%" th:each="nav : ${session.pageInfo.navigatepageNums}">
-				<a th:href="'?pageNo='+${nav}" th:text="${nav}" th:if="${nav != session.pageInfo.pageNum}"></a>
-				<span style="font-weight: bold" th:if="${nav == session.pageInfo.pageNum}" th:text="${nav}"></span>
-			</span>
-			</li>
-			<li>
-			<span width="10%" th:if="${session.pageInfo.hasNextPage}">
-				<a th:href="'?pageNo='+${session.pageInfo.nextPage}">下一页</a>
-			</span>
-			</li>
-			<li>
-			<span width="10%" th:if="${session.pageInfo.hasNextPage}">
-				<a th:href="'?pageNo='+${session.pageInfo.pages}">尾页</a>
-			</span>
-			</li>
-		</ul>
-		</nav>
 	</div>
 </div>
 	</div>
 </div>
-
 </body>
-<script>
-    	function search() {
-            var key = document.getElementById("key").value;
-            window.location.href="/petstore/item/selectByKey?key="+key;
-        }
-
-</script>
 </html>

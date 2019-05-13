@@ -1,4 +1,4 @@
-package com.yang.petstore.service.Model;
+package com.yang.petstore.service;
 
 import com.yang.petstore.dataobject.UserAddressDO;
 
@@ -8,4 +8,7 @@ public interface AddressService {
 
     //查询地址
     List<UserAddressDO> selectAddressByUserId(Integer userId);
+
+    //删除地址
+    boolean deleteAddressById(Integer id);
 }

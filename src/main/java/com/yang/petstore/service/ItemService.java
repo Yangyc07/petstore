@@ -29,4 +29,7 @@ public interface ItemService {
      //根据关键字查询
      PageInfo<ItemDO> selectByKey(int pageNo, int pageSize,String key);
 
+     //根据分类和价格区间查询
+     PageInfo<ItemDO> selectByPrice(int pageNo, int pageSize,int category, int lowPirce, int highPrice);
+
 }

@@ -65,6 +65,20 @@ public class ItemController extends BaseController{
         return "getitem";
     }
 
+    //根据价格查询
+    @RequestMapping(value = "/selectByPrice",method = {RequestMethod.GET})//Content type 'null' not supported
+    public String selectByPrice(@RequestParam(value="pageNo",defaultValue="1")int pageNo,
+                          @RequestParam(value="pageSize",defaultValue="3")int pageSize){
+        PageInfo<ItemDO> pageInfo = (PageInfo<ItemDO>)httpServletRequest.getSession().getAttribute("pageInfo");
+        int category = pageInfo.getList().get(0).getCategory();
+        int lowPrice = Integer.parseInt(httpServletRequest.getParameter("lowPirce"));
+        int highPrice = Integer.parseInt(httpServletRequest.getParameter("highPrice"));
+        PageInfo<ItemDO> page = itemService.selectByPrice(pageNo, pageSize, category,lowPrice,highPrice);
+        httpServletRequest.getSession().setAttribute("pageInfo", page);
+        return "listitem";
+    }
+
+
     private ItemVO convertVOFromModel(ItemModel itemModel){
         if(itemModel == null){
             return null;

@@ -2,9 +2,11 @@ package com.yang.petstore.controller;
 
 
 
+import com.yang.petstore.dataobject.UserAddressDO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.response.CommonReturnType;
+import com.yang.petstore.service.AddressService;
 import com.yang.petstore.service.Model.UserModel;
 import com.yang.petstore.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,9 @@ public class UserController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private AddressService addressService;
 
     //用户登录接口
     @RequestMapping(value = "/login",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
@@ -69,7 +75,7 @@ public class UserController extends BaseController{
         //验证手机号和optCode是否符合
         String inSessinOptCode = (String)this.httpServletRequest.getSession().getAttribute(telphone);
         System.out.println(inSessinOptCode  + optCode);
-        if(com.alibaba.druid.util.StringUtils.equals(optCode,inSessinOptCode)){
+        if(!StringUtils.equals(optCode,inSessinOptCode)){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不匹配");
         }
         //用户注册流程
@@ -145,12 +151,29 @@ public class UserController extends BaseController{
         return "modifypass";
     }
 
+    //编辑个人地址
+    @RequestMapping(value = "/myAddress")
+    public String myAddres(){
+        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        Integer userID =userModel.getId();
+        List<UserAddressDO> userAddressDOList = addressService.selectAddressByUserId(userID);
+        httpServletRequest.getSession().setAttribute("address",userAddressDOList);
+        return "address";
+    }
+
+    //删除个人地址
+    @RequestMapping(value = "/deleteAddress")
+    public String deleteAddress(@RequestParam(name="id")Integer id){
+        addressService.deleteAddressById(id);
+        return "address";
+    }
+
     //修改个人密码
     @RequestMapping(value = "/doModifyPassword",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType doModifyPassword(@RequestParam(name="password") String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, BusinessException {
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
-        if (userService.modifyPassword(userModel.getTelphone(), EnCodeByMd5(password))) {
+        if (userService.modifyPassword(userModel.getTelphone(), this.EnCodeByMd5(password))) {
             return CommonReturnType.create(null);
         }
         return null;
