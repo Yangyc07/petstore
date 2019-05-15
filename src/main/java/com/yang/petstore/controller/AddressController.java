@@ -41,7 +41,7 @@ public class AddressController extends BaseController{
                                 @RequestParam(name = "zip")String zip)throws BusinessException{
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
         UserAddressDO userAddressDO = new UserAddressDO();
-        userAddressDO.setId(userModel.getId());
+        userAddressDO.setUserId(userModel.getId());
         userAddressDO.setReceiverName(receiverName);
         userAddressDO.setReceiverPhone(receiverPhone);
         userAddressDO.setReceiverProvince(receiverProvince);
@@ -49,7 +49,7 @@ public class AddressController extends BaseController{
         userAddressDO.setReceiverDistrict(receiverDistrict);
         userAddressDO.setReceiverAddress(receiverAddress);
 
-        userAddressDOMapper.insert(userAddressDO);
+        addressService.addAddress(userAddressDO);
         return CommonReturnType.create(userAddressDO);
     }
 

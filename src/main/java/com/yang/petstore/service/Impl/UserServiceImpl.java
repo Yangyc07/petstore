@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ValidatorImpl validator;
 
+
     @Override
     public UserModel getUserById(Integer id) {
         //调用usermapper获取对应的dataobject

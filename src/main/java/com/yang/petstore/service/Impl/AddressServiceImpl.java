@@ -23,4 +23,19 @@ public class AddressServiceImpl implements AddressService {
     public boolean deleteAddressById(Integer id) {
        return userAddressDOMapper.deleteByPrimaryKey(id)>0;
     }
+
+    @Override
+    public boolean addAddress(UserAddressDO userAddressDO) {
+       return userAddressDOMapper.insertSelective(userAddressDO) > 0;
+    }
+
+    @Override
+    public boolean updateAddress(UserAddressDO userAddressDO) {
+        return userAddressDOMapper.updateByPrimaryKey(userAddressDO) > 0;
+    }
+
+    @Override
+    public UserAddressDO selectAddressById(Integer id) {
+        return userAddressDOMapper.selectByPrimaryKey(id);
+    }
 }

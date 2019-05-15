@@ -173,8 +173,6 @@ public class OrderServiceImpl implements OrderService {
         }
         stringBuilder.append(sequenceStr);
         //最后2位为分库分表位(不实现)
-        //Integer userid = 1000122;
-        //userid % 100;
         stringBuilder.append("11");
         return stringBuilder.toString();
     }

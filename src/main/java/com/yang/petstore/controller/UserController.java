@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,6 @@ public class UserController extends BaseController{
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
 
-        lg.info("自动生成session [{}]", httpServletRequest.getSession().getAttribute("LOGIN_USER").toString());
         return CommonReturnType.create(null);
     }
 
@@ -151,7 +151,7 @@ public class UserController extends BaseController{
         return "modifypass";
     }
 
-    //编辑个人地址
+    //个人地址
     @RequestMapping(value = "/myAddress")
     public String myAddres(){
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
@@ -161,12 +161,80 @@ public class UserController extends BaseController{
         return "address";
     }
 
+    //编辑个人地址页面
+    @RequestMapping(value = "/editAddress")
+    public String editAddress(@RequestParam(name="id")Integer id){
+        UserAddressDO userAddressDO = addressService.selectAddressById(id);
+        httpServletRequest.getSession().setAttribute("myAddress",userAddressDO);
+        return "editaddress";
+    }
+
+    //编辑个人地址
+    @RequestMapping(value = "/doEditAddress")
+    @ResponseBody
+    public CommonReturnType doEditAddres(
+                                       @RequestParam(name="receiver_name") String receiver_name,
+                                       @RequestParam(name="receiver_phone")  String receiver_phone,
+                                       @RequestParam(name="cmbProvince")  String cmbProvince,
+                                       @RequestParam(name="cmbCity")   String cmbcity,
+                                       @RequestParam(name="cmbArea")  String cmbArea,
+                                       @RequestParam(name="receiver_address")  String receiver_address,
+                                       @RequestParam(name="receiver_zip")  String receiver_zip){
+
+        UserAddressDO userAddressDO = (UserAddressDO) httpServletRequest.getSession().getAttribute("myAddress");
+        userAddressDO.setReceiverName(receiver_name);
+        userAddressDO.setReceiverPhone(receiver_phone);
+        userAddressDO.setReceiverProvince(cmbProvince);
+        userAddressDO.setReceiverCity(cmbcity);
+        userAddressDO.setReceiverDistrict(cmbArea);
+        userAddressDO.setReceiverAddress(receiver_address);
+        userAddressDO.setReceiverZip(receiver_zip);
+
+        addressService.updateAddress(userAddressDO);
+        return CommonReturnType.create(null);
+    }
+
+
     //删除个人地址
     @RequestMapping(value = "/deleteAddress")
     public String deleteAddress(@RequestParam(name="id")Integer id){
         addressService.deleteAddressById(id);
         return "address";
     }
+
+    //添加地址界面
+    @RequestMapping(value = "/addAddress")
+    public String addAddress(){
+        return "addaddress";
+    }
+
+    //添加地址
+    @RequestMapping(value = "/doAddAddress")
+    @ResponseBody
+    public CommonReturnType doAddAddress(@RequestParam(name="receiver_name") String receiver_name,
+                               @RequestParam(name="receiver_phone")  String receiver_phone,
+                               @RequestParam(name="cmbProvince")  String cmbProvince,
+                               @RequestParam(name="cmbCity")   String cmbcity,
+                               @RequestParam(name="cmbArea")  String cmbArea,
+                               @RequestParam(name="receiver_address")  String receiver_address,
+                               @RequestParam(name="receiver_zip")  String receiver_zip){
+
+        UserAddressDO userAddressDO = new UserAddressDO();
+        userAddressDO.setReceiverName(receiver_name);
+        userAddressDO.setReceiverPhone(receiver_phone);
+        userAddressDO.setReceiverProvince(cmbProvince);
+        userAddressDO.setReceiverCity(cmbcity);
+        userAddressDO.setReceiverDistrict(cmbArea);
+        userAddressDO.setReceiverAddress(receiver_address);
+        userAddressDO.setReceiverZip(receiver_zip);
+
+        UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        userAddressDO.setUserId(userModel.getId());
+        addressService.addAddress(userAddressDO);
+        return CommonReturnType.create(null);
+
+    }
+
 
     //修改个人密码
     @RequestMapping(value = "/doModifyPassword",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
@@ -178,4 +246,5 @@ public class UserController extends BaseController{
         }
         return null;
     }
+
 }

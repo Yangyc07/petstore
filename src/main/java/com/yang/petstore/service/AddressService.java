@@ -11,4 +11,13 @@ public interface AddressService {
 
     //删除地址
     boolean deleteAddressById(Integer id);
+
+    //增加地址信息
+    boolean addAddress(UserAddressDO userAddressDO);
+
+    //更新地址信息
+    boolean updateAddress(UserAddressDO userAddressDO);
+
+    //根据id查找地址
+    UserAddressDO selectAddressById(Integer id);
 }
