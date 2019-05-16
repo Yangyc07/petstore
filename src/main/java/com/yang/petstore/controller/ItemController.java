@@ -65,6 +65,11 @@ public class ItemController extends BaseController{
         return "getitem";
     }
 
+    @RequestMapping(value = "/mylist",method = {RequestMethod.GET})//Content type 'null' not supported
+    public String list(){
+        return "listitem";
+    }
+
     //根据价格查询
     @RequestMapping(value = "/selectByPrice",method = {RequestMethod.GET})//Content type 'null' not supported
     public String selectByPrice(@RequestParam(value="pageNo",defaultValue="1")int pageNo,
@@ -78,6 +83,46 @@ public class ItemController extends BaseController{
         return "listitem";
     }
 
+    //主界面筛选
+    @RequestMapping(value = "/selectByFactor",method = {RequestMethod.POST})//Content type 'null' not supported
+    @ResponseBody
+    public CommonReturnType selectByFactor(@RequestParam(value="pet")String pet,
+                                 @RequestParam(value="use")String use,
+                                 @RequestParam(value="price")String price,
+                                 @RequestParam(value="pageNo",defaultValue="1")int pageNo,
+                                 @RequestParam(value="pageSize",defaultValue="3")int pageSize){
+
+
+        PageInfo<ItemDO> page = new PageInfo<ItemDO>();
+        //单种查询
+        //为猫
+        if(pet.equals("狗狗")&&use.equals("")){
+            //只根据狗查询(1,2,3)
+            page = itemService.selectByPetCategory(pageNo,pageSize,0);
+        }
+        //为狗
+        else if(pet.equals("猫猫")&&use.equals("")){
+            //只根据狗查询(4,5,6)
+            page = itemService.selectByPetCategory(pageNo,pageSize,1);
+        }
+        //两种查询
+        else if(price.equals("")){
+            //组装类别
+            int category = convertCategory(pet, use);
+            page = itemService.selectByCategory(pageNo,pageSize,category);
+        }else{
+            //三种查询
+            int category = convertCategory(pet, use);
+            String strings [] = price.split("-");
+            int lowPrice = Integer.parseInt(strings[0]);
+            int highPrice = Integer.parseInt(strings[1]);
+            page = itemService.selectByPrice(pageNo,pageSize,category,lowPrice,highPrice);
+        }
+        httpServletRequest.getSession().setAttribute("pageInfo", page);
+        return CommonReturnType.create(null);
+    }
+
+
 
     private ItemVO convertVOFromModel(ItemModel itemModel){
         if(itemModel == null){
@@ -89,4 +134,25 @@ public class ItemController extends BaseController{
     }
 
 
+    private int convertCategory(String pet,String use){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(pet);
+        stringBuilder.append(use);
+        String str = stringBuilder.toString();
+        switch (str){
+            case "狗狗主粮零食":
+                return 1;
+            case "狗狗宠物玩具":
+                return 2;
+            case "狗狗出行装备":
+                return 3;
+            case "猫猫主粮零食":
+                return 4;
+            case "猫猫宠物玩具":
+                return 5;
+            case "猫猫出行装备":
+                return 6;
+        }
+        return 0;
+    }
 }

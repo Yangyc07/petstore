@@ -17,6 +17,17 @@
     WHERE item.title like '%${key}%'
   </select>
 
+  <select id="selectDog"  resultMap="BaseResultMap">
+
+   SELECT * FROM item WHERE category = 1 OR category = 2 OR category = 3
+  </select>
+
+  <select id="selectCat"  resultMap="BaseResultMap">
+
+    SELECT * FROM item WHERE category = 3 OR category = 4 OR category = 5
+  </select>
+
+
   <select id="selectByPrice"  resultMap="BaseResultMap">
     SELECT * FROM item
     WHERE category=#{category,jdbcType=INTEGER} AND price BETWEEN #{lowPrice,jdbcType=INTEGER} AND #{highPrice,jdbcType=INTEGER}

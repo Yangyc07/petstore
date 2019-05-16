@@ -2,6 +2,7 @@ package com.yang.petstore.dao;
 
 import com.yang.petstore.dataobject.ItemDO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -57,6 +58,10 @@ public interface ItemDOMapper {
     List<ItemDO> listItem();
 
     List<ItemDO> selectByCategory(int categoty);
+
+    List<ItemDO> selectCat();
+
+    List<ItemDO> selectDog();
 
     int increaseSales(@Param("id") Integer id, @Param("amount")Integer amount);
 

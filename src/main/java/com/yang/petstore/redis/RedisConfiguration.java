@@ -52,7 +52,9 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             sb.append(target.getClass().getName());
             sb.append(":");
             sb.append(method.getName());
-            sb.append(":" + String.valueOf(params[0])+params[1]);
+            for (Object obj : params) {
+                sb.append(":" + String.valueOf(obj));
+            }
             String rsToUse = String.valueOf(sb);
             lg.info("自动生成Redis Key -> [{}]", rsToUse);
             return rsToUse;

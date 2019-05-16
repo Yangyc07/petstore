@@ -14,13 +14,16 @@ import com.yang.petstore.validator.ValidationResult;
 import com.yang.petstore.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = "item",cacheManager = "cacheManager")
 public class ItemServiceImpl implements ItemService{
 
     @Autowired
@@ -77,7 +80,7 @@ public class ItemServiceImpl implements ItemService{
         return this.getItemById(itemModel.getId());
     }
 
-
+    @Cacheable(keyGenerator = "keyGenerator")
     @Override
     public PageInfo<ItemDO> listItem(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo,pageSize);//页数 和 行数
@@ -140,6 +143,19 @@ public class ItemServiceImpl implements ItemService{
     public PageInfo<ItemDO> selectByPrice(int pageNo, int pageSize, int category, int lowPirce, int highPrice) {
         PageHelper.startPage(pageNo,pageSize);//页数 和 行数
         List<ItemDO> itemDOList = itemDOMapper.selectByPrice(category,lowPirce,highPrice);
+        PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<ItemDO> selectByPetCategory(int pageNo, int pageSize,int category) {
+        PageHelper.startPage(pageNo,pageSize);//页数 和 行数
+        List<ItemDO> itemDOList = new LinkedList<>();
+        if(category == 0){//狗
+             itemDOList = itemDOMapper.selectDog();
+        }else{//猫
+             itemDOList = itemDOMapper.selectCat();
+        }
         PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
         return pageInfo;
     }

@@ -32,4 +32,7 @@ public interface ItemService {
      //根据分类和价格区间查询
      PageInfo<ItemDO> selectByPrice(int pageNo, int pageSize,int category, int lowPirce, int highPrice);
 
+     //根据猫狗分类查询
+     PageInfo<ItemDO> selectByPetCategory(int pageNo, int pageSize,int category);
+
 }

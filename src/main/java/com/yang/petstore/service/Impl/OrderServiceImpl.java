@@ -117,12 +117,13 @@ public class OrderServiceImpl implements OrderService {
         orderDO.setPaymentTime(DateTime.now().toDate());
         //更新
         orderDOMapper.updateByPrimaryKey(orderDO);
-        //2.落单减库存
+        //2.落单减库存,增加销量
         //根据订单信息查询出所购买商品的数量
         List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByOrderNo(orderNo);
         //减库存
         for (OrderInfoDO orderInfoDo: orderInfoDOList) {
             itemService.decreaseStock(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
+            itemService.increaseSales(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
         }
         return true;
     }
