@@ -1,20 +1,14 @@
 package com.yang.petstore.controller.ViewObject;
 
+import com.yang.petstore.dataobject.ItemDO;
 import com.yang.petstore.dataobject.UserAddressDO;
+import com.yang.petstore.service.Model.ItemModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-/**
- * create by: yyc
- * description: 订单VO
- * create time: 2019/5/8 16:16
- *
- * @Param:
- * @return
- */
-public class OrderVO {
+public class OrderInfoVO {
 
     //订单号
     private String orderNo;
@@ -52,8 +46,8 @@ public class OrderVO {
     //订单更新时间
     private Date updateTime;
 
-    //商品的信息
-    private List<CartItemVO> cartItemVO;
+    //商品信息
+    private List<ItemModel> itemModelList;
 
 
     //地址信息
@@ -61,20 +55,28 @@ public class OrderVO {
 
     private Integer amount;
 
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
     public String getOrderNo() {
         return orderNo;
     }
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public UserAddressDO getUserAddressDO() {
+        return userAddressDO;
+    }
+
+    public void setUserAddressDO(UserAddressDO userAddressDO) {
+        this.userAddressDO = userAddressDO;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Integer getUserId() {
@@ -165,19 +167,11 @@ public class OrderVO {
         this.updateTime = updateTime;
     }
 
-    public List<CartItemVO> getCartItemVO() {
-        return cartItemVO;
+    public List<ItemModel> getItemModelList() {
+        return itemModelList;
     }
 
-    public void setCartItemVO(List<CartItemVO> cartItemVO) {
-        this.cartItemVO = cartItemVO;
-    }
-
-    public UserAddressDO getUserAddressDO() {
-        return userAddressDO;
-    }
-
-    public void setUserAddressDO(UserAddressDO userAddressDO) {
-        this.userAddressDO = userAddressDO;
+    public void setItemModelList(List<ItemModel> itemModelList) {
+        this.itemModelList = itemModelList;
     }
 }

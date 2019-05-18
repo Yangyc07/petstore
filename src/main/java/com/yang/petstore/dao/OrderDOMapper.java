@@ -1,6 +1,9 @@
 package com.yang.petstore.dao;
 
+
 import com.yang.petstore.dataobject.OrderDO;
+
+import java.util.List;
 
 public interface OrderDOMapper {
     /**
@@ -52,4 +55,7 @@ public interface OrderDOMapper {
     int updateByPrimaryKey(OrderDO record);
 
     OrderDO selectByOrderNo(String orderNo);
+
+    List<OrderDO>selectByUserId(Integer userId);
+
 }

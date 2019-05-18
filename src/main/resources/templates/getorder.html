@@ -63,9 +63,9 @@
 					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-                    <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
-                    <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
+				<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+                <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+                <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
 				</ul>
 			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
@@ -141,8 +141,8 @@
       				<th>商品数量</th>
       				<th>商品总价</th>
       			</tr>
-      			<tr  th:each="cartItemVo:${session.orderVO.cartItemVO}">
-      				<td th:text="${cartItemVo.name}"></td>
+      			<tr  th:each="orderInfoVO:${session.orderInfoVOS}">
+      				<td th:text="${orderInfoVO.itemModelList}"></td>
       				<td ><img th:src="@{${cartItemVo.img_url}}" width="100" height="100" /></td>
       				<td th:text="${cartItemVo.price}"></td>
       				<td th:text="${cartItemVo.quantity}"></td>
@@ -154,11 +154,11 @@
       		<input type="hidden" th:value="${session.orderVO}"/>
 
 
-            <div th:if ="${session.orderVO.status} eq '10'">
-      		<form method="POST" th:action="@{/pay/aliPay(out_trade_no=${session.orderVO.orderNo},total_amount=${session.orderVO.payment})}">
+      		<form method="POST" th:action="@{/order/aliPay}">
       		        <button type="submit"   class="btn btn-info">立即支付</button>
       		</form>
-      	    </div>
+
+      	</div>
       </div>
 </div>
 </div>

@@ -49,8 +49,9 @@
 					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-					<li><a href="/petstore/user/address">修改密码</a></li>
+				<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+                <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+                <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
 				</ul>
 			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>

@@ -1,18 +1,23 @@
 package com.yang.petstore.controller;
 
 
+
+import com.yang.petstore.controller.ViewObject.OrderInfoVO;
 import com.yang.petstore.controller.ViewObject.OrderVO;
+import com.yang.petstore.dataobject.OrderDO;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.response.CommonReturnType;
 import com.yang.petstore.service.Model.UserModel;
 import com.yang.petstore.service.OrderService;
+import com.yang.petstore.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller("order")
 @RequestMapping("/order")
@@ -26,6 +31,9 @@ public class OrderController extends BaseController{
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    @Autowired
+    private PayService payService;
+
     //生成订单
     @RequestMapping(value = "/createOrder",method = {RequestMethod.GET})
     String createOrder(Integer addressId){
@@ -36,13 +44,28 @@ public class OrderController extends BaseController{
     }
 
 
-    //完成支付
-    @RequestMapping(value = "/completePay",method = {RequestMethod.POST})
-    @ResponseBody
-    CommonReturnType completePay(String orderNo) throws BusinessException {
-        if (orderService.completePay(orderNo)) {
-            return CommonReturnType.create(null);
-        }
-        return CommonReturnType.create(new BusinessException(EmBusinessError.UNKNOWN_ERROR));
+
+
+    //查看我的所有订单
+    @RequestMapping(value = "/myOrder",method = {RequestMethod.GET})
+    String myOrder(Integer userId){
+        List<OrderVO> orderVOS = orderService.selectByUserId(userId);
+        httpServletRequest.getSession().setAttribute("orderVOS",orderVOS);
+        return "allorder";
     }
+
+
+    //查看详细订单
+    @RequestMapping(value = "/getOrder",method = {RequestMethod.GET})
+    String getOrder(String orderNo){
+        List<OrderVO> orderList = (List<OrderVO>)httpServletRequest.getSession().getAttribute("orderVOS");
+        for (OrderVO orderVO:orderList) {
+            if(orderVO.getOrderNo().equals(orderNo)){
+                httpServletRequest.getSession().setAttribute("orderVO",orderVO);
+                break;
+            }
+        }
+        return "myorder";
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.yang.petstore.service.Impl;
 import com.yang.petstore.controller.ViewObject.CartItemVO;
 import com.yang.petstore.controller.ViewObject.CartVO;
+import com.yang.petstore.controller.ViewObject.OrderInfoVO;
 import com.yang.petstore.controller.ViewObject.OrderVO;
 import com.yang.petstore.dao.OrderDOMapper;
 import com.yang.petstore.dao.OrderInfoDOMapper;
@@ -15,14 +16,17 @@ import com.yang.petstore.service.OrderService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -126,6 +130,36 @@ public class OrderServiceImpl implements OrderService {
             itemService.increaseSales(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
         }
         return true;
+    }
+
+    @Override
+    public List<OrderVO> selectByUserId(Integer userId) {
+        //需要订单信息，详细信息和地址信息 购物车信息
+       List<OrderDO> orderDOList =  orderDOMapper.selectByUserId(userId);
+       List<OrderVO> orderVOS = new LinkedList<>();
+       Integer amount = 0;
+       //循环组装VO
+        for (OrderDO orderDO:orderDOList) {
+            amount = 0;
+            OrderVO orderVO = new OrderVO();
+            List<CartItemVO> cartItemVOList = new LinkedList<>();
+            BeanUtils.copyProperties(orderDO,orderVO);
+            List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByOrderNo(orderDO.getOrderNo());
+            for (OrderInfoDO orderInfoDO:orderInfoDOList){
+                CartItemVO cartItemVO = new CartItemVO();
+                amount += orderInfoDO.getQuantity();
+                BeanUtils.copyProperties(orderInfoDO,cartItemVO);
+                cartItemVO.setName(orderInfoDO.getItemName());
+                cartItemVO.setImg_url(orderInfoDO.getItemUrl());
+                cartItemVO.setTotal(orderInfoDO.getTotalPrice());
+                cartItemVOList.add(cartItemVO);
+            }
+            orderVO.setAmount(amount);
+            orderVO.setUserAddressDO(userAddressDOMapper.selectByPrimaryKey(orderDO.getShippingId()));
+            orderVO.setCartItemVO(cartItemVOList);
+            orderVOS.add(orderVO);
+        }
+        return orderVOS;
     }
 
     /**

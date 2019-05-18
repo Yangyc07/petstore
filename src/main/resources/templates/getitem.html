@@ -60,7 +60,8 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-					<li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+                    <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+                    <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
 				</ul>
 			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
@@ -116,7 +117,7 @@
 <div class="storecontent" >
 	<div class="storecontentleft">
 			<a href="#" >
-				<img th:src="@{${session.itemVO.imgUrl}}" th:width="500" th:height="320"/>
+				<img th:src="@{${session.itemVO.imgUrl}}" th:width="300" th:height="200"/>
 			</a>
 			<h3 align="center">商品编号
 				<span th:text="${session.itemVO.id}" th:value="${session.itemVO.id}" id="itemId"/>
