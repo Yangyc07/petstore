@@ -153,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
                 cartItemVO.setImg_url(orderInfoDO.getItemUrl());
                 cartItemVO.setTotal(orderInfoDO.getTotalPrice());
                 cartItemVOList.add(cartItemVO);
+                cartItemVO.setItemId(orderInfoDO.getItemId());
             }
             orderVO.setAmount(amount);
             orderVO.setUserAddressDO(userAddressDOMapper.selectByPrimaryKey(orderDO.getShippingId()));
@@ -178,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
 
         //运费,状态设置为未支付,订单创建时间
         orderVO.setPostage(0);
-        orderVO.setPostage(10);
+        orderVO.setStatus(10);
         orderVO.setCreateTime(DateTime.now().toDate());
         //时间暂未设置,支付时设置
         return orderVO;

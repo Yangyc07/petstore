@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,10 @@ public class ItemController extends BaseController{
     private static final Logger lg = LoggerFactory.getLogger(ItemController.class);
     //商品页表浏览
     @RequestMapping(value = "/list")//Content type 'null' not supported
-    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize){
+    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize, HttpSession httpSession){
         PageInfo<ItemDO> page = itemService.listItem(pageNo,pageSize);
         httpServletRequest.getSession().setAttribute("pageInfo",page);
+       // model.addAttribute("pageInfo",page);
         return "listitem";
     }
 

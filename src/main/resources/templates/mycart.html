@@ -17,10 +17,12 @@
         .hse1{ color: #f80910
         }
         .price{
-            top:95%;
-            height: 25%;
+
+            position: absolute;
+            height: 20%;
+            top: 80%;
             width:100%;
-            background-color: #f2faee;
+            background-color: #f3f3f3;
         }
         .myright{
             float: right;
@@ -133,14 +135,13 @@
     </div>
     <div class="price" >
         <br />
-
-            <div class ="myright">
-                送货至：<select name="programme" id="programme_view">
+            <div class ="myright" >
+               <select name="programme" id="programme_view" class="form-control" >
             </select>
                 <h3 text-align="right">&nbsp;总价
                     <span class="control-label hse1" th:text="${session.carVO.cartTotal}"/>￥
                     <button class="btn  btn-success btn-lg" onclick="createOrder()" id="createOrder" type="button" >
-                        立即支付
+                        提交订单
                     </button>
                 </h3>
             </div>

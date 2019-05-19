@@ -17,23 +17,29 @@
 			width:40%;
 			position: absolute;
 			left:5%;
-			background-color: #fffbf9;
+			background-color: #ffffff;
 		}
 		.storecontentright{
 			top:50px;
 			height: 80%;
-			width:40%;
+			width:45%;
 			position: absolute;
 			right:10%;
-			background-color: #f5fff9;
+			background-color: #fcfcfc;
 		}
 		.hse1{ color:red}
 		.price{
 			top:300px;
 			height: 20%;
-			width:90%;
-			background-color: #fff7f3;
+			width:100%;
+			background-color: #f3f3f3;
 		}
+		.amount{
+        			top:500px;
+        			height: 7%;
+        			width:100%;
+        			background-color: #f3f3f3;
+        		}
 		 .myfoot{
                     margin-left: 10%;
                     width: 80%;
@@ -117,42 +123,49 @@
 <div class="storecontent" >
 	<div class="storecontentleft">
 			<a href="#" >
-				<img th:src="@{${session.itemVO.imgUrl}}" th:width="300" th:height="200"/>
+				<img th:src="@{${session.itemVO.imgUrl}}" th:width="300" th:height="350" style="margin-left: 30px"/>
 			</a>
-			<h3 align="center">商品编号
-				<span th:text="${session.itemVO.id}" th:value="${session.itemVO.id}" id="itemId"/>
-			</h3>
+			<h6 style="margin-left: 20px">
+				商品编号：<span th:text="${session.itemVO.id}" th:value="${session.itemVO.id}" s id="itemId"/>
+			</h6>
+
 	</div>
 	<div class="storecontentright">
-		<h3>
+	<div style="margin-left: 30px">
+		<h4 >
 		   <span th:text="${session.itemVO.title}" id="title"/>
-		</h3>
-		<h4 class="hse1">
-				<span class="control-label" th:text="${session.itemVO.getDescription()}" id="description"/>
 		</h4>
+		<h5 class="hse1">
+				<span class="control-label" th:text="${session.itemVO.getDescription()}" id="description"/>
+		</h5>
 		<div class="price">
 			<br />
-			<h3>&nbsp;米乐价格：
-				<span class="control-label hse1" th:text="${session.itemVO.price}" id="price"/>￥
-			</h3>
+			<span>
+			<h5 style="margin-bottom: 30px">
+				&nbsp;米乐价格：<span class="control-label hse1" th:text="${session.itemVO.price}" style="color: #ff0000;font-size: 34px" id="price"/>￥
+			</h5>
+			</span>
 		</div>
 		<h4>
-			<br />
-				销量：<span th:text="${session.itemVO.sales}" id="sales"/>
+				已售：<span th:text="${session.itemVO.sales}" style="color: #ff0000" id="sales"/>
 		</h4>
-		<div class="gw_num">
-			<em class="jian">-</em>
+		<DIV style="BORDER-TOP: #00686b 1px dashed; OVERFLOW: hidden; HEIGHT: 1px"></DIV>
+		<br />
+
+            <div style="margin-top: 10px"> 我要买：</div>
+		<div class="gw_num" style="margin-top: -20px;margin-left: 60px">
+		    <em class="jian">-</em>
 				<input type="text" value="1" class="num" id="amount"/>
 			<em class="add">+</em>
 		</div>
 		<br />
 		<h6>米乐快递15点前下单，其他快递16点前下单，当天发货。</h6>
 		<br />
-		<br />
-		<br />
+
 		<button class="btn  btn-success btn-lg" id="addItemtoCart" type="button">
 				加入购物车
 		</button>
+	</div>
 	</div>
 	</div>
 
