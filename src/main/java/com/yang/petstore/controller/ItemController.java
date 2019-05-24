@@ -13,8 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +37,9 @@ public class ItemController extends BaseController{
     private static final Logger lg = LoggerFactory.getLogger(ItemController.class);
     //商品页表浏览
     @RequestMapping(value = "/list")//Content type 'null' not supported
-    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize, HttpSession httpSession){
+    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize){
         PageInfo<ItemDO> page = itemService.listItem(pageNo,pageSize);
         httpServletRequest.getSession().setAttribute("pageInfo",page);
-       // model.addAttribute("pageInfo",page);
         return "listitem";
     }
 
@@ -50,10 +54,18 @@ public class ItemController extends BaseController{
 
     //根据关键字搜索
     @RequestMapping(value = "/selectByKey")//Content type 'null' not supported
-    public String selectByKey(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize) {
-        String key = httpServletRequest.getParameter("key");
+    public String selectByKey(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="3")int pageSize,ModelAndView modelAndView) {
+
+
+        String key = (String) httpServletRequest.getSession().getAttribute("key");
+        if(key == null || key.trim().length()== 0){
+            key = httpServletRequest.getParameter("key");
+            httpServletRequest.getSession().setAttribute("key",key);
+        }
+
         lg.info("key-----------------------------------------",key);
         PageInfo<ItemDO> page = itemService.selectByKey(pageNo, pageSize, key);
+        modelAndView.addObject("pageInfo",page);
         httpServletRequest.getSession().setAttribute("pageInfo", page);
         return "listitem";
     }
@@ -124,7 +136,32 @@ public class ItemController extends BaseController{
         return CommonReturnType.create(null);
     }
 
-
+    //价格降序排列
+    @RequestMapping(value = "/selectByDesc",method = {RequestMethod.GET})//Content type 'null' not supported
+    public String selectByDesc(){
+        PageInfo<ItemDO> page  = (PageInfo<ItemDO>) httpServletRequest.getSession().getAttribute("pageInfo");
+        //获取商品信息
+        List<ItemDO>  itemDOList = page.getList();
+        Collections.sort(itemDOList, new Comparator<ItemDO>() {
+            public int compare(ItemDO itemDO1, ItemDO itemDO2) {
+                BigDecimal price1 = itemDO1.getPrice();
+                BigDecimal price2 = itemDO2.getPrice();
+                if (price1.compareTo(price2)==1) {
+                    return -1;
+                } else if (price2 == price1) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
+        for (ItemDO itemDO: itemDOList) {
+            System.out.println(itemDO.getPrice());
+        }
+        page.setList(itemDOList);
+        httpServletRequest.getSession().setAttribute("pageInfo", page);
+        return "listitem";
+    }
 
     private ItemVO convertVOFromModel(ItemModel itemModel){
         if(itemModel == null){

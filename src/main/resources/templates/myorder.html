@@ -106,7 +106,7 @@
 						<li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
 					</ul>
 				</li>
-				<form class="navbar-form navbar-right" action="selectByKey"  role="search">
+				<form class="navbar-form navbar-right" th:action="@{/item/selectByKey}"  role="search">
 				<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search" name="key">
 				</div>

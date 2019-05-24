@@ -142,6 +142,9 @@
         			 <button class="btn  btn-default btn-sm"  type="button" id = "searchByFactor">
                                                     确认搜索
                                                 </button>
+                      <button class="btn  btn-default btn-sm"  id="selectByDesc" type="button" >
+                                                                         价格降序
+                                                                     </button>
         		</li>
 
         	</ul>
@@ -213,7 +216,6 @@
 <script>
    jQuery(document).ready(function(){
 
-       		//绑定opt的clic事件用于向后端发送获取手机验证码的请求
        		$("#searchByFactor").on("click",function(){
                 var pet = $("#selectA.selected").text();
                 var use = $("#selectB.selected").text();
@@ -235,6 +237,11 @@
                   },
                 });
        		});
+
+       			$("#selectByDesc").on("click",function(){
+                    window.location.href="/petstore/item/selectByDesc"
+              });
+
        	});
 
 </script>

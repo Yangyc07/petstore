@@ -7,12 +7,12 @@
 	<!-- 新 Bootstrap 核心 CSS 文件 -->
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" th:href="@{/css/main.css}">
-
 	<!-- jQuery文件.务必在bootstrap.min.js 之前引入 -->
-	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
 	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
+	<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<style>
 		.carousel-inner .item img {
 			width: 100%;
@@ -46,12 +46,12 @@
 		<ul class="nav navbar-nav navbar-right">
 			<li class="dropdown" >
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
+					<span th:text="${session.LOGIN_USER.name}"/> <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-				<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-                <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
-                <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
+					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
+					<li><a href="/petstore/user/myAddress">管理我的地址</a></li>
+					<li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
 				</ul>
 			</li>
 			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
@@ -92,7 +92,7 @@
 						<li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
 					</ul>
 				</li>
-				<form class="navbar-form navbar-right" th:action="@{/item/selectByKey}"  role="search">
+				<form class="navbar-form navbar-right" action="selectByKey"  role="search">
 				<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search" name="key">
 				</div>
@@ -104,45 +104,95 @@
 </nav>
 </div>
 <div class="storecontent">
-<nav class="navbar navbar-default" role="navigation" style="background-color: #ffffff">
-    <div class="container-fluid">
-    <div>
-        <!--向左对齐-->
 
-        <!--向右对齐-->
-        <ul class="nav navbar-nav navbar-left">
-           <p class="navbar-text ">管理我的地址</p>
 
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-
-        </ul>
-    </div>
-    </div>
-</nav>
 
 	<div class="contentfooter">
 	<div class="panel panel-default" style="width: 100%">
 		<div class="panel-body">
 		<table class="table table-hover">
 			<tr>
-				<th>收获人</th>
-				<th>地址</th>
-				<th>电话</th>
+				<th>商品名称</th>
+				<th>商品图片</th>
+				<th>商品描述</th>
+				<th>商品价格</th>
+				<th>商品销量</th>
 			</tr>
-			<tr  th:each="myaddress:${session.address}">
-				<td th:text="${myaddress.receiverName}"></td>
-				<td th:text="${myaddress.receiverProvince}+${myaddress.receiverCity}+${myaddress.receiverDistrict}+${myaddress.receiverAddress}"+ /></td>
-				<td th:text="${myaddress.receiverPhone}"></td>
-                <td><a th:href="@{/user/editAddress(id=${myaddress.id})}"> <button type="button" class="btn btn-info" />编辑</a></td>
-			    <td><a th:href="@{/user/deleteAddress(id=${myaddress.id})}"><button type="button" class="btn btn-warning" id="deleteAddress" />删除</a></td>
+			<tr  th:each="itemDO:${session.pageInfo.list}">
+				<td th:text="${itemDO.title}"></td>
+				<td ><img th:src="@{${itemDO.imgUrl}}" width="100" height="100" /></td>
+				<td th:text="${itemDO.description}"></td>
+				<td th:text="${itemDO.price}"></td>
+				<td th:text="${itemDO.sales}"></td>
+				<td><a th:href="@{get(id=${itemDO.getId()})}">商品详情</a></td>
 			</tr>
 		</table>
-		 <a th:href="@{/user/addAddress}" ><span class="glyphicon glyphicon-plus">新增地址</span></a>
+		<nav aria-label="Page navigation" th:align="center">
+          <ul class="pagination">
 
+			<li><span width="10%" th:if="${session.pageInfo.hasPreviousPage}">
+				<a th:href="'?pageNo=1'">首页</a>
+				</span>
+			</li>
+             <li>
+			<span width="10%" th:if="${session.pageInfo.hasPreviousPage}">
+				<a th:href="'?pageNo='+${session.pageInfo.prePage}">上一页</a>
+			</span>
+			</li>
+			<li>
+			<span width="10%" th:each="nav : ${session.pageInfo.navigatepageNums}">
+				<a th:href="'?pageNo='+${nav}" th:text="${nav}" th:if="${nav != session.pageInfo.pageNum}"></a>
+				<span style="font-weight: bold" th:if="${nav == session.pageInfo.pageNum}" th:text="${nav}"></span>
+			</span>
+			</li>
+			<li>
+			<span width="10%" th:if="${session.pageInfo.hasNextPage}">
+				<a th:href="'?pageNo='+${session.pageInfo.nextPage}">下一页</a>
+			</span>
+			</li>
+			<li>
+			<span width="10%" th:if="${session.pageInfo.hasNextPage}">
+				<a th:href="'?pageNo='+${session.pageInfo.pages}">尾页</a>
+			</span>
+			</li>
+		</ul>
+		</nav>
 	</div>
 </div>
 	</div>
 </div>
+
 </body>
+<script>
+   jQuery(document).ready(function(){
+
+       		$("#searchByFactor").on("click",function(){
+                var pet = $("#selectA.selected").text();
+                var use = $("#selectB.selected").text();
+                var price = $("#selectC.selected").text();
+                $.ajax({
+                    type:"POST",
+                	contentType:"application/x-www-form-urlencoded",
+                	url:"http://localhost:8090/petstore/item/selectByFactor",
+                	data:{
+                		"pet":pet,
+                		"use":use,
+                		"price":price,
+                	},
+                		xhrFields:{withCredentials:true},
+                         success:function(data){
+                        if(data.status == "success"){
+                            window.location.href="/petstore/item/mylist"
+                         }
+                  },
+                });
+       		});
+
+       			$("#selectByDesc").on("click",function(){
+                    window.location.href="/petstore/item/selectByDesc"
+              });
+
+       	});
+
+</script>
 </html>

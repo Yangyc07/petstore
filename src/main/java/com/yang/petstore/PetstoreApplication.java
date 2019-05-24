@@ -49,6 +49,11 @@ public class PetstoreApplication {
 		model.addAttribute("name", "Dear");
 		return "login";
 	}
+
+	@RequestMapping("/manage")
+	public String manage(Model model){
+		return "adminlogin";
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(PetstoreApplication.class, args);
 	}

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import sun.misc.BASE64Encoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +47,7 @@ public class UserController extends BaseController{
     //用户登录接口
     @RequestMapping(value = "/login",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType login(@RequestParam(name="telphone")String telphone,@RequestParam(name="password")String password,Model model,HttpSession httpSession) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public CommonReturnType login(@RequestParam(name="telphone")String telphone, @RequestParam(name="password")String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //入参校验
         if(org.apache.commons.lang3.StringUtils.isEmpty(telphone)|| StringUtils.isEmpty(password)){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -55,7 +56,8 @@ public class UserController extends BaseController{
         System.out.print(this.EnCodeByMd5(password));
         UserModel userModel = userService.validationLogin(telphone,this.EnCodeByMd5(password));
 
-        httpSession.setAttribute("LOGIN_USER",userModel);
+
+
         //将登陆凭证加入用户登陆成功的session中
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
@@ -75,7 +77,7 @@ public class UserController extends BaseController{
                                      @RequestParam(name="password")  String password
                                      ) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //验证手机号和optCode是否符合
-        String inSessinOptCode = (String)this.httpServletRequest.getSession().getAttribute(optCode);
+        String inSessinOptCode = (String)this.httpServletRequest.getSession().getAttribute(telphone);
         System.out.println(inSessinOptCode  + optCode);
         if(!StringUtils.equals(optCode,inSessinOptCode)){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不匹配");
