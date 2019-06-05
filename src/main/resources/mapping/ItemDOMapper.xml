@@ -24,7 +24,7 @@
 
   <select id="selectCat"  resultMap="BaseResultMap">
 
-    SELECT * FROM item WHERE category = 3 OR category = 4 OR category = 5
+    SELECT * FROM item WHERE category = 4 OR category = 5 OR category = 6
   </select>
 
 

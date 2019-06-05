@@ -61,7 +61,7 @@ public class UserController extends BaseController{
 
         Cookie cookie = new Cookie("user","yang");
         cookie.setMaxAge(24*60*60);
-        cookie.setDomain("localhost:8090");
+        cookie.setDomain("localhost");
         cookie.setPath("/");
         httpServletResponse.addCookie(cookie);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");

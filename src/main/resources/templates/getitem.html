@@ -6,49 +6,45 @@
 	<link rel="stylesheet" th:href="@{/css/main.css}">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<style>
 		.carousel-inner .item img {
 			width: 100%; /* or width: 100% !important; */
 		}
+
+	.storecontent{
+		position:relative;
+		margin-left: 10%;
+		width: 80%;
+		margin-top: 2%;
+		height: 550px;
+		background: #ffffff;
+}
 		.storecontentleft{
-			top:50px;
-			height: 80%;
-			width:40%;
-			position: absolute;
-			left:5%;
+			position:absolute;
+			top:80px;
+			height: 400px;
+			width:20%;
+			left:17%;
 			background-color: #ffffff;
+			border:2px solid #f3f3f3;
 		}
 		.storecontentright{
-			top:50px;
-			height: 80%;
-			width:45%;
-			position: absolute;
-			right:10%;
-			background-color: #fcfcfc;
+			position:absolute;
+			top:80px;
+			height: 400px;
+			width:50%;
+			left:37%;
+			background-color: #ffffff;
+			border:2px solid #f3f3f3;
 		}
 		.hse1{ color:red}
 		.price{
 			top:300px;
-			height: 20%;
+			height: 15%;
 			width:100%;
 			background-color: #f3f3f3;
 		}
-		.amount{
-        			top:500px;
-        			height: 7%;
-        			width:100%;
-        			background-color: #f3f3f3;
-        		}
-		 .myfoot{
-                    margin-left: 10%;
-                    width: 80%;
-                    height: 70px;
-                    position: absolute;
-                    bottom:0;
-                    left: 0;
-                }
-
 		.gw_num{border: 1px solid #dbdbdb;width: 110px;line-height: 26px;overflow: hidden;}
 		.gw_num em{display: block;height: 26px;width: 26px;float: left;color: #7A7979;border-right: 1px solid #dbdbdb;text-align: center;cursor: pointer;}
 		.gw_num .num{display: block;float: left;text-align: center;width: 52px;font-style: normal;font-size: 14px;line-height: 24px;border: 0;}
@@ -121,9 +117,19 @@
 </div>
 
 <div class="storecontent" >
+
+	<div class="itemcatgory" style="margin-left:180px" >
+		<strong><a href="#">首页</a></strong>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<a href="">平板电脑</a>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<a href="#">Apple 苹果</a>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<em>MD531CH/A</em>
+	</div>
 	<div class="storecontentleft">
 			<a href="#" >
-				<img th:src="@{${session.itemVO.imgUrl}}" th:width="300" th:height="350" style="margin-left: 30px"/>
+				<img th:src="@{${session.itemVO.imgUrl}}" th:width="200" th:height="300" style="margin-left: 30px"/>
 			</a>
 			<h6 style="margin-left: 20px">
 				商品编号：<span th:text="${session.itemVO.id}" th:value="${session.itemVO.id}" s id="itemId"/>
@@ -131,7 +137,7 @@
 
 	</div>
 	<div class="storecontentright">
-	<div style="margin-left: 30px">
+	<div style="margin-left: 40px">
 		<h4 >
 		   <span th:text="${session.itemVO.title}" id="title"/>
 		</h4>
@@ -168,7 +174,15 @@
 	</div>
 	</div>
 	</div>
-
+	<div class="footer">
+		<P>
+			<a href="#">慕课简介</a><i>|</i>
+			<a href="#">慕课公告</a><i>|</i>
+			<a href="#">招纳贤士</a><i>|</i>
+			<a href="#">联系我们</a><i>|</i>客服热线：400-675-1234
+		</P>
+		<p>Copyright © 2006 - 2014 慕课版权所有&nbsp;&nbsp;&nbsp;京ICP备09037834号&nbsp;&nbsp;&nbsp;京ICP证B1034-8373&nbsp;&nbsp;&nbsp;某市某公安局备案编号：12390932</p>
+	</div><!-- footer结束 -->
 </body>
 <script>
     var lable = document.getElementById("itemId");

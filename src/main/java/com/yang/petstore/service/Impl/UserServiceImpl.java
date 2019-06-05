@@ -19,7 +19,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-@CacheConfig(cacheNames = "user",cacheManager = "cacheManager")
+//@CacheConfig(cacheNames = "user",cacheManager = "cacheManager")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
      * @re * @Param: nullParam: null
      */
     @Override
-    @Cacheable(keyGenerator = "keyGenerator")
+//    @Cacheable(keyGenerator = "keyGenerator")
     public UserModel validationLogin(String telphone, String encrptPassword) throws BusinessException {
         //通过用户的手机获取用户信息
         UserDO userDO = userDOMapper.selectByTelphone(telphone);

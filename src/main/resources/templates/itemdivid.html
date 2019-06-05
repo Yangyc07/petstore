@@ -106,25 +106,25 @@
 <div class="storecontent">
 <div class = "storecontentheader">
 	<div class ="storecontentheader-left">
-		<div class= "navitem">
-			<a href="#" class = "b">全部商品分类</a></br></br>
-			<a href="#" class = "b">猫猫用品</a></br></br>
-			<h8>
-			<a th:href="@{/item/listByCategory(category=4)}" class = "a">主粮零食</a>
-			<a th:href="@{/item/listByCategory(category=5)}" class = "a">出行装备</a>
-			<a th:href="@{/item/listByCategory(category=6)}" class = "a">玩具</a>
-			</h8>
-		</div>
-		<div class= "navitem">
-			<a href="#" class = "b">全部商品分类</a></br></br>
-			<a href="#" class = "b">狗狗用品</a></br></br>
-			<h8>
-			<a th:href="@{/item/listByCategory(category=1)}" class = "a">主粮零食</a>
-			<a th:href="@{/item/listByCategory(category=2)}" class = "a">出行装备</a>
-			<a th:href="@{/item/listByCategory(category=3)}" class = "a">玩具</a>
-			</h8>
-		</div>
-	</div>
+    		<div class= "navitem">
+    			<a href="#" class = "b">全部商品分类</a></br></br>
+    			<a href="#" class = "b">猫猫用品</a></br></br>
+    			<h8>
+    			<a th:href="@{/item/listByCategory(category=4)}" class = "a">主粮零食</a>
+    			<a th:href="@{/item/listByCategory(category=6)}" class = "a">出行装备</a>
+    			<a th:href="@{/item/listByCategory(category=5)}" class = "a">玩具</a>
+    			</h8>
+    		</div>
+    		<div class= "navitem">
+    			<a href="#" class = "b">全部商品分类</a></br></br>
+    			<a href="#" class = "b">狗狗用品</a></br></br>
+    			<h8>
+    			<a th:href="@{/item/listByCategory(category=1)}" class = "a">主粮零食</a>
+    			<a th:href="@{/item/listByCategory(category=3)}" class = "a">出行装备</a>
+    			<a th:href="@{/item/listByCategory(category=2)}" class = "a">玩具</a>
+    			</h8>
+    		</div>
+    	</div>
 
 	<div class ="storecontentheader-right">
 	<div id="myCarousel" class="carousel slide"  style="width: 700px; height: 288px;">
@@ -167,7 +167,7 @@
 		<a href="#" class="more">更多&gt;&gt;</a>
 	</div><!-- shop-title结束 -->
 		<div class="shoplist">
-     	<div th:each="itemDO:${catPage.list}">
+     	<div th:each="itemDO:${itemPage.list}">
      				<div class="shop-item">
      					<div class="shop-item-pic">
      						<a th:href="@{/item/get(id=${itemDO.id})}"><img th:src="@{${itemDO.imgUrl}}"  width="150px" height="200px"/></a>
@@ -179,23 +179,6 @@
 	    </div>
 </div>
 </br>
-<div class="storecontentlist">
-		<div class="shop-title">
-		<h3>狗狗用品</h3>
-		<a href="#" class="more">更多&gt;&gt;</a>
-	</div><!-- shop-title结束 -->
-		<div class="shoplist">
-     	<div th:each="itemDO:${dogPage.list}">
-     				<div class="shop-item">
-     					<div class="shop-item-pic">
-     						<a th:href="@{/item/get(id=${itemDO.id})}"><img th:src="@{${itemDO.imgUrl}}"  width="150px" height="200px"/></a>
-     					</div><!-- shop-item-pic结束 -->
-     					<h3><span th:text="${itemDO.title}"></span></h3>
-     					<p>4899元</p>
-     				</div><!-- shop-item结束 -->
-     			</div>
-	    </div>
-</div>
 </div>
 	<div class="footer">
 		<P>

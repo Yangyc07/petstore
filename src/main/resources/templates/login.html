@@ -66,12 +66,9 @@
 					"password":password,
 				},
 				xhrFields:{withCredentials:true},
+				crossDomain: true,
 				success:function(data){
 					if(data.status == "success"){
-					    //保存用户信息
-                        var obj = data.data;
-                        var infostr = JSON.stringify(obj);//转换json
-                        sessionStorage.obj = infostr;
 						alert("登陆成功");
 						window.location.href="item/list";
 					}else{

@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-@CacheConfig(cacheNames = "item",cacheManager = "cacheManager")
+//@CacheConfig(cacheNames = "item",cacheManager = "cacheManager")
 public class ItemServiceImpl implements ItemService{
 
     @Autowired
@@ -80,7 +80,7 @@ public class ItemServiceImpl implements ItemService{
         return this.getItemById(itemModel.getId());
     }
 
-    @Cacheable(keyGenerator = "keyGenerator")
+//    @Cacheable(keyGenerator = "keyGenerator")
     @Override
     public PageInfo<ItemDO> listItem(int pageNo, int pageSize) {
 

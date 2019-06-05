@@ -27,14 +27,14 @@
         .myright{
             float: right;
         }
-        .myfoot{
-            margin-left: 10%;
-            width: 80%;
-            height: 70px;
-            position: absolute;
-            bottom:0;
-            left: 0;
-        }
+        .storecontent{
+          position:relative;
+          margin-left: 15%;
+          width: 70%;
+          margin-top: 2%;
+          height: 550px;
+          background: #ffffff;
+         }
 
     </style>
 </head>
@@ -104,13 +104,19 @@
 </div>
 <div class="storecontent">
 
-<div class="storecontentw">
-</div>
-<div class="contentfooter">
-    <div class="panel panel-default" style="width: 100%">
-        <div class="panel-heading" style="background-color: #ffffff;width: 100px">
-            我的购物车
+    <div class="shopcartaddress">
+        <div class="shopcartitem ">
+               <h4 style="margin-bottom: 8px">收货信息</h4>
         </div>
+        </br>
+           <span><em>*</em>详细地址：<select name="programme" id="programme_view" class="form-control" style="width: 200px;height: 35px;margin-left: 100px;margin-top: -25px">
+                                                   </select></span>
+    </div>
+    <div class="shopcartaddress">
+    <div class="shopcartitem ">
+                   <h4 style="margin-bottom: 8px">商品信息</h4>
+    </div>
+    <div class="panel panel-default" style="width: 100%">
         <div class="panel-body">
             <table class="table table-hover">
                 <tr>
@@ -133,21 +139,24 @@
 
     </div>
     </div>
-    <div class="price" >
-        <br />
-            <div class ="myright" >
-               <select name="programme" id="programme_view" class="form-control" >
-            </select>
-                <h3 text-align="right">&nbsp;总价
-                    <span class="control-label hse1" th:text="${session.carVO.cartTotal}"/>￥
-                    <button class="btn  btn-success btn-lg" onclick="createOrder()" id="createOrder" type="button" >
-                        提交订单
-                    </button>
-                </h3>
-            </div>
-    </div>
-</div>
+    <div class="shopcartaddress">
+    <div class="shopcartitem ">
+                       <h4 style="margin-bottom: 8px">总价格</h4>
+        </div>
+      <div class="price" >
+             <br />
+                 <div class ="myright" >
 
+                     <h3 text-align="right">&nbsp;总价
+                         <span class="control-label hse1" th:text="${session.carVO.cartTotal}"/>￥
+                         <button class="btn  btn-success btn-lg" onclick="createOrder()" id="createOrder" type="button" >
+                             提交订单
+                         </button>
+                     </h3>
+                 </div>
+         </div>
+        </div>
+    </div>
 </body>
 
 <script>
