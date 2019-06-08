@@ -1,266 +1,371 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-	<title>米乐宠物商城</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<!-- 新 Bootstrap 核心 CSS 文件 -->
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<!-- jQuery文件.务必在bootstrap.min.js 之前引入 -->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-	<link rel="stylesheet" th:href="@{/css/main.css}">
-    <script type="text/javascript" th:src="@{/js/jquery-1.7.2.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/script.js}"></script>
-	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-	<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<style>
-
-.carousel-control.left {
-
-  background-image:none;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
-}
-.carousel-control.right {
-  left: auto;
-  right: 0;
-
-  background-image:none;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
-
-
-          .glyphicon glyphicon-arrow-down{
-                color: #d2dbe1;
-          }
-           btn-default{
-
-           }
-
-	</style>
-</head>
-<body th:style="'background:url('+ '/petstore/assets/global/img/bg.jpg'+ ');'">
-<div class="storeheader">
-	<nav class="navbar navbar-default" >
-	<div class="container-fluid" >
-		<ul class="nav navbar-nav navbar-right">
-			<li class="dropdown" >
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<span th:text="${session.LOGIN_USER.name}"/> <b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-					<li><a href="/petstore/user/myAddress">管理我的地址</a></li>
-					<li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
-				</ul>
-			</li>
-			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
-			<li><a th:href="@{/hello}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
-		</ul>
-		<div class="navbar-header" style="margin-left: 10%;margin-right: 10%" >
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" th:href="@{/item/list}">米乐宠物商城</a>
-			<img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
-		</div>
-		<div class="collapse navbar-collapse" id="myNavbar" >
-			<ul class="nav navbar-nav">
-				<li class="dropdown" >
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						狗狗 <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a th:href="@{/item/listByCategory(category=1)}">狗粮</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=3)}">出行装备</a></li>
-					</ul>
-				</li>
-				<li class="dropdown" >
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						猫咪 <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a th:href="@{/item/listByCategory(category=4)}">猫粮</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=5)}">猫猫玩具</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
-					</ul>
-				</li>
-				<form class="navbar-form navbar-right" action="selectByKey"  role="search">
-				<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search" name="key">
-				</div>
-				<button type="submit" id="search" class="btn btn-default">搜索</button>
-				</form>
-			</ul>
-		</div>
-	</div>
-</nav>
-</div>
-<div class="storecontent">
-<div class = "storecontentheader">
-	<div class ="storecontentheader-left">
-		<div class= "navitem">
-			<a href="#" class = "b">全部商品分类</a></br></br>
-			<a href="#" class = "b">猫猫用品</a></br></br>
-			<h8>
-			<a th:href="@{/item/listByCategory(category=4)}" class = "a">主粮零食</a>
-			<a th:href="@{/item/listByCategory(category=5)}" class = "a">出行装备</a>
-			<a th:href="@{/item/listByCategory(category=6)}" class = "a">玩具</a>
-			</h8>
-		</div>
-		<div class= "navitem">
-			<a href="#" class = "b">全部商品分类</a></br></br>
-			<a href="#" class = "b">狗狗用品</a></br></br>
-			<h8>
-			<a th:href="@{/item/listByCategory(category=1)}" class = "a">主粮零食</a>
-			<a th:href="@{/item/listByCategory(category=2)}" class = "a">出行装备</a>
-			<a th:href="@{/item/listByCategory(category=3)}" class = "a">玩具</a>
-			</h8>
-		</div>
-	</div>
-
-	<div class ="storecontentheader-right">
-	<div id="myCarousel" class="carousel slide"  style="width: 700px; height: 288px;">
-    <!-- 轮播（Carousel）指标 -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <!-- 轮播（Carousel）项目 -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <img th:src="@{/img/banner1.jpg}" alt="First slide"  style="width: 700px; height: 288px;">
-            <div class="carousel-caption">标题 1</div>
-        </div>
-        <div class="item">
-            <img th:src="@{/img/banner2.jpg}" alt="Second slide" style="width: 700px; height: 288px;">
-            <div class="carousel-caption">标题 2</div>
-        </div>
-        <div class="item">
-            <img th:src="@{/img/banner3.jpg}" alt="Third slide" style="width: 700px; height: 288px;">
-            <div class="carousel-caption">标题 3</div>
-        </div>
-    </div>
-    <!-- 轮播（Carousel）导航 -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-	</div>
-</div>
-<div class="storecontentlist">
-		<div class="shop-title">
-		<h3>猫猫用品</h3>
-		<a href="#" class="more">更多&gt;&gt;</a>
-	</div><!-- shop-title结束 -->
-		<div class="shoplist">
-     	<div th:each="itemDO:${catPage.list}">
-     				<div class="shop-item">
-     					<div class="shop-item-pic">
-     						<a th:href="@{/item/get(id=${itemDO.id})}"><img th:src="@{${itemDO.imgUrl}}"  width="150px" height="200px"/></a>
-     					</div><!-- shop-item-pic结束 -->
-     					<h3><span th:text="${itemDO.title}"></span></h3>
-     					<p>4899元</p>
-     				</div><!-- shop-item结束 -->
-     			</div>
-	    </div>
-</div>
-</br>
-<div class="storecontentlist">
-		<div class="shop-title">
-		<h3>狗狗用品</h3>
-		<a href="#" class="more">更多&gt;&gt;</a>
-	</div><!-- shop-title结束 -->
-		<div class="shoplist">
-     	<div th:each="itemDO:${dogPage.list}">
-     				<div class="shop-item">
-     					<div class="shop-item-pic">
-     						<a th:href="@{/item/get(id=${itemDO.id})}"><img th:src="@{${itemDO.imgUrl}}"  width="150px" height="200px"/></a>
-     					</div><!-- shop-item-pic结束 -->
-     					<h3><span th:text="${itemDO.title}"></span></h3>
-     					<p>4899元</p>
-     				</div><!-- shop-item结束 -->
-     			</div>
-	    </div>
-</div>
-</div>
-	<div class="footer">
-		<P>
-			<a href="#">慕课简介</a><i>|</i>
-			<a href="#">慕课公告</a><i>|</i>
-			<a href="#">招纳贤士</a><i>|</i>
-			<a href="#">联系我们</a><i>|</i>客服热线：400-675-1234
-		</P>
-		<p>Copyright © 2006 - 2014 慕课版权所有&nbsp;&nbsp;&nbsp;京ICP备09037834号&nbsp;&nbsp;&nbsp;京ICP证B1034-8373&nbsp;&nbsp;&nbsp;某市某公安局备案编号：12390932</p>
-	</div><!-- footer结束 -->
-</body>
+<meta charset="utf-8"/>
+<title>首页</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/swiper.min.js}"></script>
 <script>
-   jQuery(document).ready(function(){
-
-          function getCookie(cookie_name)
-          {
-              var allcookies = document.cookie;
-              var cookie_start = allcookies.indexOf(cookie_name); //寻找名第一次出现的位置
-              // 如果找到了就代表cookie存在
-              // 反之，就说明不存在。
-              if (cookie_start != -1)
-              {
-                  // 把cookie_start放在值的开始，只要给值加1即可。
-                  cookie_start += cookie_name.length + 1;
-                  var cookie_end = allcookies.indexOf(';', cookie_start);
-                  if (cookie_end == -1)
-                  {
-                      cookie_end = allcookies.length;
-                  }
-                  }
-                  return  allcookies.substring(cookie_start,cookie_end);
-              }
-
-             var coo =getCookie("name");
-             console.log(coo);
-
-
-       		$("#searchByFactor").on("click",function(){
-                var pet = $("#selectA.selected").text();
-                var use = $("#selectB.selected").text();
-                var price = $("#selectC.selected").text();
-                $.ajax({
-                    type:"POST",
-                	contentType:"application/x-www-form-urlencoded",
-                	url:"http://localhost:8090/petstore/item/selectByFactor",
-                	data:{
-                		"pet":pet,
-                		"use":use,
-                		"price":price,
-                	},
-                		xhrFields:{withCredentials:true},
-                		crossDomain: true,
-                         success:function(data){
-                        if(data.status == "success"){
-                            window.location.href="/petstore/item/mylist"
-                         }
-                  },
-                });
-       		});
-
-       			$("#selectByDesc").on("click",function(){
-                    window.location.href="/petstore/item/selectByDesc"
-              });
-
-       	});
-
+$(document).ready(function(){
+	//焦点图
+	var mySwiper = new Swiper('#slide',{
+		  autoplay:5000,
+		  visibilityFullFit : true,
+		  loop:true,
+		  pagination : '.pagination',
+	  });
+})
 </script>
+</head>
+<body>
+<!--advertisment<div class="wrap"><img src="upload/banner.jpg"/></div>-->
+<!--header-->
+<header>
+  <!--topNavBg-->
+  <div class="topNavBg">
+   <div class="wrap">
+   <!--topRightNav-->
+    <ul class="topRtNav">
+     <li><a href="user.html">个人中心</a></li>
+     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
+     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
+     <li><a href="user.html">商家中心</a></li>
+     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
+     <li><a href="union_login.html">联盟管理</a></li>
+    </ul>
+   </div>
+  </div>
+  <!--logoArea-->
+  <div class="wrap logoSearch">
+   <!--logo-->
+   <div class="logo">
+    <h1><img th:src="@{images/logo.png}"/></h1>
+   </div>
+   <!--search-->
+   <div class="search">
+    <ul class="switchNav">
+     <li class="active" id="chanpin">产品</li>
+     <li id="shangjia">商家</li>
+     <li id="zixun">搭配</li>
+     <li id="wenku">文库</li>
+    </ul>
+    <div class="searchBox">
+     <form>
+      <div class="inputWrap">
+      <input type="text" placeholder="输入产品关键词或货号"/>
+      </div>
+      <div class="btnWrap">
+      <input type="submit" value="搜索"/>
+      </div>
+     </form>
+     <a href="#" class="advancedSearch">高级搜索</a>
+    </div>
+   </div>
+  </div>
+  <!--nav-->
+  <nav>
+<ul class="wrap navList">
+<li class="category">
+<a>全部产品分类</a>
+<dl class="asideNav indexAsideNav">
+<dt><a href="channel.html">狗狗</a></dt>
+<dd>
+<a href="#">主粮零食</a>
+<a href="#">狗狗玩具</a>
+<a href="#">出行装备</a>
+<a href="#">牵引</a>
+<a href="#">狗狗清洁</a>
+
+</dd>
+<dt><a href="channel.html">猫猫</a></dt>
+<dd>
+<a href="#">主粮零食</a>
+<a href="#">狗狗玩具</a>
+<a href="#">出行装备</a>
+<a href="#">牵引</a>
+<a href="#">猫猫清洁</a>
+</dd>
+</dl>
+</li>
+<li>
+<a href="index.html" class="active">首页</a>
+</li>
+<li>
+<a href="#">时尚搭配</a>
+</li>
+<li>
+<a href="channel.html">原创设计</a>
+</li>
+<li>
+<a href="channel.html">时尚代购</a>
+</li>
+<li>
+<a href="channel.html">民族风</a>
+</li>
+<li>
+<a href="information.html">时尚搭配</a>
+</li>
+<li>
+<a href="library.html">搭配知识</a>
+</li>
+<li>
+<a href="#">促销专区</a>
+</li>
+<li>
+<a href="#">其他</a>
+</li>
+</ul>
+</nav>
+
+ </header>
+ <script>
+ $(document).ready(function(){
+   //测试效果，程序对接如需变动重新编辑
+   $(".switchNav li").click(function(){
+     $(this).addClass("active").siblings().removeClass("active");
+     });
+   $("#chanpin").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入产品关键词或货号");
+     });
+   $("#shangjia").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入商家店铺名");
+     });
+   $("#zixun").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文章内容");
+     });
+   $("#wenku").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文库内容");
+     });
+   });
+   
+ </script>
+ 
+<!--advertisment area-->
+<section class="wrap">
+ <!--ctCont-->
+ <div class="IdxmainArea">
+    <!--slide-->
+    <div id="slide">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+         <a href="#">
+          <img th:src="@{/upload/banner-1.jpg}"/>
+         </a>
+        </div>
+        <div class="swiper-slide">
+         <a href="#">
+          <img th:src="@{/upload/banner-2.jpg}"/>
+         </a>
+        </div>
+      </div>
+      <div class="pagination"></div>  
+    </div>
+    <!--singleAd-->
+    <div class="singleAd">
+     <a href="#">
+      <img th:src="@{/upload/cart-1.jpg}"/>
+     </a>
+    </div>
+     <!--bestShop-->
+    <dl class="bestShop">
+     <dt>
+      <strong>热销商品</strong>
+      <a href="shop_list.html" class="fr">更多</a>
+     </dt>
+     <div  th:each="itemDO:${itemBySales}">
+     <dd>
+       <a th:href="@{/item/get(id=${itemDO.id})}">
+       <img th:src="@{${itemDO.imgUrl}}"/>
+       <h2><span th:text="${itemDO.title}"/></h2>
+
+      </a>
+     </dd>
+    </div>
+
+    </dl>
+
+ </div>
+ <!--asdCont-->
+ <div class="IdxAsideRt">
+  <!--login-->
+  <div class="idxRtLogin">
+   <div class="fstArea">
+     <a href="#" class="userIcon">
+      <img th:src="@{/upload/head.jpg}">
+     </a>
+     <div class="rtInfor">
+      <p><span th:text="${session.LOGIN_USER.name}"></span> </p>
+      <p class="obviousText">欢迎！</p>
+     </div>
+    </div>
+   </div>
+   <dl class="idxRtAtc">
+    <dt>
+     <em class="obviousText">最新公告</em>
+     <a href="article_list.html">more</a>
+    </dt>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告统升级通告</a></dd>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告</a></dd>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告</a></dd>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告</a></dd>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告</a></dd>
+   </dl>
+   <dl class="idxRtAtc">
+    <dt>
+     <em>最新公告</em>
+     <a href="article_list.html">more</a>
+    </dt>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告统升级通告</a></dd>
+    <dd><a href="article_read.html">2015年12月20日系统升级通告</a></dd>
+   </dl>
+  </div>
+</section>
+<!--productList-->
+
+<section class="wrap idexCase">
+ <h2>
+  <strong>猫猫用品</strong>
+  <a href="#">more</a>
+ </h2>
+ <ul>
+   <div  th:each="itemDO:${catPage.list}">
+  <li>
+   <a th:href="@{/item/get(id=${itemDO.id})}">
+    <img th:src="@{${itemDO.imgUrl}}"/>
+    <h3><span  th:text="${itemDO.title}"/></h3>
+      <p><span th:text="${itemDO.price}"/>
+                <span>￥</span>
+      </p>
+   </a>
+  </li>
+  </div>
+ </ul>
+</section>
+
+<section class="wrap idexCase">
+ <h2>
+  <strong>狗狗用品</strong>
+  <a href="#">more</a>
+ </h2>
+ <ul>
+   <div  th:each="itemDO:${dogPage.list}">
+  <li>
+     <a th:href="@{/item/get(id=${itemDO.id})}">
+    <img th:src="@{${itemDO.imgUrl}}"/>
+    <h3><span  th:text="${itemDO.title}"/></h3>
+     <p>
+            <span th:text="${itemDO.price}"/>
+            <span>￥</span>
+     </p>
+   </a>
+  </li>
+  </div>
+ </ul>
+</section>
+<!--section:two->articleList-->
+<section class="wrap idxArticle">
+  <dl>
+   <dt>
+    <strong>招标资讯</strong>
+    <a href="article_list.html">more</a>
+   </dt>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
+   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+  </dl>
+  <dl style="margin:0 2.5%">
+   <dt>
+    <strong>最新询价信息</strong>
+    <a href="article_list.html">more</a>
+   </dt>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
+   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+  </dl>
+  <dl>
+   <dt>
+    <strong>行业资讯</strong>
+    <a href="article_list.html">more</a>
+   </dt>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
+   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
+   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
+  </dl>
+ </section>
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+ <dl class="wrap otherLink">
+  <dt>友情链接</dt>
+  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
+  <dd><a href="#">当当</a></dd>
+  <dd><a href="#">优酷</a></dd>
+  <dd><a href="#">土豆</a></dd>
+  <dd><a href="#">新浪</a></dd>
+  <dd><a href="#">钉钉</a></dd>
+  <dd><a href="#">支付宝</a></dd>
+ </dl>
+ <div class="wrap btmInfor">
+  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
+  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+ </div>
+</footer>
+</body>
 </html>

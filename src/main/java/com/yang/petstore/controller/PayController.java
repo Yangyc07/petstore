@@ -40,17 +40,17 @@ public class PayController {
                 .setSubject(subject));
     }
 
-    //同步回调
-    @RequestMapping(value = "/getReturnUrlInfo",method = RequestMethod.GET)
-    String alipayNotifyUrlInfo(HttpServletRequest request){
-        payService.synchronous(request);
-        //获取订单号
-        String out_trade_no = request.getParameter("out_trade_no");
-        //根据订单号获取订单信息
-        OrderVO orderVO = orderService.selectByOrderNo(out_trade_no);
-        request.getSession().setAttribute("orderVO",orderService.selectByOrderNo(out_trade_no));
-
-        //界面必须部署在公网上
-        return "myorder";
-    }
+//    //同步回调
+//    @RequestMapping(value = "/getReturnUrlInfo",method = RequestMethod.GET)
+//    String alipayNotifyUrlInfo(HttpServletRequest request){
+//        payService.synchronous(request);
+//        //获取订单号
+//        String out_trade_no = request.getParameter("out_trade_no");
+//        //根据订单号获取订单信息
+//        OrderVO orderVO = orderService.selectByOrderNo(out_trade_no);
+//        request.getSession().setAttribute("orderVO",orderService.selectByOrderNo(out_trade_no));
+//
+//        //界面必须部署在公网上
+//        return "myorder";
+//    }
 }

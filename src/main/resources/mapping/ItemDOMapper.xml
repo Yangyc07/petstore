@@ -19,12 +19,12 @@
 
   <select id="selectDog"  resultMap="BaseResultMap">
 
-   SELECT * FROM item WHERE category = 1 OR category = 2 OR category = 3
+   SELECT * FROM item WHERE category = 1 OR category = 2 OR category = 3 OR category = 4 OR category = 5
   </select>
 
   <select id="selectCat"  resultMap="BaseResultMap">
 
-    SELECT * FROM item WHERE category = 4 OR category = 5 OR category = 6
+    SELECT * FROM item WHERE category = 6 OR category = 7 OR category = 8 OR category = 9 OR category = 10
   </select>
 
 
@@ -223,4 +223,9 @@
     set sales = sales + #{amount}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBySales" resultMap="BaseResultMap">
+    select * from item order by sales desc limit 0,8;
+  </select>
 </mapper>
+

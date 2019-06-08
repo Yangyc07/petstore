@@ -35,4 +35,7 @@ public interface ItemService {
      //根据猫狗分类查询
      PageInfo<ItemDO> selectByPetCategory(int pageNo, int pageSize,int category);
 
+     //根据销量查询前8的商品
+     List<ItemDO> selectBySales();
+
 }

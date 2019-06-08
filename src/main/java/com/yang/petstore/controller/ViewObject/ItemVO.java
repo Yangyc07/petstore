@@ -18,6 +18,8 @@ public class ItemVO {
     private String imgUrl;
     //商品分类
     private Integer category;
+    //商品品牌
+    private String brand;
 
     public Integer getId() {
         return id;
@@ -81,5 +83,13 @@ public class ItemVO {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

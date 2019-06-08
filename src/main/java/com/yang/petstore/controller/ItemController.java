@@ -47,9 +47,11 @@ public class ItemController extends BaseController{
     private static final Logger lg = LoggerFactory.getLogger(ItemController.class);
     //商品页表浏览
     @RequestMapping(value = "/list")//Content type 'null' not supported
-    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="4")int pageSize,Model model){
+    public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="5")int pageSize,Model model){
         PageInfo<ItemDO> catPage = itemService.selectByPetCategory(pageNo,pageSize,1);
         PageInfo<ItemDO> dogPage = itemService.selectByPetCategory(pageNo,pageSize,0);
+        List<ItemDO> itemsBySales = itemService.selectBySales();
+        model.addAttribute("itemBySales",itemsBySales);
         model.addAttribute("catPage",catPage);
         model.addAttribute("dogPage",dogPage);
         return "index";
@@ -82,7 +84,7 @@ public class ItemController extends BaseController{
 
     //商品详情页浏览
     @RequestMapping(value = "/get{id}",method = {RequestMethod.GET})//Content type 'null' not supported
-    public String getItem(@RequestParam(name = "id") Integer id){
+    public String getItem(@RequestParam(name = "id") Integer id,Model model){
 
        ItemModel itemModel = null;
 
@@ -104,7 +106,7 @@ public class ItemController extends BaseController{
            cacheService.setCommonCache("item_"+id,itemModel);
        }
         ItemVO itemVO = convertVOFromModel(itemModel);
-        httpServletRequest.getSession().setAttribute("itemVO",itemVO);
+        model.addAttribute("itemVO",itemVO);
         return "getitem";
     }
 

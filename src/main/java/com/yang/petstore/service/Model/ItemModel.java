@@ -28,6 +28,10 @@ public class ItemModel implements Serializable{
     @NotNull(message = "商品图片信息不能不填")
     private String imgUrl;
 
+    //品牌
+    @NotNull(message = "商品牌不能不填")
+    private String brand;
+
     //商品分类
     @NotNull(message = "商品分类不能不填")
     private Integer category;
@@ -96,6 +100,14 @@ public class ItemModel implements Serializable{
         this.category = category;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
     @Override
     public String toString() {
         return "ItemModel{" +
@@ -106,6 +118,7 @@ public class ItemModel implements Serializable{
                 ", description='" + description + '\'' +
                 ", sales=" + sales +
                 ", imgUrl='" + imgUrl + '\'' +
+                ", brand='" + brand + '\'' +
                 ", category=" + category +
                 '}';
     }

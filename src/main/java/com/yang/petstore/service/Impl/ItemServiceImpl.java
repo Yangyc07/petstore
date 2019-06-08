@@ -161,6 +161,11 @@ public class ItemServiceImpl implements ItemService{
         return pageInfo;
     }
 
+    @Override
+    public List<ItemDO> selectBySales() {
+        return itemDOMapper.selectBySales();
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO){
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(itemDO,itemModel);

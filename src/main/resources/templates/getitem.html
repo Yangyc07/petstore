@@ -1,269 +1,497 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-	<title>米乐宠物商城</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" th:href="@{/css/main.css}">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<style>
-		.carousel-inner .item img {
-			width: 100%; /* or width: 100% !important; */
-		}
-
-	.storecontent{
-		position:relative;
-		margin-left: 10%;
-		width: 80%;
-		margin-top: 2%;
-		height: 550px;
-		background: #ffffff;
-}
-		.storecontentleft{
-			position:absolute;
-			top:80px;
-			height: 400px;
-			width:20%;
-			left:17%;
-			background-color: #ffffff;
-			border:2px solid #f3f3f3;
-		}
-		.storecontentright{
-			position:absolute;
-			top:80px;
-			height: 400px;
-			width:50%;
-			left:37%;
-			background-color: #ffffff;
-			border:2px solid #f3f3f3;
-		}
-		.hse1{ color:red}
-		.price{
-			top:300px;
-			height: 15%;
-			width:100%;
-			background-color: #f3f3f3;
-		}
-		.gw_num{border: 1px solid #dbdbdb;width: 110px;line-height: 26px;overflow: hidden;}
-		.gw_num em{display: block;height: 26px;width: 26px;float: left;color: #7A7979;border-right: 1px solid #dbdbdb;text-align: center;cursor: pointer;}
-		.gw_num .num{display: block;float: left;text-align: center;width: 52px;font-style: normal;font-size: 14px;line-height: 24px;border: 0;}
-		.gw_num em.add{float: right;border-right: 0;border-left: 1px solid #dbdbdb;}
-	</style>
-</head>
-<body th:style="'background:url('+ '/petstore/assets/global/img/bg.jpg'+ ');'">
-<div class="storeheader">
-	<nav class="navbar navbar-default" >
-	<div class="container-fluid" >
-		<ul class="nav navbar-nav navbar-right">
-			<li class="dropdown" >
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<span th:text="${session.LOGIN_USER.getName()}"/> <b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a href="/petstore/user/modifyPassword">修改密码</a></li>
-                    <li><a href="/petstore/user/myAddress">管理我的地址</a></li>
-                    <li><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.getId()})}">我的订单</a></li>
-				</ul>
-			</li>
-			<li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}"><span class="glyphicon glyphicon-shopping-cart"></span>我的购物车</a></li>
-			<li><a th:href="@{/hello}"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
-		</ul>
-		<div class="navbar-header" style="margin-left: 10%;margin-right: 10%" >
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" th:href="@{/item/list}">米乐宠物商城</a>
-			<img th:src="@{/assets/global/img/logo.jpg}"  width="70" height="50">
-		</div>
-		<div class="collapse navbar-collapse" id="myNavbar" >
-			<ul class="nav navbar-nav">
-				<li class="dropdown" >
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						狗狗 <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a th:href="@{/item/listByCategory(category=1)}">狗粮</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=3)}">出行装备</a></li>
-					</ul>
-				</li>
-				<li class="dropdown" >
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						猫咪 <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a th:href="@{/item/listByCategory(category=4)}">猫粮</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=5)}">猫猫玩具</a></li>
-						<li class="divider"></li>
-						<li><a th:href="@{/item/listByCategory(category=6)}">出行装备</a></li>
-					</ul>
-				</li>
-				<form class="navbar-form navbar-right" action="selectByKey"  role="search">
-				<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search" name="key">
-				</div>
-				<button type="submit" id="search" class="btn btn-default">搜索</button>
-				</form>
-			</ul>
-		</div>
-	</div>
-</nav>
-</div>
-
-<div class="storecontent" >
-
-	<div class="itemcatgory" style="margin-left:180px" >
-		<strong><a href="#">首页</a></strong>
-		<span>&nbsp;&gt;&nbsp;</span>
-		<a href="">平板电脑</a>
-		<span>&nbsp;&gt;&nbsp;</span>
-		<a href="#">Apple 苹果</a>
-		<span>&nbsp;&gt;&nbsp;</span>
-		<em>MD531CH/A</em>
-	</div>
-	<div class="storecontentleft">
-			<a href="#" >
-				<img th:src="@{${session.itemVO.imgUrl}}" th:width="200" th:height="300" style="margin-left: 30px"/>
-			</a>
-			<h6 style="margin-left: 20px">
-				商品编号：<span th:text="${session.itemVO.id}" th:value="${session.itemVO.id}" s id="itemId"/>
-			</h6>
-
-	</div>
-	<div class="storecontentright">
-	<div style="margin-left: 40px">
-		<h4 >
-		   <span th:text="${session.itemVO.title}" id="title"/>
-		</h4>
-		<h5 class="hse1">
-				<span class="control-label" th:text="${session.itemVO.getDescription()}" id="description"/>
-		</h5>
-		<div class="price">
-			<br />
-			<span>
-			<h5 style="margin-bottom: 30px">
-				&nbsp;米乐价格：<span class="control-label hse1" th:text="${session.itemVO.price}" style="color: #ff0000;font-size: 34px" id="price"/>￥
-			</h5>
-			</span>
-		</div>
-		<h4>
-				已售：<span th:text="${session.itemVO.sales}" style="color: #ff0000" id="sales"/>
-		</h4>
-		<DIV style="BORDER-TOP: #00686b 1px dashed; OVERFLOW: hidden; HEIGHT: 1px"></DIV>
-		<br />
-
-            <div style="margin-top: 10px"> 我要买：</div>
-		<div class="gw_num" style="margin-top: -20px;margin-left: 60px">
-		    <em class="jian">-</em>
-				<input type="text" value="1" class="num" id="amount"/>
-			<em class="add">+</em>
-		</div>
-		<br />
-		<h6>米乐快递15点前下单，其他快递16点前下单，当天发货。</h6>
-		<br />
-
-		<button class="btn  btn-success btn-lg" id="addItemtoCart" type="button">
-				加入购物车
-		</button>
-	</div>
-	</div>
-	</div>
-	<div class="footer">
-		<P>
-			<a href="#">慕课简介</a><i>|</i>
-			<a href="#">慕课公告</a><i>|</i>
-			<a href="#">招纳贤士</a><i>|</i>
-			<a href="#">联系我们</a><i>|</i>客服热线：400-675-1234
-		</P>
-		<p>Copyright © 2006 - 2014 慕课版权所有&nbsp;&nbsp;&nbsp;京ICP备09037834号&nbsp;&nbsp;&nbsp;京ICP证B1034-8373&nbsp;&nbsp;&nbsp;某市某公安局备案编号：12390932</p>
-	</div><!-- footer结束 -->
-</body>
+<meta charset="utf-8"/>
+<title>产品详情</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jquery.jqzoom.js}"></script>
+<script th:src="@{/js/base.js}"></script>
 <script>
-    var lable = document.getElementById("itemId");
-    var id = lable.innerHTML.trim();
-    console.log(id);
-    console.log(amount);
-    jQuery(document).ready(function(){
-            //加的效果
-            $(".add").click(function(){
-                var n=$(this).prev().val();
-                var num=parseInt(n)+1;
-                if(num==0){ return;}
-                $(this).prev().val(num);
-            });
-            //减的效果
-            $(".jian").click(function(){
-                var n=$(this).next().val();
-                var num=parseInt(n)-1;
-                if(num==0){ return}
-                $(this).next().val(num);
-            });
-
-			loadPrograme();
+$(document).ready(function(){
 
 
-        //添加商品至购物车
-        $("#addItemtoCart").on("click",function()
-        {
-            var amount = document.getElementById("amount").value;
-            console.log(amount);
-            $.ajax({
-                type:"POST",
-                contentType:"application/x-www-form-urlencoded",
-                url:"http://localhost:8090/petstore/cart/addItemToCart",
-                data:{
-                    "itemId":id,
-                    "amount":amount,
-                },
-                xhrFields:{withCredentials:true},
-                success:function(data){
-                    if(data.status == "success"){
-                        alert("已添加入购物车");
-                        window.location.reload();
-                    }else{
-                        alert("添加购物车失败"+data.data.errMsg);
-                        if(data.data.errCode == 20003){
-                            window.location.reload();
-                        }
-                    }
-                },
-                error:function(data){
-                    alert("添加购物车失败"+data.responseTex);
-                }
-            });
-            return false;
-        });
-    });
-    function loadPrograme(){
-        $.ajax({
-            url : 'http://localhost:8090/petstore/address/myAddress',
-            type : 'GET',
-            contentType:"application/x-www-form-urlencoded",
-            xhrFields:{withCredentials:true},
-            success : function(data) {
-                if(data){
-                    var expressCompany = $("#programme_view");
-                    expressCompany.empty();
-                    for(var i=0,len=data.data.length;i<len;i++){
-                        var programme = data.data[i];
-                        console.log(programme['receiverZip']);
-                        expressCompany.append(
-                            "<option value=" + programme['receiverProvince'] + ">" + programme['receiverCity']
-								+ programme['receiverDistrict'] + programme['receiverAddress']
-                            + "</option>");
-                    }
-                }
-            },
-            error : function() {
-                alert('查询节目异常');
-            }
-        });
-    }
+
+  $("nav .indexAsideNav").hide();
+  $("nav .category").mouseover(function(){
+	  $(".asideNav").slideDown();
+	  });
+  $("nav .asideNav").mouseleave(function(){
+	  $(".asideNav").slideUp();
+	  });
+  //detail tab
+  $(".product_detail_btm .item_tab a").click(function(){
+	   var liindex = $(".product_detail_btm .item_tab a").index(this);
+	   $(this).addClass("curr_li").parent().siblings().find("a").removeClass("curr_li");
+       $(".cont_wrap").eq(liindex).fadeIn(150).siblings(".cont_wrap").hide();
+	  });
+  //radio
+  $(".horizontal_attr label").click(function(){
+	  $(this).addClass("isTrue").siblings().removeClass("isTrue");
+	  });
+});
 </script>
+</head>
+<body>
+<!--header-->
+<header>
+  <!--topNavBg-->
+  <div class="topNavBg">
+   <div class="wrap">
+   <!--topLeftNav-->
+    <ul class="topLtNav">
+     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
+     <li><a href="register.html">注册</a></li>
+     <li><a href="#">移动端</a></li>
+    </ul>
+   <!--topRightNav-->
+    <ul class="topRtNav">
+     <li><a href="user.html">个人中心</a></li>
+     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
+     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
+     <li><a href="user.html">商家中心</a></li>
+     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
+     <li><a href="union_login.html">联盟管理</a></li>
+    </ul>
+   </div>
+  </div>
+  <!--logoArea-->
+  <div class="wrap logoSearch">
+   <!--logo-->
+   <div class="logo">
+    <h1><img src="images/logo.png"/></h1>
+   </div>
+   <!--search-->
+   <div class="search">
+    <ul class="switchNav">
+     <li class="active" id="chanpin">产品</li>
+     <li id="shangjia">商家</li>
+     <li id="zixun">搭配</li>
+     <li id="wenku">文库</li>
+    </ul>
+    <div class="searchBox">
+     <form>
+      <div class="inputWrap">
+      <input type="text" placeholder="输入产品关键词或货号"/>
+      </div>
+      <div class="btnWrap">
+      <input type="submit" value="搜索"/>
+      </div>
+     </form>
+     <a href="#" class="advancedSearch">高级搜索</a>
+    </div>
+   </div>
+  </div>
+  <!--nav-->
+  <nav>
+<ul class="wrap navList">
+<li class="category">
+<a>全部产品分类</a>
+<dl class="asideNav indexAsideNav">
+<dt><a href="channel.html">女装</a></dt>
+<dd>
+<a href="#">夏装新</a>
+<a href="#">连衣裙</a>
+<a href="#">T恤</a>
+<a href="#">衬衫</a>
+<a href="#">裤子</a>
+<a href="#">牛仔裤</a>
+<a href="#">背带裤</a>
+<a href="#">短外套</a>
+<a href="#">时尚外套</a>
+<a href="#">风衣</a>
+<a href="#">毛衣</a>
+<a href="#">背心</a>
+<a href="#">吊带</a>
+<a href="#">民族服装</a>
+</dd>
+<dt><a href="channel.html">男装</a></dt>
+<dd>
+<a href="#">衬衫</a>
+<a href="#">背心</a>
+<a href="#">西装</a>
+<a href="#">POLO衫</a>
+<a href="#">马夹</a>
+<a href="#">皮衣</a>
+<a href="#">毛衣</a>
+<a href="#">针织衫</a>
+<a href="#">牛仔裤</a>
+<a href="#">外套</a>
+<a href="#">夹克</a>
+<a href="#">卫衣</a>
+<a href="#">风衣</a>
+<a href="#">民族风</a>
+<a href="#">原创设计</a>
+<a href="#">大码</a>
+<a href="#">情侣装</a>
+<a href="#">开衫</a>
+<a href="#">运动裤</a>
+<a href="#">工装裤</a>
+</dd>
+</dl>
+</li>
+<li>
+<a href="index.html" class="active">首页</a>
+</li>
+<li>
+<a href="#">时尚搭配</a>
+</li>
+<li>
+<a href="channel.html">原创设计</a>
+</li>
+<li>
+<a href="channel.html">时尚代购</a>
+</li>
+<li>
+<a href="channel.html">民族风</a>
+</li>
+<li>
+<a href="information.html">时尚搭配</a>
+</li>
+<li>
+<a href="library.html">搭配知识</a>
+</li>
+<li>
+<a href="#">促销专区</a>
+</li>
+<li>
+<a href="#">其他</a>
+</li>
+</ul>
+</nav>
+
+ </header>
+ <script>
+ $(document).ready(function(){
+   //测试效果，程序对接如需变动重新编辑
+   $(".switchNav li").click(function(){
+     $(this).addClass("active").siblings().removeClass("active");
+     });
+   $("#chanpin").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入产品关键词或货号");
+     });
+   $("#shangjia").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入商家店铺名");
+     });
+   $("#zixun").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文章内容");
+     });
+   $("#wenku").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文库内容");
+     });
+   });
+
+ jQuery(document).ready(function(){
+                //加的效果
+               $("#add").click(function(){
+                   var n=$("#num").val();
+                   var num=parseInt(n)+1;
+
+                   if(num==0){ return;}
+                   $("#num").val(num);
+               });
+               //减的效果
+               $("#jian").click(function(){
+                   var n=$("#num").val();
+
+                   var num=parseInt(n)-1;
+                   if(num==0){ return}
+                   $("#num").val(num);
+               });
+               });
+
+ </script>
+ 
+ <!--导航指向-->
+<aside class="wrap insideLink">
+  <a href="index.html">首页</a>
+  <a href="product_list.html">时尚女装</a>
+</aside>
+<section class="wrap product_detail">
+ <!--img:left-->
+ <div class="gallery">
+  <div>
+    <div id="preview" class="spec-preview"> <span class="jqzoom"><img th:jqimg="@{${itemVO.imgUrl}}" th:src="@{${itemVO.imgUrl}}" /></span> </div>
+    <!--缩图开始-->
+
+    <!--缩图结束-->
+  </div>
+ </div>
+ <!--text:right-->
+ <div class="rt_infor">
+  <!--lt_infor-->
+  <div class="goods_infor">
+   <h2><span th:text="${itemVO.title}"/></h2>
+   <ul>
+    <li>
+     <dl class="horizontal">
+      <dt>价格：</dt>
+      <dd><strong class="rmb_icon univalent"><span th:text="${itemVO.price}"/></strong></dd>
+     </dl>
+    </li>
+    <li>
+    </li>
+    <li>
+     <dl class="horizontal">
+      <dt>品牌：</dt>
+      <dd><time><span th:text="${itemVO.brand}"/></time></dd>
+     </dl>
+    </li>
+    <li class="statistics">
+     <dl class="vertical">
+     <dt>销量</dt>
+      <dd><span th:text="${itemVO.stock}"/></dd>
+     </dl>
+     <dl class="vertical">
+      <dt>累计评论</dt>
+      <dd>198</dd>
+     </dl>
+     <dl class="vertical">
+      <dt>关注</dt>
+      <dd>230</dd>
+     </dl>
+    </li>
+    <li>
+     <dl class="horizontal horizontal_attr">
+      <dt>规格：</dt>
+      <dd>
+       <label><input type="radio" name="guige"/>S码</label>
+       <label><input type="radio" name="guige"/>M码</label>
+       <label><input type="radio" name="guige"/>L码</label>
+       <label><input type="radio" name="guige"/>XL码</label>
+       <label><input type="radio" name="guige"/>XXL码</label>
+      </dd>
+     </dl>
+    </li>
+    <li>
+     <dl class="horizontal horizontal_attr">
+      <dt>颜色：</dt>
+      <dd>
+       <label><input type="radio" name="yanse"/>黑色</label>
+       <label><input type="radio" name="yanse"/>蓝色</label>
+       <label><input type="radio" name="yanse"/>白色</label>
+      </dd>
+     </dl>
+    </li>
+    </li>
+    <li>
+     <dl class="horizontal horizontal_attr">
+      <dt>数量：</dt>
+      <dd>
+       <input type="button" value="-" class="jj_btn" id="jian"/>
+       <input type="text" value="1" readonly class="num" id="num"/>
+       <input type="button" value="+" class="jj_btn" id="add"/>
+       <span>库存：<span th:text="${itemVO.stock}"></span></span>
+      </dd>
+     </dl>
+    </li>
+    <li class="last_li">
+       <input type="button" value="立即购买" class="buy_btn" onClick="javascript:location.href='cart.html'"/>
+       <input type="button" value="加入购物车" class="add_btn"/>
+    </li>
+   </ul>
+  </div>
+  <!--rt_infor-->
+ </div>
+</section>
+<!--detail-->
+<section class="wrap product_detail_btm">
+ <article>
+  <ul class="item_tab">
+   <li><a class="curr_li">商品详情</a></li>
+   <li><a>商品评价（2893）</a></li>
+   <li><a>成交记录（1892）</a></li>
+  </ul>
+  <!--商品详情-->
+  <div class="cont_wrap active">
+   <span th:text="${itemVO.description}"/><br/>
+ <img th:src="@{/upload/blog-details.jpg}"/>
+  </div>
+  <!--商品评价-->
+  <div class="cont_wrap">
+   <table class="table">
+    <tr>
+     <td width="20%" align="center">李*锋</td>
+     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
+     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
+    </tr>
+    <tr>
+     <td width="20%" align="center">彭**法</td>
+     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
+     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
+    </tr>
+    <tr>
+     <td width="20%" align="center">代**彭</td>
+     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
+     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
+    </tr>
+   </table>
+   <!--分页-->
+   <div class="paging">
+    <a>第一页</a>
+    <a class="active">2</a>
+    <a>3</a>
+    <a>...</a>
+    <a>89</a>
+    <a>最后一页</a>
+   </div>
+  </div>
+  <!--成交记录-->
+  <div class="cont_wrap">
+   <table class="table">
+    <tr>
+     <th>买家</th>
+     <th>产品属性</th>
+     <th>数量</th>
+     <th>成交时间</th>
+    </tr>
+    <tr>
+     <td align="center">李**强</td>
+     <td>
+      <p>颜色：黑色<p>
+      <p>规格：M<p>
+     </td>
+     <td align="center"><b>1</b></td>
+     <td align="center"><time>2013-01-13 15:25:39</time></td>
+    </tr>
+    <tr>
+     <td align="center">李**强</td>
+     <td>
+      <p>颜色：黑色<p>
+      <p>规格：L<p>
+     </td>
+     <td align="center"><b>1</b></td>
+     <td align="center"><time>2013-01-13 15:25:39</time></td>
+    </tr>
+    <tr>
+     <td align="center">葛**华</td>
+     <td>
+      <p>颜色：白色<p>
+      <p>规格：XL<p>
+     </td>
+     <td align="center"><b>5</b></td>
+     <td align="center"><time>2013-01-13 15:25:39</time></td>
+    </tr>
+   </table>
+   <!--分页-->
+   <div class="paging">
+    <a>第一页</a>
+    <a class="active">2</a>
+    <a>3</a>
+    <a>...</a>
+    <a>89</a>
+    <a>最后一页</a>
+   </div>
+  </div>
+ </article>
+ <aside>
+  <dl class="aside_pro_list">
+   <dt>
+    <strong>精品推荐</strong>
+    <a>更多</a>
+   </dt>
+   <dd>
+    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
+    <div class="rt_infor">
+     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
+     <p><del class="rmb_icon">1298.00</del></p>
+     <p><strong class="rmb_icon">980.00</strong></p>
+    </div>
+   </dd>
+   <dd>
+    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
+    <div class="rt_infor">
+     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
+     <p><del class="rmb_icon">1298.00</del></p>
+     <p><strong class="rmb_icon">980.00</strong></p>
+    </div>
+   </dd>
+   <dd>
+    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
+    <div class="rt_infor">
+     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
+     <p><del class="rmb_icon">1298.00</del></p>
+     <p><strong class="rmb_icon">980.00</strong></p>
+    </div>
+   </dd>
+    <dd>
+    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
+    <div class="rt_infor">
+     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
+     <p><del class="rmb_icon">1298.00</del></p>
+     <p><strong class="rmb_icon">980.00</strong></p>
+    </div>
+   </dd>
+  </dl>
+ </aside>
+</section>
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+ <dl class="wrap otherLink">
+  <dt>友情链接</dt>
+  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
+  <dd><a href="#">当当</a></dd>
+  <dd><a href="#">优酷</a></dd>
+  <dd><a href="#">土豆</a></dd>
+  <dd><a href="#">新浪</a></dd>
+  <dd><a href="#">钉钉</a></dd>
+  <dd><a href="#">支付宝</a></dd>
+ </dl>
+ <div class="wrap btmInfor">
+  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
+  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+ </div>
+</footer>
+</body>
 </html>
