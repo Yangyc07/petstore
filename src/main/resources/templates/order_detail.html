@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>我的订单-用户中心</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script>
+$(document).ready(function(){
+  $("nav .indexAsideNav").hide();
+  $("nav .category").mouseover(function(){
+	  $(".asideNav").slideDown();
+	  });
+  $("nav .asideNav").mouseleave(function(){
+	  $(".asideNav").slideUp();
+	  });
+});
+</script>
+</head>
+<body>
+<!--header-->
+<header>
+  <!--topNavBg-->
+  <div class="topNavBg">
+   <div class="wrap">
+   <!--topLeftNav-->
+    <ul class="topLtNav">
+     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
+     <li><a href="register.html">注册</a></li>
+     <li><a href="#">移动端</a></li>
+    </ul>
+   <!--topRightNav-->
+    <ul class="topRtNav">
+     <li><a th:href="@{/user/user}">个人中心</a></li>
+     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+    </ul>
+   </div>
+  </div>
+  <!--logoArea-->
+  <div class="wrap logoSearch">
+   <!--logo-->
+   <div class="logo">
+    <h1><img th:src="@{/images/logo.png}"/></h1>
+   </div>
+   <!--search-->
+   <div class="search">
+    <ul class="switchNav">
+     <li class="active" id="chanpin">产品</li>
+     <li id="shangjia">商家</li>
+     <li id="zixun">搭配</li>
+     <li id="wenku">文库</li>
+    </ul>
+    <div class="searchBox">
+      <form action="selectByKey">
+      <div class="inputWrap">
+      <input type="text" placeholder="输入产品关键词或货号"/>
+      </div>
+      <div class="btnWrap">
+      <input type="submit" value="搜索"/>
+      </div>
+     </form>
+    </div>
+   </div>
+  </div>
+  <!--nav-->
+  <nav>
+<ul class="wrap navList">
+<li class="category">
+<a>全部产品分类</a>
+<dl class="asideNav indexAsideNav">
+<dt><a href="channel.html">狗狗</a></dt>
+<dd>
+<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
+</dd>
+<dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
+<dd>
+<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
+</dd>
+</dl>
+</li>
+<li>
+<a th:href="@{/item/list}">主页</a>
+</li>
+<li>
+<a href="#">促销专区</a>
+</li>
+<li>
+<a href="#">秒杀专场</a>
+</li>
+<li>
+<a href="#">其他</a>
+</li>
+</ul>
+</nav>
+
+ </header>
+ <script>
+ $(document).ready(function(){
+   //测试效果，程序对接如需变动重新编辑
+   $(".switchNav li").click(function(){
+     $(this).addClass("active").siblings().removeClass("active");
+     });
+   $("#chanpin").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入产品关键词或货号");
+     });
+   $("#shangjia").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入商家店铺名");
+     });
+   $("#zixun").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文章内容");
+     });
+   $("#wenku").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文库内容");
+     });
+   });
+   
+ </script>
+ 
+<section class="wrap user_center_wrap">
+ <!--左侧导航-->
+  <aside class="user_aside_nav">
+  <dl>
+   <dt>买家中心</dt>
+  <dd><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.id})}">我的订单</a></dd>
+   <dd><a href="address.html">我的地址库</a></dd>
+  </dl>
+  <dl>
+   <dt>控制面板</dt>
+   <dd><a href="profile.html">个人资料</a></dd>
+   <dd><a href="change_password.html">修改密码</a></dd>
+  </dl>
+ </aside>
+ <!--右侧：内容区域-->
+ <div class="user_rt_cont">
+  <div class="top_title">
+   <strong>订单号：<span th:text="${orderVO.orderNo}"/></strong>
+  </div>
+  <dl class="order_detail_infor">
+   <dt>订单信息</dt>
+   <dd><span>下单时间：</span><span th:text="${orderVO.createTime}"/></dd>
+   <dd><span>付款时间：</span>2013-01-15 13:30:58</dd>
+   <dd><span>订单状态：</span>未付款<a>立即付款</a></dd>
+   <dd><span>收件人：</span><span th:text="${orderVO.userAddressDO.receiverName}"/></dd>
+   <dd><span>联系电话：</span><span th:text="${orderVO.userAddressDO.receiverPhone}"/></dd>
+   <dd><span>收件地址：</span><span th:text="${orderVO.userAddressDO.toString()}"/></dd>
+  </dl>
+    <table class="order_table">
+     <caption><strong>订单商品</strong><span class="fr">订单合计金额：<b class="rmb_icon" th:text="${orderVO.payment}"></b> </span></caption>
+     <tr>
+      <th>产品图</th>
+      <th>产品名</th>
+      <th>单价</th>
+      <th>数量</th>
+      <th>小计</th>
+     </tr>
+     <div  th:each="cartItemVO : ${orderVO.cartItemVO}">
+     <tr>
+      <td class="center"><a th:href="@{/item/get(id=${cartItemVO.itemId})}"><img th:src="@{${cartItemVO.img_url}}" style="width:50px;height:50px;"/></a></td>
+            <td><a th:href="@{${cartItemVO.img_url}}"><span th:text="${cartItemVO.name}"/></a></td>
+            <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.price}"/></strong></td>
+            <td class="center"><b><span th:text="${cartItemVO.quantity}"/></b></td>
+            <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.total}"/></strong></td>
+     </tr>
+    </div>
+    </table>
+ </div>
+</section>
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+ <dl class="wrap otherLink">
+  <dt>友情链接</dt>
+  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
+  <dd><a href="#">当当</a></dd>
+  <dd><a href="#">优酷</a></dd>
+  <dd><a href="#">土豆</a></dd>
+  <dd><a href="#">新浪</a></dd>
+  <dd><a href="#">钉钉</a></dd>
+  <dd><a href="#">支付宝</a></dd>
+ </dl>
+ <div class="wrap btmInfor">
+  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
+  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+ </div>
+</footer>
+</body>
+</html>
