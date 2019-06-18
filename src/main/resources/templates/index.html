@@ -32,12 +32,8 @@ $(document).ready(function(){
    <div class="wrap">
    <!--topRightNav-->
     <ul class="topRtNav">
-     <li><a href="user.html">个人中心</a></li>
-     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
-     <li><a href="user.html">商家中心</a></li>
-     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
-     <li><a href="union_login.html">联盟管理</a></li>
+     <li><a th:href="@{/user/user}">个人中心</a></li>
+     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
     </ul>
    </div>
   </div>
@@ -45,7 +41,7 @@ $(document).ready(function(){
   <div class="wrap logoSearch">
    <!--logo-->
    <div class="logo">
-    <h1><img th:src="@{images/logo.png}"/></h1>
+    <h1><img th:src="@{/images/logo.png}"/></h1>
    </div>
    <!--search-->
    <div class="search">
@@ -56,15 +52,14 @@ $(document).ready(function(){
      <li id="wenku">文库</li>
     </ul>
     <div class="searchBox">
-     <form>
+     <form action="selectByKey">
       <div class="inputWrap">
-      <input type="text" placeholder="输入产品关键词或货号"/>
+      <input type="text" placeholder="输入产品关键词" id="key" name="key"/>
       </div>
       <div class="btnWrap">
       <input type="submit" value="搜索"/>
       </div>
      </form>
-     <a href="#" class="advancedSearch">高级搜索</a>
     </div>
    </div>
   </div>
@@ -74,48 +69,33 @@ $(document).ready(function(){
 <li class="category">
 <a>全部产品分类</a>
 <dl class="asideNav indexAsideNav">
-<dt><a href="channel.html">狗狗</a></dt>
+<dt><a th:href="@{/item/selectByPetCategory(category=0)}">狗狗</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">牵引</a>
-<a href="#">狗狗清洁</a>
+<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
 
 </dd>
-<dt><a href="channel.html">猫猫</a></dt>
+<dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">牵引</a>
-<a href="#">猫猫清洁</a>
+<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
 </dd>
 </dl>
 </li>
 <li>
-<a href="index.html" class="active">首页</a>
-</li>
-<li>
-<a href="#">时尚搭配</a>
-</li>
-<li>
-<a href="channel.html">原创设计</a>
-</li>
-<li>
-<a href="channel.html">时尚代购</a>
-</li>
-<li>
-<a href="channel.html">民族风</a>
-</li>
-<li>
-<a href="information.html">时尚搭配</a>
-</li>
-<li>
-<a href="library.html">搭配知识</a>
+<a th:href="@{/item/list}">主页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
+</li>
+<li>
+<a href="#">秒杀专场</a>
 </li>
 <li>
 <a href="#">其他</a>
@@ -178,12 +158,11 @@ $(document).ready(function(){
       <strong>热销商品</strong>
       <a href="shop_list.html" class="fr">更多</a>
      </dt>
-     <div  th:each="itemDO:${itemBySales}">
+     <div  th:each="itemDO:${session.itemBySales}">
      <dd>
        <a th:href="@{/item/get(id=${itemDO.id})}">
        <img th:src="@{${itemDO.imgUrl}}"/>
        <h2><span th:text="${itemDO.title}"/></h2>
-
       </a>
      </dd>
     </div>
@@ -231,7 +210,7 @@ $(document).ready(function(){
 <section class="wrap idexCase">
  <h2>
   <strong>猫猫用品</strong>
-  <a href="#">more</a>
+  <a th:href="@{/item/selectByPetCategory(category=1)}">more</a>
  </h2>
  <ul>
    <div  th:each="itemDO:${catPage.list}">
@@ -251,7 +230,7 @@ $(document).ready(function(){
 <section class="wrap idexCase">
  <h2>
   <strong>狗狗用品</strong>
-  <a href="#">more</a>
+  <a th:href="@{/item/selectByPetCategory(category=0)}">more</a>
  </h2>
  <ul>
    <div  th:each="itemDO:${dogPage.list}">

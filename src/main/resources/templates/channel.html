@@ -3,23 +3,24 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<title>注册</title>
+<title>频道主页</title>
 <meta name="keywords"  content="DeathGhost" />
 <meta name="description" content="DeathGhost" />
 <meta name="author" content="DeathGhost,deathghost@deathghost.cn">
 <link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{js/html5.js}"></script>
 <script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{js/swiper.min.js}"></script>
 <script>
 $(document).ready(function(){
-  $("nav .indexAsideNav").hide();
-  $("nav .category").mouseover(function(){
-	  $(".asideNav").slideDown();
+	//焦点图
+	var mySwiper = new Swiper('#slide',{
+		  autoplay:5000,
+		  visibilityFullFit : true,
+		  loop:true,
+		  pagination : '.pagination',
 	  });
-  $("nav .asideNav").mouseleave(function(){
-	  $(".asideNav").slideUp();
-	  });
-});
+})
 </script>
 </head>
 <body>
@@ -38,10 +39,6 @@ $(document).ready(function(){
     <ul class="topRtNav">
      <li><a href="user.html">个人中心</a></li>
      <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
-     <li><a href="user.html">商家中心</a></li>
-     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
-     <li><a href="union_login.html">联盟管理</a></li>
     </ul>
    </div>
   </div>
@@ -49,7 +46,7 @@ $(document).ready(function(){
   <div class="wrap logoSearch">
    <!--logo-->
    <div class="logo">
-    <h1><img th:src="@{/images/logo.png}"/></h1>
+    <h1><img src="images/logo.png"/></h1>
    </div>
    <!--search-->
    <div class="search">
@@ -73,37 +70,46 @@ $(document).ready(function(){
    </div>
   </div>
   <!--nav-->
+<!--nav-->
   <nav>
 <ul class="wrap navList">
 <li class="category">
 <a>全部产品分类</a>
 <dl class="asideNav indexAsideNav">
-<dt><a href="channel.html">女装</a></dt>
+<dt><a href="channel.html">狗狗</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">猫猫清洁</a>
+<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
 </dd>
-<dt><a href="channel.html">男装</a></dt>
+<dt><a href="channel.html">猫猫</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">猫猫清洁</a>
+<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
 </dd>
 </dl>
 </li>
 <li>
-<a href="index.html" class="active">首页</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
 </li>
+<li>
+<a th:href="@{/item/listByCategory(category=4)}">狗狗清洁</a>
+</li>
+<li>
+<a th:href="@{/item/listByCategory(category=6)}">猫猫玩具</a>
+</li>
+<li>
+<a th:href="@{/item/listByCategory(category=8)}">猫猫清洁</a>
+</li>
+
 <li>
 <a href="#">促销专区</a>
-</li>
-<li>
-<a href="#">秒杀专场</a>
 </li>
 <li>
 <a href="#">其他</a>
@@ -134,36 +140,131 @@ $(document).ready(function(){
    
  </script>
  
-<section class="wrap user_form">
- <div class="lt_img">
-  <img src="images/form_bg.jpg"/>
- </div>
- <div class="rt_form">
-  <h2>会员注册</h2>
-  <ul>
-   <li class="user_icon">
-    <input type="text" class="textbox" placeholder="手机号码"/>
+<!--categoryRightArea-->
+<div class="wrap">
+  <div class="cnlCtgrRt">
+     <!--left:slide-->
+     <div id="slide">
+       <div class="swiper-wrapper">
+         <div class="swiper-slide">
+          <a href="#">
+           <img src="upload/slide001.jpg"/>
+          </a>
+         </div>
+         <div class="swiper-slide">
+          <a href="#">
+           <img src="upload/slide002.jpg"/>
+          </a>
+         </div>
+         <div class="swiper-slide">
+          <a href="#">
+           <img src="upload/slide003.jpg"/>
+          </a>
+         </div>
+         <div class="swiper-slide">
+          <a href="#">
+           <img src="upload/slide004.jpg"/>
+          </a>
+         </div>
+       </div>
+       <div class="pagination"></div>  
+     </div>
+     <!--right:ad-->
+     <div class="rtAd">
+      <div class="adArea"><a href="product_list.html"><img src="upload/ad001.jpg"/></a></div>
+      <div class="adArea"><a href="product_list.html"><img src="upload/ad002.jpg"/></a></div>
+     </div>
+  </div>
+</div>
+<!--list-->
+<section class="wrap" style="overflow:hidden;">
+ <div class="ltWrap">
+  <h2>
+   <strong>女装分类</strong>
+   <a href="product_list.html">more</a>
+  </h2>
+  <aside>
+  <!--classLi-->
+   <ul class="classLi">
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+    <li><a href="product_list.html">XX女装</a></li>
+   </ul>
+   <!--ad:pic-->
+   <div class="adPic">
+    <a href="product_list.html"><img src="upload/ad006.jpg"/></a>
+   </div>
+  </aside>
+  <!--product list-->
+  <ul class="goodsLi">
+ <div  th:each="itemDO:${itemPage.list}">
+   <li>
+    <a th:href="@{/item/get(id=${itemDO.id})}">
+     <img th:src="@{${itemDO.imgUrl}}"/>
+     <h3><span  th:text="${itemDO.title}"/></h3>
+     <p><span th:text="${itemDO.price}"</p>
+    </a>
    </li>
-   <li class="link_li">
-    <input type="button" value="获取手机校验码" class="get_num_btn"/>
-   </li>
-   <li class="user_cc">
-    <input type="text" class="textbox" placeholder="手机校验码"/>
-   </li>
-   <li class="user_pwd">
-    <input type="password" class="textbox" placeholder="设置密码"/>
-   </li>
-   <li class="user_pwd">
-    <input type="password" class="textbox" placeholder="确认密码"/>
-   </li>
-   <li class="link_li">
-    <label><input type="checkbox"/><a>阅读注册协议</a></label>
-    <a href="login.html" title="登录账号" class="fr">已有账号，立即登录？</a>
-   </li>
-   <li class="link_li">
-    <input type="button" value="立即注册" class="sbmt_btn"/>
-   </li>
+   </div>
   </ul>
+ </div>
+ <div class="rtWrap">
+  <dl class="rtLiTwoCol">
+   <dt>热门推荐</dt>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods002.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods001.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods003.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods004.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods008.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods007.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods006.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+   <dd>
+    <a href="product.html">
+     <img src="upload/goods005.jpg"/>
+     <p>0.00</p>
+    </a>
+   </dd>
+  </dl>
  </div>
 </section>
 <!--footer-->

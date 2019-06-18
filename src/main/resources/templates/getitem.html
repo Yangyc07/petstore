@@ -52,11 +52,7 @@ $(document).ready(function(){
    <!--topRightNav-->
     <ul class="topRtNav">
      <li><a href="user.html">个人中心</a></li>
-     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
-     <li><a href="user.html">商家中心</a></li>
-     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
-     <li><a href="union_login.html">联盟管理</a></li>
+     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车</a></li>
     </ul>
    </div>
   </div>
@@ -64,7 +60,7 @@ $(document).ready(function(){
   <div class="wrap logoSearch">
    <!--logo-->
    <div class="logo">
-    <h1><img src="images/logo.png"/></h1>
+    <h1><img th:src="@{/images/logo.png}"/></h1>
    </div>
    <!--search-->
    <div class="search">
@@ -75,7 +71,7 @@ $(document).ready(function(){
      <li id="wenku">文库</li>
     </ul>
     <div class="searchBox">
-     <form>
+   <form action="/petstore/item/selectByKey">
       <div class="inputWrap">
       <input type="text" placeholder="输入产品关键词或货号"/>
       </div>
@@ -83,7 +79,6 @@ $(document).ready(function(){
       <input type="submit" value="搜索"/>
       </div>
      </form>
-     <a href="#" class="advancedSearch">高级搜索</a>
     </div>
    </div>
   </div>
@@ -95,43 +90,20 @@ $(document).ready(function(){
 <dl class="asideNav indexAsideNav">
 <dt><a href="channel.html">女装</a></dt>
 <dd>
-<a href="#">夏装新</a>
-<a href="#">连衣裙</a>
-<a href="#">T恤</a>
-<a href="#">衬衫</a>
-<a href="#">裤子</a>
-<a href="#">牛仔裤</a>
-<a href="#">背带裤</a>
-<a href="#">短外套</a>
-<a href="#">时尚外套</a>
-<a href="#">风衣</a>
-<a href="#">毛衣</a>
-<a href="#">背心</a>
-<a href="#">吊带</a>
-<a href="#">民族服装</a>
+<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
 </dd>
-<dt><a href="channel.html">男装</a></dt>
+<dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
 <dd>
-<a href="#">衬衫</a>
-<a href="#">背心</a>
-<a href="#">西装</a>
-<a href="#">POLO衫</a>
-<a href="#">马夹</a>
-<a href="#">皮衣</a>
-<a href="#">毛衣</a>
-<a href="#">针织衫</a>
-<a href="#">牛仔裤</a>
-<a href="#">外套</a>
-<a href="#">夹克</a>
-<a href="#">卫衣</a>
-<a href="#">风衣</a>
-<a href="#">民族风</a>
-<a href="#">原创设计</a>
-<a href="#">大码</a>
-<a href="#">情侣装</a>
-<a href="#">开衫</a>
-<a href="#">运动裤</a>
-<a href="#">工装裤</a>
+<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
 </dd>
 </dl>
 </li>
@@ -139,25 +111,10 @@ $(document).ready(function(){
 <a href="index.html" class="active">首页</a>
 </li>
 <li>
-<a href="#">时尚搭配</a>
-</li>
-<li>
-<a href="channel.html">原创设计</a>
-</li>
-<li>
-<a href="channel.html">时尚代购</a>
-</li>
-<li>
-<a href="channel.html">民族风</a>
-</li>
-<li>
-<a href="information.html">时尚搭配</a>
-</li>
-<li>
-<a href="library.html">搭配知识</a>
-</li>
-<li>
 <a href="#">促销专区</a>
+</li>
+<li>
+<a href="#">秒杀专场</a>
 </li>
 <li>
 <a href="#">其他</a>
@@ -189,28 +146,59 @@ $(document).ready(function(){
  jQuery(document).ready(function(){
                 //加的效果
                $("#add").click(function(){
-                   var n=$("#num").val();
+                   var n=$("#amount").val();
                    var num=parseInt(n)+1;
 
                    if(num==0){ return;}
-                   $("#num").val(num);
+                   $("#amount").val(num);
                });
                //减的效果
                $("#jian").click(function(){
-                   var n=$("#num").val();
+                   var n=$("#amount").val();
 
                    var num=parseInt(n)-1;
                    if(num==0){ return}
-                   $("#num").val(num);
-               });
+                   $("#amount").val(num);
                });
 
+               //添加商品至购物车
+                       $("#addItemtoCart").on("click",function()
+                       {
+                           var id = document.getElementById("id").innerHTML.trim();
+                           var amount = document.getElementById("amount").value;
+                           console.log(amount);
+                           $.ajax({
+                               type:"POST",
+                               contentType:"application/x-www-form-urlencoded",
+                               url:"http://localhost:8090/petstore/cart/addItemToCart",
+                               data:{
+                                   "itemId":id,
+                                   "amount":amount,
+                               },
+                               xhrFields:{withCredentials:true},
+                               success:function(data){
+                                   if(data.status == "success"){
+                                       alert("已添加入购物车");
+                                       window.location.reload();
+                                   }else{
+                                       alert("添加购物车失败"+data.data.errMsg);
+                                       if(data.data.errCode == 20003){
+                                           window.location.reload();
+                                       }
+                                   }
+                               },
+                               error:function(data){
+                                   alert("添加购物车失败"+data.responseTex);
+                               }
+                           });
+                           return false;
+                       });
+                   });
  </script>
  
  <!--导航指向-->
 <aside class="wrap insideLink">
-  <a href="index.html">首页</a>
-  <a href="product_list.html">时尚女装</a>
+  <a th:href="@{/item/list}">首页</a>
 </aside>
 <section class="wrap product_detail">
  <!--img:left-->
@@ -241,11 +229,15 @@ $(document).ready(function(){
       <dt>品牌：</dt>
       <dd><time><span th:text="${itemVO.brand}"/></time></dd>
      </dl>
+      <dl class="horizontal">
+           <dt>商品编号：</dt>
+           <dd><time><span th:text="${itemVO.id}" id="id"/></time></dd>
+          </dl>
     </li>
     <li class="statistics">
      <dl class="vertical">
      <dt>销量</dt>
-      <dd><span th:text="${itemVO.stock}"/></dd>
+      <dd><span th:text="${itemVO.sales}"/></dd>
      </dl>
      <dl class="vertical">
       <dt>累计评论</dt>
@@ -284,15 +276,15 @@ $(document).ready(function(){
       <dt>数量：</dt>
       <dd>
        <input type="button" value="-" class="jj_btn" id="jian"/>
-       <input type="text" value="1" readonly class="num" id="num"/>
+       <input type="text" value="1" readonly class="num" id="amount"/>
        <input type="button" value="+" class="jj_btn" id="add"/>
        <span>库存：<span th:text="${itemVO.stock}"></span></span>
       </dd>
      </dl>
     </li>
     <li class="last_li">
-       <input type="button" value="立即购买" class="buy_btn" onClick="javascript:location.href='cart.html'"/>
-       <input type="button" value="加入购物车" class="add_btn"/>
+       <input type="button" value="立即购买" class="buy_btn"/>
+       <input type="button" value="加入购物车" class="add_btn" id="addItemtoCart"/>
     </li>
    </ul>
   </div>

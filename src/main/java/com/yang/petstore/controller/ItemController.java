@@ -51,7 +51,7 @@ public class ItemController extends BaseController{
         PageInfo<ItemDO> catPage = itemService.selectByPetCategory(pageNo,pageSize,1);
         PageInfo<ItemDO> dogPage = itemService.selectByPetCategory(pageNo,pageSize,0);
         List<ItemDO> itemsBySales = itemService.selectBySales();
-        model.addAttribute("itemBySales",itemsBySales);
+        httpServletRequest.getSession().setAttribute("itemBySales",itemsBySales);
         model.addAttribute("catPage",catPage);
         model.addAttribute("dogPage",dogPage);
         return "index";
@@ -61,10 +61,22 @@ public class ItemController extends BaseController{
     @RequestMapping(value = "/listByCategory")//Content type 'null' not supported
     public String listItem(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="10")int pageSize, int category,Model model) {
         PageInfo<ItemDO> itemPage = itemService.selectByCategory(pageNo, pageSize, category);
+        httpServletRequest.getSession().setAttribute("category",category);
         model.addAttribute("itemPage", itemPage);
-        return "itemdivid";
+        return "item_list";
     }
 
+    //根据分类查询商品
+    @RequestMapping(value = "/selectByPetCategory")//Content type 'null' not supported
+    public String selectByPetCategory(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="10")int pageSize, Integer category,Model model) {
+        if(category==null){
+            category = (Integer) httpServletRequest.getSession().getAttribute("category");
+        }
+        PageInfo<ItemDO> itemPage = itemService.selectByPetCategory(pageNo, pageSize, category);
+        httpServletRequest.getSession().setAttribute("category", category);
+        model.addAttribute("itemPage", itemPage);
+        return "item_list";
+    }
 
     //根据关键字搜索
     @RequestMapping(value = "/selectByKey")//Content type 'null' not supported
@@ -79,7 +91,7 @@ public class ItemController extends BaseController{
         lg.info("key-----------------------------------------",key);
         PageInfo<ItemDO> itemPage = itemService.selectByKey(pageNo, pageSize, key);
         model.addAttribute("itemPage",itemPage);
-        return "itemdivid";
+        return "item_list";
     }
 
     //商品详情页浏览
@@ -225,4 +237,7 @@ public class ItemController extends BaseController{
         }
         return 0;
     }
+
+
+
 }

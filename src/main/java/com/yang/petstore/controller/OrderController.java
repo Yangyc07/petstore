@@ -13,6 +13,7 @@ import com.yang.petstore.service.OrderService;
 import com.yang.petstore.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -40,7 +41,7 @@ public class OrderController extends BaseController{
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
         OrderVO orderVO = orderService.createOrder(userModel.getId(),addressId);
         httpServletRequest.getSession().setAttribute("orderVO",orderVO);
-        return "myorder";
+        return "system_prompts";
     }
 
 
@@ -48,24 +49,24 @@ public class OrderController extends BaseController{
 
     //查看我的所有订单
     @RequestMapping(value = "/myOrder",method = {RequestMethod.GET})
-    String myOrder(Integer userId){
+    String myOrder(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="5")int pageSize,Integer userId){
         List<OrderVO> orderVOS = orderService.selectByUserId(userId);
         httpServletRequest.getSession().setAttribute("orderVOS",orderVOS);
-        return "allorder";
+        return "order_list";
     }
 
 
     //查看详细订单
     @RequestMapping(value = "/getOrder",method = {RequestMethod.GET})
-    String getOrder(String orderNo){
+    String getOrder(String orderNo,Model model){
         List<OrderVO> orderList = (List<OrderVO>)httpServletRequest.getSession().getAttribute("orderVOS");
         for (OrderVO orderVO:orderList) {
             if(orderVO.getOrderNo().equals(orderNo)){
-                httpServletRequest.getSession().setAttribute("orderVO",orderVO);
+                model.addAttribute("orderVO",orderVO);
                 break;
             }
         }
-        return "myorder";
+        return "order_detail";
     }
 
 }

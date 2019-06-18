@@ -72,6 +72,11 @@ public class UserController extends BaseController{
         return CommonReturnType.create(null);
     }
 
+    //用户接口
+    @RequestMapping(value = "/user",method = {RequestMethod.GET})
+    public String User(){
+        return "user";
+    }
 
     //用户注册接口
     @RequestMapping(value = "/doRegister",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})

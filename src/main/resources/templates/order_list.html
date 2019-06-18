@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<title>注册</title>
+<title>用户中心</title>
 <meta name="keywords"  content="DeathGhost" />
 <meta name="description" content="DeathGhost" />
 <meta name="author" content="DeathGhost,deathghost@deathghost.cn">
@@ -36,12 +36,8 @@ $(document).ready(function(){
     </ul>
    <!--topRightNav-->
     <ul class="topRtNav">
-     <li><a href="user.html">个人中心</a></li>
-     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
-     <li><a href="user.html">商家中心</a></li>
-     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
-     <li><a href="union_login.html">联盟管理</a></li>
+      <li><a href="templates/user.html">个人中心</a></li>
+      <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
     </ul>
    </div>
   </div>
@@ -80,24 +76,25 @@ $(document).ready(function(){
 <dl class="asideNav indexAsideNav">
 <dt><a href="channel.html">女装</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">猫猫清洁</a>
+<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
 </dd>
-<dt><a href="channel.html">男装</a></dt>
+<dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
 <dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">猫猫清洁</a>
+<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
 </dd>
 </dl>
 </li>
 <li>
-<a href="index.html" class="active">首页</a>
+<a th:href="@{/item/list}">主页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
@@ -134,36 +131,69 @@ $(document).ready(function(){
    
  </script>
  
-<section class="wrap user_form">
- <div class="lt_img">
-  <img src="images/form_bg.jpg"/>
- </div>
- <div class="rt_form">
-  <h2>会员注册</h2>
-  <ul>
-   <li class="user_icon">
-    <input type="text" class="textbox" placeholder="手机号码"/>
+<section class="wrap user_center_wrap">
+ <!--左侧导航-->
+  <aside class="user_aside_nav">
+  <dl>
+   <dt>买家中心</dt>
+   <dd><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.id})}">我的订单</a></dd>
+   <dd><a href="address.html">我的地址库</a></dd>
+  </dl>
+  <dl>
+   <dt>控制面板</dt>
+   <dd><a href="profile.html">个人资料</a></dd>
+   <dd><a href="change_password.html">修改密码</a></dd>
+  </dl>
+ </aside>
+ <!--右侧：内容区域-->
+ <div class="user_rt_cont">
+  <div class="top_title">
+   <strong>我的订单</strong>
+  </div>
+  <!--条件检索-->
+  <div style="margin:8px 0;">
+   <select class="select">
+    <option>订单状态</option>
+    <option>待付款</option>
+    <option>待发货</option>
+    <option>待确认</option>
+    <option>待评价</option>
+    <option>退货</option>
+   </select>
+   <input type="text" class="textbox textbox_225" placeholder="输入订单编号"/>
+   <input type="button" value="查询" class="group_btn"/>
+  </div>
+  <ul class="order_li">
+  <div  th:each="orderVO : ${session.orderVOS}">
+   <li>
+    <table class="order_table">
+     <caption>
+      <strong>订单编号：<span th:text="${orderVO.orderNo}"/></strong>
+      <a th:href="@{/order/getOrder(orderNo=${orderVO.orderNo})}">订单详情</a>
+     </caption>
+     <div  th:each="cartItemVO : ${orderVO.cartItemVO}">
+     <tr>
+      <td class="center"><a th:href="@{/item/get(id=${cartItemVO.itemId})}"><img th:src="@{${cartItemVO.img_url}}" style="width:50px;height:50px;"/></a></td>
+      <td><a th:href="@{${cartItemVO.img_url}}"><span th:text="${cartItemVO.name}"/></a></td>
+      <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.price}"/></strong></td>
+      <td class="center"><b><span th:text="${cartItemVO.quantity}"/></b></td>
+      <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.total}"/></strong></td>
+      <td class="center"><a class="a_btn">确认收货</a></td>
+     </tr>
+    </div>
+    </table>
    </li>
-   <li class="link_li">
-    <input type="button" value="获取手机校验码" class="get_num_btn"/>
-   </li>
-   <li class="user_cc">
-    <input type="text" class="textbox" placeholder="手机校验码"/>
-   </li>
-   <li class="user_pwd">
-    <input type="password" class="textbox" placeholder="设置密码"/>
-   </li>
-   <li class="user_pwd">
-    <input type="password" class="textbox" placeholder="确认密码"/>
-   </li>
-   <li class="link_li">
-    <label><input type="checkbox"/><a>阅读注册协议</a></label>
-    <a href="login.html" title="登录账号" class="fr">已有账号，立即登录？</a>
-   </li>
-   <li class="link_li">
-    <input type="button" value="立即注册" class="sbmt_btn"/>
-   </li>
+   </div>
   </ul>
+   <!--分页-->
+   <div class="paging" style="text-align:right">
+    <a>第一页</a>
+    <a class="active">2</a>
+    <a>3</a>
+    <a>...</a>
+    <a>89</a>
+    <a>最后一页</a>
+   </div>
  </div>
 </section>
 <!--footer-->

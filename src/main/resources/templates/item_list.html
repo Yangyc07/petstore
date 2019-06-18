@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>分类列表</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script>
+$(document).ready(function(){
+  $("nav .indexAsideNav").hide();
+  $("nav .category").mouseover(function(){
+	  $(".asideNav").slideDown();
+	  });
+  $("nav .asideNav").mouseleave(function(){
+	  $(".asideNav").slideUp();
+	  });
+  //冒泡
+	$(".favorite_list li .shop_collect_goods").click(function(){
+	alert("收藏产品");
+	event.stopPropagation();
+	});
+});
+</script>
+</head>
+<body>
+<!--header-->
+<header>
+   <!--topNavBg-->
+   <div class="topNavBg">
+    <div class="wrap">
+    <!--topLeftNav-->
+     <ul class="topLtNav">
+      <li><a href="login.html" class="obviousText">亲，请登录</a></li>
+      <li><a href="register.html">注册</a></li>
+      <li><a href="#">移动端</a></li>
+     </ul>
+    <!--topRightNav-->
+     <ul class="topRtNav">
+      <li><a href="user.html">个人中心</a></li>
+      <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+     </ul>
+    </div>
+   </div>
+   <!--logoArea-->
+   <div class="wrap logoSearch">
+    <!--logo-->
+    <div class="logo">
+     <h1><img th:src="@{/images/logo.png}"/></h1>
+    </div>
+    <!--search-->
+    <div class="search">
+     <ul class="switchNav">
+      <li class="active" id="chanpin">产品</li>
+      <li id="shangjia">商家</li>
+      <li id="zixun">搭配</li>
+      <li id="wenku">文库</li>
+     </ul>
+     <div class="searchBox">
+      <form action="selectByKey">
+       <div class="inputWrap">
+       <input type="text" placeholder="输入产品关键词或货号"/>
+       </div>
+       <div class="btnWrap">
+       <input type="submit" value="搜索"/>
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+   <!--nav-->
+   <nav>
+      <ul class="wrap navList">
+      <li class="category">
+      <a>全部产品分类</a>
+      <dl class="asideNav indexAsideNav">
+      <dt><a th:href="@{/item/selectByPetCategory(category=0)}">狗狗</a></dt>
+      <dd>
+      <a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+      <a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+      <a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+      <a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+      <a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
+      </dd>
+      <dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
+      <dd>
+      <a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+      <a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+      <a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+      <a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+      <a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
+      </dd>
+      </dl>
+      </li>
+      <li>
+      <a th:href="@{/item/list}" class="active">首页</a>
+      </li>
+     <li>
+     <a href="#">促销专区</a>
+     </li>
+     <li>
+     <a href="#">秒杀专场</a>
+     </li>
+     <li>
+     <a href="#">其他</a>
+     </li>
+      </ul>
+      </nav>
+  </header>
+  <script>
+  $(document).ready(function(){
+     //测试效果，程序对接如需变动重新编辑
+     $(".switchNav li").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+        });
+     $("#chanpin").click(function(){
+        $(".inputWrap input[type='text']").attr("placeholder","输入产品关键词或货号");
+        });
+     $("#shangjia").click(function(){
+        $(".inputWrap input[type='text']").attr("placeholder","输入商家店铺名");
+        });
+     $("#zixun").click(function(){
+        $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文章内容");
+        });
+     $("#wenku").click(function(){
+        $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文库内容");
+        });
+     });
+    document.oncontextmenu=new Function("event.returnValue=false;");
+    document.onselectstart=new Function("event.returnValue=false;"); 
+  </script>
+  
+<section class="wrap list_class_page">
+ <div class="lt_area">
+  <!--产品列表-->
+    <section class="shop_goods_li">
+     <h2>店铺产品</h2>
+      <ul class="favorite_list">
+        <div  th:each="itemDO:${itemPage.list}">
+       <li>
+        <a th:href="@{/item/get(id=${itemDO.id})}">
+         <img th:src="@{${itemDO.imgUrl}}"/>
+         <h3><span  th:text="${itemDO.title}"/></h3>
+         <p class="price"><span class="rmb_icon"><span th:text="${itemDO.price}"/></span></p>
+         <p class="shop_collect_goods" title="收藏该产品"><span>&#115;</span></p>
+        </a>
+       </li>
+       </div>
+      </ul>
+       <!--分页-->
+       <div class="paging">
+       <span th:if="${itemPage.hasPreviousPage}">
+            <a th:href="'?pageNo=1'">首页</a>
+        </span>
+      <span  th:if="${itemPage.hasPreviousPage}">
+        <a th:href="'?pageNo='+${itemPage.prePage}">上一页</a>
+      </span>
+      <span  th:each="nav : ${itemPage.navigatepageNums}">
+      				<span><a th:href="'?pageNo='+${nav}" th:text="${nav}" th:if="${nav != itemPage.pageNum}"></a></span>
+      				<span> <a style="font-weight: bold" th:if="${nav == itemPage.pageNum}" th:text="${nav}"></a></span>
+      </span>
+       <span  th:if="${itemPage.hasNextPage}">
+        				<a th:href="'?pageNo='+${itemPage.nextPage}">下一页</a>
+       </span>
+       <span width="10%" th:if="${itemPage.hasNextPage}">
+       				<a th:href="'?pageNo='+${itemPage.pages}">尾页</a>
+       </span>
+       </div>
+    </section>
+
+ </div>
+ <aside class="rtWrap">
+  <dl class="rtLiTwoCol">
+   <dt>热门推荐</dt>
+
+ <div  th:each="itemDO:${session.itemBySales}">
+   <dd>
+   <a th:href="@{/item/get(id=${itemDO.id})}">
+     <img th:src="@{${itemDO.imgUrl}}"/>
+     <p><span th:text="${itemDO.price}"/></p>
+    </a>
+   </dd>
+</div>
+  </dl>
+ </aside>
+</section>
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+ <dl class="wrap otherLink">
+  <dt>友情链接</dt>
+  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
+  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
+  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
+  <dd><a href="#">当当</a></dd>
+  <dd><a href="#">优酷</a></dd>
+  <dd><a href="#">土豆</a></dd>
+  <dd><a href="#">新浪</a></dd>
+  <dd><a href="#">钉钉</a></dd>
+  <dd><a href="#">支付宝</a></dd>
+ </dl>
+ <div class="wrap btmInfor">
+  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
+  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+ </div>
+</footer>
+</body>
+</html>

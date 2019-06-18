@@ -149,6 +149,7 @@ public class OrderServiceImpl implements OrderService {
                 CartItemVO cartItemVO = new CartItemVO();
                 amount += orderInfoDO.getQuantity();
                 BeanUtils.copyProperties(orderInfoDO,cartItemVO);
+                cartItemVO.setPrice(orderInfoDO.getCurrentUnitPrice());
                 cartItemVO.setName(orderInfoDO.getItemName());
                 cartItemVO.setImg_url(orderInfoDO.getItemUrl());
                 cartItemVO.setTotal(orderInfoDO.getTotalPrice());
