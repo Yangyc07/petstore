@@ -27,19 +27,28 @@ $(document).ready(function(){
 <header>
   <!--topNavBg-->
   <div class="topNavBg">
-   <div class="wrap">
-   <!--topLeftNav-->
-    <ul class="topLtNav">
-     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
-     <li><a href="register.html">注册</a></li>
-     <li><a href="#">移动端</a></li>
-    </ul>
-   <!--topRightNav-->
-    <ul class="topRtNav">
-     <li><a th:href="@{/user/user}">个人中心</a></li>
-     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
-    </ul>
-   </div>
+
+
+ <div class="topNavBg">
+
+     <div th:switch="${session.IS_LOGIN}">
+
+       <div class="wrap" th:case="true">
+       <!--topRightNav-->
+        <ul class="topRtNav">
+         <li><a th:href="@{/user/user}">个人中心</a></li>
+         <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+        </ul>
+       </div>
+
+       <div class="wrap" th:case="*">
+        <li><span th:text="${session.LOGIN_USER.name}"></span></li>
+       </div>
+
+       </div>
+      </div>
+
+
   </div>
   <!--logoArea-->
   <div class="wrap logoSearch">
@@ -73,7 +82,7 @@ $(document).ready(function(){
 <li class="category">
 <a>全部产品分类</a>
 <dl class="asideNav indexAsideNav">
-<dt><a href="channel.html">狗狗</a></dt>
+<dt><a th:href="@{/item/selectByPetCategory(category=0)}">狗狗</a></dt>
 <dd>
 <a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
 <a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
@@ -93,7 +102,7 @@ $(document).ready(function(){
 </dl>
 </li>
 <li>
-<a th:href="@{/item/list}">主页</a>
+<a th:href="@{/item/list}">首页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
@@ -136,12 +145,12 @@ $(document).ready(function(){
   <dl>
    <dt>买家中心</dt>
   <dd><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.id})}">我的订单</a></dd>
-   <dd><a href="address.html">我的地址库</a></dd>
+   <dd><a th:href="@{/address/selectAddress}">我的地址库</a></dd>
   </dl>
   <dl>
    <dt>控制面板</dt>
    <dd><a href="profile.html">个人资料</a></dd>
-   <dd><a href="change_password.html">修改密码</a></dd>
+ <dd><a th:href="@{/user/modifyPassword}">修改密码</a></dd>
   </dl>
  </aside>
  <!--右侧：内容区域-->
@@ -153,7 +162,17 @@ $(document).ready(function(){
    <dt>订单信息</dt>
    <dd><span>下单时间：</span><span th:text="${orderVO.createTime}"/></dd>
    <dd><span>付款时间：</span>2013-01-15 13:30:58</dd>
-   <dd><span>订单状态：</span>未付款<a>立即付款</a></dd>
+   <dd><span>订单状态：</span>
+   <span th:switch="${orderVO.status}">
+           <span th:case="0">已取消</span>
+           <span th:case="10"><a th:href="@{/pay/aliPay(out_trade_no=${orderVO.orderNo},total_amount=${orderVO.payment})}"><span>未付款,立即支付</span></a></span>
+           <span th:case="20">已付款</span>
+           <span th:case="40">已发货</span>
+           <span th:case="50">交易成功</span>
+          <span th:case="60">交易关闭</span>
+
+    </span>
+   </dd>
    <dd><span>收件人：</span><span th:text="${orderVO.userAddressDO.receiverName}"/></dd>
    <dd><span>联系电话：</span><span th:text="${orderVO.userAddressDO.receiverPhone}"/></dd>
    <dd><span>收件地址：</span><span th:text="${orderVO.userAddressDO.toString()}"/></dd>
@@ -220,26 +239,11 @@ $(document).ready(function(){
    </dl>
   </li>
  </ul>
- <dl class="wrap otherLink">
-  <dt>友情链接</dt>
-  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
-  <dd><a href="#">当当</a></dd>
-  <dd><a href="#">优酷</a></dd>
-  <dd><a href="#">土豆</a></dd>
-  <dd><a href="#">新浪</a></dd>
-  <dd><a href="#">钉钉</a></dd>
-  <dd><a href="#">支付宝</a></dd>
- </dl>
- <div class="wrap btmInfor">
-  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
-  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+
+ <div class="wrap btmInfor" align="center">
+  <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+  </br>
+  <address>联系地址：湖北省十堰市</address>
  </div>
 </footer>
 </body>
