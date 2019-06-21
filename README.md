@@ -3,9 +3,9 @@
 ### 后台功能：查看商品信息，添加商品信息。
 ## 项目环境
 - IDE:idea 2017
-- 后端框架：SpringBoot,Guava Cache
+- 后端框架：SpringBoot
 - 前端：css/html/js,Bootstrap,thymeleaf
-- 缓存:redis
+- 缓存:redis,Guava Cache
 ## 界面截图
 #### 主界面
 <img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
