@@ -2,6 +2,7 @@ package com.yang.petstore.controller;
 
 
 
+import com.github.pagehelper.PageInfo;
 import com.yang.petstore.controller.ViewObject.OrderInfoVO;
 import com.yang.petstore.controller.ViewObject.OrderVO;
 import com.yang.petstore.dataobject.OrderDO;
@@ -44,13 +45,12 @@ public class OrderController extends BaseController{
         return "system_prompts";
     }
 
-
-
-
     //查看我的所有订单
     @RequestMapping(value = "/myOrder",method = {RequestMethod.GET})
-    String myOrder(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="pageSize",defaultValue="5")int pageSize,Integer userId){
-        List<OrderVO> orderVOS = orderService.selectByUserId(userId);
+    String myOrder(@RequestParam(value="pageNo",defaultValue="1")int pageNo,
+                   @RequestParam(value="pageSize",defaultValue="4")int pageSize,
+                   Integer userId){
+        PageInfo<OrderVO> orderVOS = orderService.selectByUserId(pageNo,pageSize,userId);
         httpServletRequest.getSession().setAttribute("orderVOS",orderVOS);
         return "order_list";
     }
@@ -59,7 +59,8 @@ public class OrderController extends BaseController{
     //查看详细订单
     @RequestMapping(value = "/getOrder",method = {RequestMethod.GET})
     String getOrder(String orderNo,Model model){
-        List<OrderVO> orderList = (List<OrderVO>)httpServletRequest.getSession().getAttribute("orderVOS");
+        PageInfo<OrderVO> pageInfo = (PageInfo<OrderVO>)httpServletRequest.getSession().getAttribute("orderVOS");
+        List<OrderVO> orderList = pageInfo.getList();
         for (OrderVO orderVO:orderList) {
             if(orderVO.getOrderNo().equals(orderNo)){
                 model.addAttribute("orderVO",orderVO);
@@ -68,5 +69,4 @@ public class OrderController extends BaseController{
         }
         return "order_detail";
     }
-
 }

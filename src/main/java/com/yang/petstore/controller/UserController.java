@@ -130,7 +130,7 @@ public class UserController extends BaseController{
         return "getopt";
     }
 
-    //用户获取otp短信接口
+    //跳转到登陆界面
     @RequestMapping(value = "/register",method = {RequestMethod.GET})
     public String register() {
         return "register";
@@ -153,7 +153,8 @@ public class UserController extends BaseController{
         String newstr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));
         return newstr;
     }
-    //退出登录
+
+    //用户退出登录
     @RequestMapping(value = "/logOut")
     @ResponseBody
     public String logOut(){
@@ -165,10 +166,10 @@ public class UserController extends BaseController{
     //修改个人密码
     @RequestMapping(value = "/modifyPassword")
     public String modifyPassword(){
-        return "modifypass";
+        return "change_password";
     }
 
-    //个人地址
+    //获取个人地址
     @RequestMapping(value = "/myAddress")
     public String myAddres(){
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
@@ -186,43 +187,12 @@ public class UserController extends BaseController{
         return "editaddress";
     }
 
-    //编辑个人地址
-    @RequestMapping(value = "/doEditAddress")
-    @ResponseBody
-    public CommonReturnType doEditAddres(
-                                       @RequestParam(name="receiver_name") String receiver_name,
-                                       @RequestParam(name="receiver_phone")  String receiver_phone,
-                                       @RequestParam(name="cmbProvince")  String cmbProvince,
-                                       @RequestParam(name="cmbCity")   String cmbcity,
-                                       @RequestParam(name="cmbArea")  String cmbArea,
-                                       @RequestParam(name="receiver_address")  String receiver_address,
-                                       @RequestParam(name="receiver_zip")  String receiver_zip){
-
-        UserAddressDO userAddressDO = (UserAddressDO) httpServletRequest.getSession().getAttribute("myAddress");
-        userAddressDO.setReceiverName(receiver_name);
-        userAddressDO.setReceiverPhone(receiver_phone);
-        userAddressDO.setReceiverProvince(cmbProvince);
-        userAddressDO.setReceiverCity(cmbcity);
-        userAddressDO.setReceiverDistrict(cmbArea);
-        userAddressDO.setReceiverAddress(receiver_address);
-        userAddressDO.setReceiverZip(receiver_zip);
-
-        addressService.updateAddress(userAddressDO);
-        return CommonReturnType.create(null);
-    }
-
 
     //删除个人地址
     @RequestMapping(value = "/deleteAddress")
     public String deleteAddress(@RequestParam(name="id")Integer id){
         addressService.deleteAddressById(id);
         return "address";
-    }
-
-    //添加地址界面
-    @RequestMapping(value = "/addAddress")
-    public String addAddress(){
-        return "addaddress";
     }
 
     //添加地址
@@ -252,16 +222,24 @@ public class UserController extends BaseController{
 
     }
 
-
     //修改个人密码
     @RequestMapping(value = "/doModifyPassword",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType doModifyPassword(@RequestParam(name="password") String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, BusinessException {
-        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
-        if (userService.modifyPassword(userModel.getTelphone(), this.EnCodeByMd5(password))) {
-            return CommonReturnType.create(null);
-        }
-        return null;
-    }
+    public CommonReturnType doModifyPassword(@RequestParam(name="originPassword") String originPassword,
+                                             @RequestParam(name="password") String password,
+                                             @RequestParam(name="confirmPassword") String confirmPassword) throws UnsupportedEncodingException, NoSuchAlgorithmException, BusinessException {
 
+
+        UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        userModel = userService.validationLogin(userModel.getTelphone(),this.EnCodeByMd5(originPassword));
+        if(userModel == null){
+            throw new BusinessException(EmBusinessError.USER_NOT_LOGIN);
+        }
+
+        if(!confirmPassword.equals(password)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"密码不一致");
+        }
+        userService.modifyPassword(userModel.getTelphone(),this.EnCodeByMd5(password));
+        return CommonReturnType.create(null);
+    }
 }

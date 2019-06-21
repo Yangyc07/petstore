@@ -27,21 +27,24 @@ $(document).ready(function(){
 <!--header-->
 <header>
   <!--topNavBg-->
-  <div class="topNavBg">
-   <div class="wrap">
-   <!--topLeftNav-->
-    <ul class="topLtNav">
-     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
-     <li><a href="register.html">注册</a></li>
-     <li><a href="#">移动端</a></li>
-    </ul>
-   <!--topRightNav-->
-    <ul class="topRtNav">
-     <li><a href="user.html">个人中心</a></li>
-     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-    </ul>
-   </div>
-  </div>
+    <div class="topNavBg">
+
+   <div th:switch="${session.IS_LOGIN}">
+
+     <div class="wrap" th:case="true">
+     <!--topRightNav-->
+      <ul class="topRtNav">
+       <li><a th:href="@{/user/user}">个人中心</a></li>
+       <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+      </ul>
+     </div>
+
+     <div class="wrap" th:case="*">
+      <li><span th:text="${session.LOGIN_USER.name}"></span></li>
+     </div>
+
+     </div>
+    </div>
   <!--logoArea-->
   <div class="wrap logoSearch">
    <!--logo-->

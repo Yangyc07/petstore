@@ -26,21 +26,24 @@ $(document).ready(function(){
 <!--header-->
 <header>
   <!--topNavBg-->
-  <div class="topNavBg">
-   <div class="wrap">
-   <!--topLeftNav-->
-    <ul class="topLtNav">
-     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
-     <li><a href="register.html">注册</a></li>
-     <li><a href="#">移动端</a></li>
-    </ul>
-   <!--topRightNav-->
-    <ul class="topRtNav">
-      <li><a href="templates/user.html">个人中心</a></li>
+   <div class="topNavBg">
+
+  <div th:switch="${session.IS_LOGIN}">
+
+    <div class="wrap" th:case="true">
+    <!--topRightNav-->
+     <ul class="topRtNav">
+      <li><a th:href="@{/user/user}">个人中心</a></li>
       <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
-    </ul>
+     </ul>
+    </div>
+
+    <div class="wrap" th:case="*">
+     <li><span th:text="${session.LOGIN_USER.name}"></span></li>
+    </div>
+
+    </div>
    </div>
-  </div>
   <!--logoArea-->
   <div class="wrap logoSearch">
    <!--logo-->
@@ -94,7 +97,7 @@ $(document).ready(function(){
 </dl>
 </li>
 <li>
-<a th:href="@{/item/list}">主页</a>
+<a th:href="@{/item/list}">首页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
@@ -137,12 +140,12 @@ $(document).ready(function(){
   <dl>
    <dt>买家中心</dt>
    <dd><a th:href="@{/order/myOrder(userId=${session.LOGIN_USER.id})}">我的订单</a></dd>
-   <dd><a href="address.html">我的地址库</a></dd>
+   <dd><a th:href="@{/address/selectAddress}">我的地址库</a></dd>
   </dl>
   <dl>
    <dt>控制面板</dt>
    <dd><a href="profile.html">个人资料</a></dd>
-   <dd><a href="change_password.html">修改密码</a></dd>
+   <dd><a th:href="@{/user/modifyPassword}">修改密码</a></dd>
   </dl>
  </aside>
  <!--右侧：内容区域-->
@@ -150,21 +153,8 @@ $(document).ready(function(){
   <div class="top_title">
    <strong>我的订单</strong>
   </div>
-  <!--条件检索-->
-  <div style="margin:8px 0;">
-   <select class="select">
-    <option>订单状态</option>
-    <option>待付款</option>
-    <option>待发货</option>
-    <option>待确认</option>
-    <option>待评价</option>
-    <option>退货</option>
-   </select>
-   <input type="text" class="textbox textbox_225" placeholder="输入订单编号"/>
-   <input type="button" value="查询" class="group_btn"/>
-  </div>
   <ul class="order_li">
-  <div  th:each="orderVO : ${session.orderVOS}">
+  <div  th:each="orderVO : ${session.orderVOS.list}">
    <li>
     <table class="order_table">
      <caption>
@@ -178,22 +168,41 @@ $(document).ready(function(){
       <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.price}"/></strong></td>
       <td class="center"><b><span th:text="${cartItemVO.quantity}"/></b></td>
       <td class="center"><strong class="rmb_icon"><span th:text="${cartItemVO.total}"/></strong></td>
-      <td class="center"><a class="a_btn">确认收货</a></td>
      </tr>
+    </div>
+    <div th:switch="${orderVO.status}">
+        <td th:case="0" class="center"><a class="a_btn" >已取消</a></td>
+        <td th:case="10" class="center"><a class="a_btn" th:href="@{/pay/aliPay(out_trade_no=${orderVO.orderNo},total_amount=${orderVO.payment})}">去付款</a></td>
+        <td th:case="20" class="center"><a class="a_btn">已付款</a></td>
+        <td th:case="40" class="center"><a class="a_btn">已发货</a></td>
+        <td th:case="50" class="center"><a class="a_btn">交易成功</a></td>
+        <td th:case="60" class="center"><a class="a_btn">交易关闭</a></td>
+
     </div>
     </table>
    </li>
    </div>
   </ul>
-   <!--分页-->
-   <div class="paging" style="text-align:right">
-    <a>第一页</a>
-    <a class="active">2</a>
-    <a>3</a>
-    <a>...</a>
-    <a>89</a>
-    <a>最后一页</a>
-   </div>
+    <!--分页-->
+     <!--分页-->
+       <div class="paging">
+       <span th:if="${session.orderVOS.hasPreviousPage}">
+            <a th:href="'?pageNo=1'+'&userId='+${session.LOGIN_USER.id}">首页</a>
+        </span>
+      <span  th:if="${session.orderVOS.hasPreviousPage}">
+        <a th:href="'?pageNo='+${session.orderVOS.prePage}+'&userId='+${session.LOGIN_USER.id}">上一页</a>
+      </span>
+      <span  th:each="nav : ${session.orderVOS.navigatepageNums}">
+      				<span><a th:href="'?pageNo='+${nav}+'&userId='+${session.LOGIN_USER.id}" th:text="${nav}" th:if="${nav != session.orderVOS.pageNum}"></a></span>
+      				<span> <a style="font-weight: bold" th:if="${nav == session.orderVOS.pageNum}" th:text="${nav}"></a></span>
+      </span>
+       <span  th:if="${session.orderVOS.hasNextPage}">
+        	<a th:href="'?pageNo='+${session.orderVOS.nextPage}+'&userId='+${session.LOGIN_USER.id}">下一页</a>
+       </span>
+       <span th:if="${session.orderVOS.hasNextPage}">
+       			<a th:href="'?pageNo='+${session.orderVOS.pages}+'&userId='+${session.LOGIN_USER.id}">尾页</a>
+       </span>
+       </div>
  </div>
 </section>
 <!--footer-->
@@ -237,26 +246,11 @@ $(document).ready(function(){
    </dl>
   </li>
  </ul>
- <dl class="wrap otherLink">
-  <dt>友情链接</dt>
-  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
-  <dd><a href="#">当当</a></dd>
-  <dd><a href="#">优酷</a></dd>
-  <dd><a href="#">土豆</a></dd>
-  <dd><a href="#">新浪</a></dd>
-  <dd><a href="#">钉钉</a></dd>
-  <dd><a href="#">支付宝</a></dd>
- </dl>
- <div class="wrap btmInfor">
-  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
-  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+
+ <div class="wrap btmInfor" align="center">
+  <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+  </br>
+  <address>联系地址：湖北省十堰市</address>
  </div>
 </footer>
 </body>

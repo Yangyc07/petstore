@@ -1,4 +1,6 @@
 package com.yang.petstore.service.Impl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yang.petstore.controller.ViewObject.CartItemVO;
 import com.yang.petstore.controller.ViewObject.CartVO;
 import com.yang.petstore.controller.ViewObject.OrderInfoVO;
@@ -10,14 +12,17 @@ import com.yang.petstore.dao.UserAddressDOMapper;
 import com.yang.petstore.dataobject.*;
 import com.yang.petstore.error.BusinessException;
 import com.yang.petstore.redis.RedisConfiguration;
+import com.yang.petstore.service.CacheService;
 import com.yang.petstore.service.CartService;
 import com.yang.petstore.service.ItemService;
+import com.yang.petstore.service.Model.ItemModel;
 import com.yang.petstore.service.OrderService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -52,6 +58,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private CacheService cacheService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -126,29 +138,53 @@ public class OrderServiceImpl implements OrderService {
         List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByOrderNo(orderNo);
         //减库存
         for (OrderInfoDO orderInfoDo: orderInfoDOList) {
+            //先更新数据库，然后更新缓存
             itemService.decreaseStock(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
             itemService.increaseSales(orderInfoDo.getItemId(),orderInfoDo.getQuantity());
+            //首先更新本地缓存，再更新redis缓存
+            ItemModel itemModel = (ItemModel) redisTemplate.opsForValue().get("item_"+orderInfoDo.getItemId());
+            itemModel.setStock(itemModel.getStock()-orderInfoDo.getQuantity());
+            itemModel.setSales(itemModel.getSales()+orderInfoDo.getQuantity());
+            cacheService.setCommonCache("item_"+orderInfoDo.getItemId(),itemModel);
+            //更新redis缓存
+            redisTemplate.opsForValue().set("item_"+orderInfoDo.getItemId(),itemModel);
+            redisTemplate.expire("item_"+orderInfoDo.getItemId(),10, TimeUnit.MINUTES);
+
         }
         return true;
     }
 
+
     @Override
-    public List<OrderVO> selectByUserId(Integer userId) {
+    public PageInfo<OrderVO> selectByUserId(int pageNo, int pageSize,Integer userId) {
+       PageHelper.startPage(pageNo,pageSize);//页数 和 行数
         //需要订单信息，详细信息和地址信息 购物车信息
        List<OrderDO> orderDOList =  orderDOMapper.selectByUserId(userId);
-       List<OrderVO> orderVOS = new LinkedList<>();
-       Integer amount = 0;
-       //循环组装VO
-        for (OrderDO orderDO:orderDOList) {
+       //转化为pageInfo
+       PageInfo<OrderDO> orderDOS = new PageInfo<>(orderDOList);
+       //将pageInfo进行处理
+       List<OrderVO> orderVOList = this.ConvertOrderVO(orderDOS.getList());
+       orderDOS.setList(orderDOList);
+       PageInfo<OrderVO> orderVOS = new PageInfo<>();
+       BeanUtils.copyProperties(orderDOS,orderVOS);
+       orderVOS.setList(orderVOList);
+       return orderVOS;
+    }
+
+    private List<OrderVO>  ConvertOrderVO(List<OrderDO> orderDOList) {
+        List<OrderVO> orderVOS = new LinkedList<>();
+        Integer amount = 0;
+        //循环组装VO
+        for (OrderDO orderDO : orderDOList) {
             amount = 0;
             OrderVO orderVO = new OrderVO();
             List<CartItemVO> cartItemVOList = new LinkedList<>();
-            BeanUtils.copyProperties(orderDO,orderVO);
+            BeanUtils.copyProperties(orderDO, orderVO);
             List<OrderInfoDO> orderInfoDOList = orderInfoDOMapper.selectByOrderNo(orderDO.getOrderNo());
-            for (OrderInfoDO orderInfoDO:orderInfoDOList){
+            for (OrderInfoDO orderInfoDO : orderInfoDOList) {
                 CartItemVO cartItemVO = new CartItemVO();
                 amount += orderInfoDO.getQuantity();
-                BeanUtils.copyProperties(orderInfoDO,cartItemVO);
+                BeanUtils.copyProperties(orderInfoDO, cartItemVO);
                 cartItemVO.setPrice(orderInfoDO.getCurrentUnitPrice());
                 cartItemVO.setName(orderInfoDO.getItemName());
                 cartItemVO.setImg_url(orderInfoDO.getItemUrl());

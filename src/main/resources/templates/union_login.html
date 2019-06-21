@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>登录-</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" /><script th:src="@{/js/html5.js}"></script>
+<script th:src="@{js/jquery.js}"></script>
+</head>
+<body>
+<div class="unionLoginTop">
+ <div class="wrap">
+  <h1>米乐宠物商城后台管理</h1>
+ </div>
+</div>
+<div class="unionLoginBg">
+ <div class="wrap" style="background:url(images/unbg.jpg) center no-repeat;height:486px;">
+  <dl class="loginForm">
+   <dt>登录后台管理</dt>
+   <dd>
+    <span>账号：</span>
+    <input type="text" placeholder="输入账号" class="txtbox" id="telphone"/>
+   </dd>
+   <dd>
+    <span>密码：</span>
+    <input type="password" placeholder="输入密码" class="txtbox" id="password"/>
+   </dd>
+   <dd>
+    <input type="button" value="立 即 登 陆" class="loginBtn" id="login"/>
+   </dd>
+  </dl>
+ </div>
+</div>
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+<div class="wrap btmInfor" align="center">
+  <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+  </br>
+  <address>联系地址：湖北省十堰市</address>
+ </div>
+</footer>
+</body>
+
+<script>
+$(document).ready(function(){
+
+    jQuery(document).ready(function(){
+    		//绑定opt的clic事件用于向后端发送获取手机验证码的请求
+    		$("#login").on("click",function(){
+    			var telphone = $("#telphone").val();
+    			var password = $("#password").val();
+
+    			if(telphone == null||telphone == ""){
+    				alert("手机号不能为空");
+    				return false;
+    			}
+    			if(password == null||password == ""){
+    				alert("密码不能为空");
+    				return false;
+    			}
+
+    			$.ajax({
+    				type:"POST",
+    				contentType:"application/x-www-form-urlencoded",
+    				url:"http://localhost:8090/petstore/manage/user/login",
+    				data:{
+    					"telphone":$("#telphone").val(),
+    					"password":password,
+    				},
+    				xhrFields:{withCredentials:true},
+    				crossDomain: true,
+    				success:function(data){
+    					if(data.status == "success"){
+    						alert("登陆成功");
+    						window.location.href="manage/item/list";
+    					}else{
+    						alert("登陆失败"+data.data.errMsg);
+    					}
+    				},
+    				error:function(data){
+    					alert("登陆失败"+data.responseTex);
+    				}
+    			});
+    			return false;
+    		});
+    	});
+});
+</script>
+</html>

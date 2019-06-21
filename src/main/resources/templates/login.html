@@ -69,26 +69,7 @@ $(document).ready(function(){
 <body>
 <!--header-->
 <header>
-  <!--topNavBg-->
-  <div class="topNavBg">
-   <div class="wrap">
-   <!--topLeftNav-->
-    <ul class="topLtNav">
-     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
-     <li><a th:href="@{/user/register}">注册</a></li>
-     <li><a href="#">移动端</a></li>
-    </ul>
-   <!--topRightNav-->
-    <ul class="topRtNav">
-     <li><a href="user.html">个人中心</a></li>
-     <li><a href="cart.html" class="cartIcon">购物车<i>0</i></a></li>
-     <li><a href="favorite.html" class="favorIcon">收藏夹</a></li>
-     <li><a href="user.html">商家中心</a></li>
-     <li><a href="article_read.html" class="srvIcon">客户服务</a></li>
-     <li><a href="union_login.html">联盟管理</a></li>
-    </ul>
-   </div>
-  </div>
+
   <!--logoArea-->
   <div class="wrap logoSearch">
    <!--logo-->
@@ -122,36 +103,37 @@ $(document).ready(function(){
 <li class="category">
 <a>全部产品分类</a>
 <dl class="asideNav indexAsideNav">
-<dt><a href="channel.html">狗狗</a></dt>
-<dd>
-<a href="#">主粮零食</a>
-<a href="#">狗狗玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">狗狗清洁</a>
-</dd>
-<dt><a href="channel.html">猫猫</a></dt>
-<dd>
-<a href="#">主粮零食</a>
-<a href="#">猫猫玩具</a>
-<a href="#">出行装备</a>
-<a href="#">医疗用品</a>
-<a href="#">猫猫清洁</a>
-</dd>
+<dt><a th:href="@{/item/selectByPetCategory(category=0)}">狗狗</a></dt>
+     <dd>
+     <a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+     <a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+     <a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+     <a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+     <a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+
+     </dd>
+     <dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
+     <dd>
+     <a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+     <a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+     <a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+     <a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+     <a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
+     </dd>
 </dl>
 </li>
 <li>
-<a href="index.html" class="active">首页</a>
-</li>
-<li>
-<a href="#">促销专区</a>
-</li>
-<li>
-<a href="#">秒杀专场</a>
-</li>
-<li>
-<a href="#">其他</a>
-</li>
+ <a th:href="@{/item/list}">首页</a>
+ </li>
+ <li>
+ <a href="#">促销专区</a>
+ </li>
+ <li>
+ <a href="#">秒杀专场</a>
+ </li>
+ <li>
+ <a href="#">其他</a>
+ </li>
 </ul>
 </nav>
 
@@ -192,7 +174,7 @@ $(document).ready(function(){
     <input type="password" class="textbox" placeholder="密码" id="password"/>
    </li>
    <li class="link_li">
-    <a href="register.html" title="注册新用户" class="fl">注册新用户</a>
+    <a th:href="@{/user/register}" title="注册新用户" class="fl">注册新用户</a>
     <a href="find_pwd.html" title="忘记密码" class="fr">忘记密码？</a>
    </li>
    <li class="link_li">
@@ -242,26 +224,11 @@ $(document).ready(function(){
    </dl>
   </li>
  </ul>
- <dl class="wrap otherLink">
-  <dt>友情链接</dt>
-  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
-  <dd><a href="#">当当</a></dd>
-  <dd><a href="#">优酷</a></dd>
-  <dd><a href="#">土豆</a></dd>
-  <dd><a href="#">新浪</a></dd>
-  <dd><a href="#">钉钉</a></dd>
-  <dd><a href="#">支付宝</a></dd>
- </dl>
+
  <div class="wrap btmInfor" align="center">
-  <p style="margin-left: 150px">© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
-  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+  <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+  </br>
+  <address>联系地址：湖北省十堰市</address>
  </div>
 </footer>
 </body>

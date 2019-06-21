@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller("address")
@@ -56,8 +57,25 @@ public class AddressController extends BaseController{
     //查询用户地址
     @RequestMapping(value = "/myAddress",method = {RequestMethod.GET})
     @ResponseBody
-    CommonReturnType selectAddress(){
+    CommonReturnType myAddress(){
         UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
         return CommonReturnType.create(addressService.selectAddressByUserId(userModel.getId()));
     }
+
+    //查询用户地址
+    @RequestMapping(value = "/selectAddress",method = {RequestMethod.GET})
+    String selectAddress(){
+        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        List<UserAddressDO> userAddressDOS = addressService.selectAddressByUserId(userModel.getId());
+        httpServletRequest.getSession().setAttribute("userAddressDOS",userAddressDOS);
+        return "address";
+    }
+
+    //删除用户地址
+    @RequestMapping(value = "/deleteAddressById",method = {RequestMethod.GET})
+    String deleteAddress(Integer id){
+        addressService.deleteAddressById(id);
+        return "address";
+    }
+
 }

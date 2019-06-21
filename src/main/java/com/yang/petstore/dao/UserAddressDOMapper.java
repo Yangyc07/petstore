@@ -54,4 +54,6 @@ public interface UserAddressDOMapper {
     int updateByPrimaryKey(UserAddressDO record);
 
     List<UserAddressDO> selectByUserId(Integer UserId);
+
+    void  deleteByUserId(Integer userID);
 }

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>商品列表-用户中心</title>
+<meta name="keywords"  content="DeathGhost" />
+<meta name="description" content="DeathGhost" />
+<meta name="author" content="DeathGhost,deathghost@deathghost.cn">
+<link rel="icon" th:href="@{/images/icon/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" /><script th:src="@{js/html5.js}"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script>
+$(document).ready(function(){
+  $("nav .indexAsideNav").hide();
+  $("nav .category").mouseover(function(){
+	  $(".asideNav").slideDown();
+	  });
+  $("nav .asideNav").mouseleave(function(){
+	  $(".asideNav").slideUp();
+	  });
+});
+</script>
+</head>
+<body>
+<!--header-->
+<header>
+  <!--topNavBg-->
+  <div class="topNavBg">
+   <div class="wrap">
+    <ul class="topLtNav">
+        <li><span  class="obviousText">米乐宠物商城后台管理</span></li>
+    </ul>
+   <!--topRightNav-->
+    <ul class="topRtNav">
+     <li><a href="union_login.html">亲爱的管理员，欢迎您！</a></li>
+    </ul>
+   </div>
+  </div>
+
+  <!--nav-->
+  <nav>
+ <ul class="wrap navList">
+ <li class="category">
+ <a>后台管理中心</a>
+
+ </li>
+ <li>
+ <a href="index.html" class="active">管理</a>
+ </li>
+ </ul>
+ </nav>
+
+ </header>
+ <script>
+ $(document).ready(function(){
+   //测试效果，程序对接如需变动重新编辑
+   $(".switchNav li").click(function(){
+     $(this).addClass("active").siblings().removeClass("active");
+     });
+   $("#chanpin").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入产品关键词或货号");
+     });
+   $("#shangjia").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入商家店铺名");
+     });
+   $("#zixun").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文章内容");
+     });
+   $("#wenku").click(function(){
+     $(".inputWrap input[type='text']").attr("placeholder","输入关键词查找文库内容");
+     });
+   });
+   
+ </script>
+ 
+<section class="wrap user_center_wrap">
+ <!--左侧导航-->
+  <aside class="user_aside_nav">
+
+  <dl>
+   <dt>商家管理中心</dt>
+   <dd><a href="seller_product_list.html">商品管理</a></dd>
+   <dd><a href="seller_order_list.html">订单管理</a></dd>
+   <dd><a href="seller_order_list.html">用户管理</a></dd>
+  </dl>
+ </aside>
+ <!--右侧：内容区域-->
+ <div class="user_rt_cont">
+  <div class="top_title">
+   <strong>商品列表</strong>
+   <a th:href="@{/manage/item/creatItem}" title="添加新商品" class="fr">添加新商品</a>
+  </div>
+  <!--条件检索-->
+  <div style="margin:8px 0;">
+   <select class="select">
+    <option>商品分类</option>
+    <option>男装</option>
+    <option>女装</option>
+    <option>配饰</option>
+   </select>
+   <input type="text" class="textbox textbox_225" placeholder="输入产品货号/关键词"/>
+   <input type="button" value="搜索" class="group_btn"/>
+  </div>
+  <table class="order_table">
+   <tr>
+    <th>货号</th>
+    <th>图片</th>
+    <th>名称</th>
+    <th>价格</th>
+    <th>库存</th>
+    <th>销量</th>
+    <th>操作</th>
+   </tr>
+    <div  th:each="itemModel:${itemModelPage.list}">
+   <tr>
+    <td class="center" th:text="${itemModel.id}"></td>
+    <td class="center"><img th:src="@{${itemModel.imgUrl}}" width="50" height="50"/></td>
+    <td><a h href="product.html" target="_blank" th:text="${itemModel.title}"></a></td>
+    <td class="center"><strong class="rmb_icon" th:text="${itemModel.price}"></strong></td>
+    <td class="center" th:text="${itemModel.stock}"></td>
+    <td class="center" th:text="${itemModel.sales}"></td>
+    <td class="center">
+     <a href="product.html" target="_blank" title="查看"><img th:src="@{/images/icon_view.gif}"/></a>
+     <a th:href="@{/manage/item/get(id=${itemModel.id})}" title="编辑"><img th:src="@{/images/icon_edit.gif}"/></a>
+     <a title="删除"><img th:src="@{/images/icon_trash.gif}"/></a>
+    </td>
+   </tr>
+   </div>
+
+  </table>
+   <!--分页-->
+  <div class="paging">
+         <span th:if="${itemModelPage.hasPreviousPage}">
+              <a th:href="'?pageNo=1'">首页</a>
+          </span>
+        <span  th:if="${itemModelPage.hasPreviousPage}">
+          <a th:href="'?pageNo='+${itemModelPage.prePage}">上一页</a>
+        </span>
+        <span  th:each="nav : ${itemModelPage.navigatepageNums}">
+        				<span><a th:href="'?pageNo='+${nav}" th:text="${nav}" th:if="${nav != itemModelPage.pageNum}"></a></span>
+        				<span> <a style="font-weight: bold" th:if="${nav == itemModelPage.pageNum}" th:text="${nav}"></a></span>
+        </span>
+         <span  th:if="${itemModelPage.hasNextPage}">
+          				<a th:href="'?pageNo='+${itemModelPage.nextPage}">下一页</a>
+         </span>
+         <span width="10%" th:if="${itemModelPage.hasNextPage}">
+         				<a th:href="'?pageNo='+${itemModelPage.pages}">尾页</a>
+         </span>
+         </div>
+
+
+ </div>
+</section>
+
+<!--footer-->
+<footer>
+ <!--help-->
+ <ul class="wrap help">
+  <li>
+   <dl>
+    <dt>消费者保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>新手上路</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>付款方式</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+  <li>
+   <dl>
+    <dt>服务保障</dt>
+    <dd><a href="article_read.html">保障范围</a></dd>
+    <dd><a href="article_read.html">退换货流程</a></dd>
+    <dd><a href="article_read.html">服务中心</a></dd>
+    <dd><a href="article_read.html">更多服务特色</a></dd>
+   </dl>
+  </li>
+ </ul>
+  <div class="wrap btmInfor" align="center">
+   <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+   </br>
+   <address>联系地址：湖北省十堰市</address>
+  </div>
+</footer>
+</body>
+</html>

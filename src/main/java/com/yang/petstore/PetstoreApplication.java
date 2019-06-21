@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +33,6 @@ public class PetstoreApplication {
 	@Autowired
 	public UserDOMapper userDOMapper;
 
-
-
-	@Autowired
-	RedisTemplate redisTemplate;
 	@RequestMapping("/hello")
 	public String index(Model model){
 		model.addAttribute("name", "Dear");
@@ -47,12 +41,9 @@ public class PetstoreApplication {
 
 	@RequestMapping("/manage")
 	public String manage(Model model){
-		return "adminlogin";
+		return "union_login";
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(PetstoreApplication.class, args);
 	}
-
-
-
 }

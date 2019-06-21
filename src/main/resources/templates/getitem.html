@@ -41,21 +41,24 @@ $(document).ready(function(){
 <!--header-->
 <header>
   <!--topNavBg-->
-  <div class="topNavBg">
-   <div class="wrap">
-   <!--topLeftNav-->
-    <ul class="topLtNav">
-     <li><a href="login.html" class="obviousText">亲，请登录</a></li>
-     <li><a href="register.html">注册</a></li>
-     <li><a href="#">移动端</a></li>
-    </ul>
-   <!--topRightNav-->
-    <ul class="topRtNav">
-     <li><a href="user.html">个人中心</a></li>
-     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车</a></li>
-    </ul>
+   <div class="topNavBg">
+
+  <div th:switch="${session.IS_LOGIN}">
+
+    <div class="wrap" th:case="true">
+    <!--topRightNav-->
+     <ul class="topRtNav">
+      <li><a th:href="@{/user/user}">个人中心</a></li>
+      <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+     </ul>
+    </div>
+
+    <div class="wrap" th:case="*">
+     <li><span th:text="${session.LOGIN_USER.name}"></span></li>
+    </div>
+
+    </div>
    </div>
-  </div>
   <!--logoArea-->
   <div class="wrap logoSearch">
    <!--logo-->
@@ -108,7 +111,7 @@ $(document).ready(function(){
 </dl>
 </li>
 <li>
-<a href="index.html" class="active">首页</a>
+<a th:href="@{/item/list}" class="active">首页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
@@ -239,36 +242,6 @@ $(document).ready(function(){
      <dt>销量</dt>
       <dd><span th:text="${itemVO.sales}"/></dd>
      </dl>
-     <dl class="vertical">
-      <dt>累计评论</dt>
-      <dd>198</dd>
-     </dl>
-     <dl class="vertical">
-      <dt>关注</dt>
-      <dd>230</dd>
-     </dl>
-    </li>
-    <li>
-     <dl class="horizontal horizontal_attr">
-      <dt>规格：</dt>
-      <dd>
-       <label><input type="radio" name="guige"/>S码</label>
-       <label><input type="radio" name="guige"/>M码</label>
-       <label><input type="radio" name="guige"/>L码</label>
-       <label><input type="radio" name="guige"/>XL码</label>
-       <label><input type="radio" name="guige"/>XXL码</label>
-      </dd>
-     </dl>
-    </li>
-    <li>
-     <dl class="horizontal horizontal_attr">
-      <dt>颜色：</dt>
-      <dd>
-       <label><input type="radio" name="yanse"/>黑色</label>
-       <label><input type="radio" name="yanse"/>蓝色</label>
-       <label><input type="radio" name="yanse"/>白色</label>
-      </dd>
-     </dl>
     </li>
     </li>
     <li>
@@ -283,7 +256,6 @@ $(document).ready(function(){
      </dl>
     </li>
     <li class="last_li">
-       <input type="button" value="立即购买" class="buy_btn"/>
        <input type="button" value="加入购物车" class="add_btn" id="addItemtoCart"/>
     </li>
    </ul>
@@ -296,129 +268,28 @@ $(document).ready(function(){
  <article>
   <ul class="item_tab">
    <li><a class="curr_li">商品详情</a></li>
-   <li><a>商品评价（2893）</a></li>
-   <li><a>成交记录（1892）</a></li>
   </ul>
   <!--商品详情-->
   <div class="cont_wrap active">
    <span th:text="${itemVO.description}"/><br/>
  <img th:src="@{/upload/blog-details.jpg}"/>
   </div>
-  <!--商品评价-->
-  <div class="cont_wrap">
-   <table class="table">
-    <tr>
-     <td width="20%" align="center">李*锋</td>
-     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
-     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
-    </tr>
-    <tr>
-     <td width="20%" align="center">彭**法</td>
-     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
-     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
-    </tr>
-    <tr>
-     <td width="20%" align="center">代**彭</td>
-     <td width="60%">这里是评论内容哦这里是评论内容哦这里是评论内容哦容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦这里是评论内容哦</td>
-     <td width="20%" align="center"><time>2013-01-13 15:06</time></td>
-    </tr>
-   </table>
-   <!--分页-->
-   <div class="paging">
-    <a>第一页</a>
-    <a class="active">2</a>
-    <a>3</a>
-    <a>...</a>
-    <a>89</a>
-    <a>最后一页</a>
-   </div>
-  </div>
-  <!--成交记录-->
-  <div class="cont_wrap">
-   <table class="table">
-    <tr>
-     <th>买家</th>
-     <th>产品属性</th>
-     <th>数量</th>
-     <th>成交时间</th>
-    </tr>
-    <tr>
-     <td align="center">李**强</td>
-     <td>
-      <p>颜色：黑色<p>
-      <p>规格：M<p>
-     </td>
-     <td align="center"><b>1</b></td>
-     <td align="center"><time>2013-01-13 15:25:39</time></td>
-    </tr>
-    <tr>
-     <td align="center">李**强</td>
-     <td>
-      <p>颜色：黑色<p>
-      <p>规格：L<p>
-     </td>
-     <td align="center"><b>1</b></td>
-     <td align="center"><time>2013-01-13 15:25:39</time></td>
-    </tr>
-    <tr>
-     <td align="center">葛**华</td>
-     <td>
-      <p>颜色：白色<p>
-      <p>规格：XL<p>
-     </td>
-     <td align="center"><b>5</b></td>
-     <td align="center"><time>2013-01-13 15:25:39</time></td>
-    </tr>
-   </table>
-   <!--分页-->
-   <div class="paging">
-    <a>第一页</a>
-    <a class="active">2</a>
-    <a>3</a>
-    <a>...</a>
-    <a>89</a>
-    <a>最后一页</a>
-   </div>
-  </div>
  </article>
  <aside>
   <dl class="aside_pro_list">
    <dt>
     <strong>精品推荐</strong>
-    <a>更多</a>
    </dt>
-   <dd>
-    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
-    <div class="rt_infor">
-     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
-     <p><del class="rmb_icon">1298.00</del></p>
-     <p><strong class="rmb_icon">980.00</strong></p>
-    </div>
-   </dd>
-   <dd>
-    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
-    <div class="rt_infor">
-     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
-     <p><del class="rmb_icon">1298.00</del></p>
-     <p><strong class="rmb_icon">980.00</strong></p>
-    </div>
-   </dd>
-   <dd>
-    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
-    <div class="rt_infor">
-     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
-     <p><del class="rmb_icon">1298.00</del></p>
-     <p><strong class="rmb_icon">980.00</strong></p>
-    </div>
-   </dd>
+
+    <div  th:each="itemDO:${session.itemBySales}">
     <dd>
-    <a href="#" class="goods_img"><img src="upload/goods002.jpg"/></a>
+    <a th:href="@{/item/get(id=${itemDO.id})}" class="goods_img"><img th:src="@{${itemDO.imgUrl}}"/></a>
     <div class="rt_infor">
-     <h3><a href="#">时尚女装 2019春季针织衫</a></h3>
-     <p><del class="rmb_icon">1298.00</del></p>
-     <p><strong class="rmb_icon">980.00</strong></p>
+     <h3><a href="#"><span th:text="${itemDO.title}"/></a></h3>
+     <p><strong class="rmb_icon"><span th:text="${itemDO.price}"/></strong></p>
     </div>
    </dd>
+   </div>
   </dl>
  </aside>
 </section>
@@ -463,27 +334,11 @@ $(document).ready(function(){
    </dl>
   </li>
  </ul>
- <dl class="wrap otherLink">
-  <dt>友情链接</dt>
-  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
-  <dd><a href="#">当当</a></dd>
-  <dd><a href="#">优酷</a></dd>
-  <dd><a href="#">土豆</a></dd>
-  <dd><a href="#">新浪</a></dd>
-  <dd><a href="#">钉钉</a></dd>
-  <dd><a href="#">支付宝</a></dd>
- </dl>
- <div class="wrap btmInfor">
-  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
-  <address>联系地址：陕西省西安市雁塔区XXX号</address>
- </div>
+ <div class="wrap btmInfor" align="center">
+     <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+     </br>
+      <address>联系地址：湖北省十堰市</address>
+     </div>
 </footer>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.yang.petstore.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yang.petstore.controller.ViewObject.OrderInfoVO;
 import com.yang.petstore.controller.ViewObject.OrderVO;
 import com.yang.petstore.dataobject.OrderDO;
@@ -15,5 +16,5 @@ public interface OrderService {
     boolean completePay(String orderNo) throws BusinessException;
 
     //获取订单
-    List<OrderVO> selectByUserId(Integer userId);
+    PageInfo<OrderVO> selectByUserId(int pageNo, int pageSize,Integer userId);
 }

@@ -29,14 +29,23 @@ $(document).ready(function(){
 <header>
   <!--topNavBg-->
   <div class="topNavBg">
-   <div class="wrap">
-   <!--topRightNav-->
-    <ul class="topRtNav">
-     <li><a th:href="@{/user/user}">个人中心</a></li>
-     <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
-    </ul>
-   </div>
-  </div>
+
+      <div th:switch="${session.IS_LOGIN}">
+
+        <div class="wrap" th:case="true">
+        <!--topRightNav-->
+         <ul class="topRtNav">
+          <li><a th:href="@{/user/user}">个人中心</a></li>
+          <li><a th:href="@{/cart/myCart(userId=${session.LOGIN_USER.getId()})}" class="cartIcon">购物车<i>0</i></a></li>
+         </ul>
+        </div>
+
+        <div class="wrap" th:case="*">
+         <li><span th:text="${session.LOGIN_USER.name}"></span></li>
+        </div>
+
+        </div>
+       </div>
   <!--logoArea-->
   <div class="wrap logoSearch">
    <!--logo-->
@@ -70,26 +79,26 @@ $(document).ready(function(){
 <a>全部产品分类</a>
 <dl class="asideNav indexAsideNav">
 <dt><a th:href="@{/item/selectByPetCategory(category=0)}">狗狗</a></dt>
-<dd>
-<a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
-<a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
-<a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
-<a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
-<a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
+     <dd>
+     <a th:href="@{/item/listByCategory(category=1)}">主粮零食</a>
+     <a th:href="@{/item/listByCategory(category=2)}">狗狗玩具</a>
+     <a th:href="@{/item/listByCategory(category=3)}">出行装备</a>
+     <a th:href="@{/item/listByCategory(category=4)}">医疗用品</a>
+     <a th:href="@{/item/listByCategory(category=5)}">狗狗清洁</a>
 
-</dd>
-<dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
-<dd>
-<a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
-<a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
-<a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
-<a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
-<a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
-</dd>
+     </dd>
+     <dt><a th:href="@{/item/selectByPetCategory(category=1)}">猫猫</a></dt>
+     <dd>
+     <a th:href="@{/item/listByCategory(category=6)}">主粮零食</a>
+     <a th:href="@{/item/listByCategory(category=7)}">狗狗玩具</a>
+     <a th:href="@{/item/listByCategory(category=8)}">出行装备</a>
+     <a th:href="@{/item/listByCategory(category=9)}">医疗用品</a>
+     <a th:href="@{/item/listByCategory(category=10)}">猫猫清洁</a>
+     </dd>
 </dl>
 </li>
 <li>
-<a th:href="@{/item/list}">主页</a>
+<a th:href="@{/item/list}">首页</a>
 </li>
 <li>
 <a href="#">促销专区</a>
@@ -247,42 +256,7 @@ $(document).ready(function(){
   </div>
  </ul>
 </section>
-<!--section:two->articleList-->
-<section class="wrap idxArticle">
-  <dl>
-   <dt>
-    <strong>招标资讯</strong>
-    <a href="article_list.html">more</a>
-   </dt>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
-   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-  </dl>
-  <dl style="margin:0 2.5%">
-   <dt>
-    <strong>最新询价信息</strong>
-    <a href="article_list.html">more</a>
-   </dt>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
-   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-  </dl>
-  <dl>
-   <dt>
-    <strong>行业资讯</strong>
-    <a href="article_list.html">more</a>
-   </dt>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-   <dd><a href="article_read.html">四川省老年大学教学用具及设备采购二标段公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">慢道峰山桥至仙境源风机路、曲径通幽至老虎洞至孙家至王沟服务区亮化工程公开招标公告</a></dd>
-   <dd><a href="article_read.html">四川省资阳市安岳县民政局第二次全国地名普查外包服务采购项目公开招标采购公告</a></dd>
-   <dd><a href="article_read.html">内蒙古君联生物发展有限公司阿巴嘎旗流化床锅炉除尘及链条炉排炉内脱硫设施采购项目公开招标招标公告</a></dd>
-  </dl>
- </section>
+
 <!--footer-->
 <footer>
  <!--help-->
@@ -324,26 +298,11 @@ $(document).ready(function(){
    </dl>
   </li>
  </ul>
- <dl class="wrap otherLink">
-  <dt>友情链接</dt>
-  <dd><a href="http://www.17sucai.com" target="_blank">17素材</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/24448.html">HTML5模块化后台管理模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/15966.html">绿色清爽后台管理系统模板</a></dd>
-  <dd><a href="http://www.17sucai.com/pins/14931.html">黑色的cms商城网站后台管理模板</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">前端博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">博客</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">新码笔记</a></dd>
-  <dd><a href="http://www.deathghost.cn" target="_blank">DethGhost</a></dd>
-  <dd><a href="#">当当</a></dd>
-  <dd><a href="#">优酷</a></dd>
-  <dd><a href="#">土豆</a></dd>
-  <dd><a href="#">新浪</a></dd>
-  <dd><a href="#">钉钉</a></dd>
-  <dd><a href="#">支付宝</a></dd>
- </dl>
- <div class="wrap btmInfor">
-  <p>© 2013 DeathGhost.cn 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</p>
-  <address>联系地址：陕西省西安市雁塔区XXX号</address>
+
+ <div class="wrap btmInfor" align="center">
+  <address>© 2019 版权所有 网络文化经营许可证：浙网文[2013]***-027号 增值电信业务经营许可证：浙B2-200***24-1 信息网络传播视听节目许可证：1109***4号</address>
+  </br>
+  <address>联系地址：湖北省十堰市</address>
  </div>
 </footer>
 </body>

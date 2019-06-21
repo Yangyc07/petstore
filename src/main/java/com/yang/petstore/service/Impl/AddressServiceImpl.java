@@ -30,12 +30,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public boolean updateAddress(UserAddressDO userAddressDO) {
-        return userAddressDOMapper.updateByPrimaryKey(userAddressDO) > 0;
+    public UserAddressDO selectAddressById(Integer id) {
+        return userAddressDOMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public UserAddressDO selectAddressById(Integer id) {
-        return userAddressDOMapper.selectByPrimaryKey(id);
+    public void deleteByUserId(Integer userId) {
+        userAddressDOMapper.deleteByUserId(userId);
     }
 }

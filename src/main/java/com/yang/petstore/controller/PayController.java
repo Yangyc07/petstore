@@ -26,7 +26,7 @@ public class PayController {
     private OrderService orderService;
 
     //阿里支付界面
-    @RequestMapping(value = "aliPay",method = {RequestMethod.POST})
+    @RequestMapping(value = "aliPay")
     String aliPay(String out_trade_no,String total_amount) throws BusinessException, AlipayApiException {
         String subject = "测试";
         String body = "测试";

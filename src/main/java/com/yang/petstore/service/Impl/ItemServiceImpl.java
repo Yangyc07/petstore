@@ -80,7 +80,6 @@ public class ItemServiceImpl implements ItemService{
         return this.getItemById(itemModel.getId());
     }
 
-//    @Cacheable(keyGenerator = "keyGenerator")
     @Override
     public PageInfo<ItemDO> listItem(int pageNo, int pageSize) {
 
@@ -136,14 +135,6 @@ public class ItemServiceImpl implements ItemService{
     public PageInfo<ItemDO> selectByKey(int pageNo, int pageSize,String key) {
         PageHelper.startPage(pageNo,pageSize);//页数 和 行数
         List<ItemDO> itemDOList = itemDOMapper.selectByKey(key);
-        PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
-        return pageInfo;
-    }
-
-    @Override
-    public PageInfo<ItemDO> selectByPrice(int pageNo, int pageSize, int category, int lowPirce, int highPrice) {
-        PageHelper.startPage(pageNo,pageSize);//页数 和 行数
-        List<ItemDO> itemDOList = itemDOMapper.selectByPrice(category,lowPirce,highPrice);
         PageInfo<ItemDO> pageInfo =new PageInfo<ItemDO>(itemDOList);
         return pageInfo;
     }
