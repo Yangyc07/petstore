@@ -7,23 +7,10 @@
 - 前端：css/html/js,Bootstrap,thymeleaf
 - 缓存:redis
 ## 界面截图
-主页面
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
+<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300" alt="主界面"></a>
 
-商品详情
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
+<img src="https://github.com/Yangyc07/petstore/blob/master/%E8%B4%AD%E7%89%A9%E8%BD%A6.png" width="500" height="300" alt="购物车"></a>
 
-购物车
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
-
-订单信息
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
-
-地址管理
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
-
-商品发布
-<img src="https://github.com/Yangyc07/petstore/blob/master/%E4%B8%BB%E9%A1%B5.png" width="500" height="300"></a>
 
 使用分页插件PageHelper时，如果需要对对象进行处理，应该在得到pageinfo信息之后处理，否则只能查询出第一页的信息
 
