@@ -3,7 +3,7 @@
 ### 后台功能：查看商品信息，添加商品信息。
 ## 项目环境
 - IDE:idea 2017
-- 后端框架：SpringBoot
+- 后端框架：SpringBoot,Guava Cache
 - 前端：css/html/js,Bootstrap,thymeleaf
 - 缓存:redis
 ## 界面截图
