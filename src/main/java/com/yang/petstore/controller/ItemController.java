@@ -55,8 +55,6 @@ public class ItemController extends BaseController{
         httpServletRequest.getSession().setAttribute("itemBySales",itemsBySales);
         model.addAttribute("catPage",catPage);
         model.addAttribute("dogPage",dogPage);
-
-
         return "index";
     }
 

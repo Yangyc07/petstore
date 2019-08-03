@@ -186,20 +186,23 @@ $(document).ready(function(){
    <tr>
     <td width="100" align="right"></td>
     <td><input type="button" value="增加地址" class="group_btn" id="addAddress"/></td>
+    <td><input type="button" value="更新地址" class="group_btn" id="updateAddress" style="margin-left: -320px"/></td>
    </tr>
   </table>
   </form>
-  <table class="order_table address_tbl">
+  <table class="order_table address_tbl" id="tab">
 
    <tr>
+     <th width="140">地址号</th>
     <th width="140">收件人</th>
     <th width="140">联系电话</th>
     <th>收件地址</th>
     <th width="240">操作</th>
    </tr>
    <div  th:each="userAddressDO:${session.userAddressDOS}" >
-   <tr >
-    <td ><span th:text="${userAddressDO.receiverName}"/></td>
+   <tr align="center">
+   <td ><span th:text="${userAddressDO.id}" id="name"/></td>
+    <td ><span th:text="${userAddressDO.receiverName}" id="name"/></td>
     <td><span th:text="${userAddressDO.receiverPhone}"/></td>
     <td>
      <address>
@@ -208,6 +211,7 @@ $(document).ready(function(){
     </td>
     <td>
      <a  th:href="@{/address/deleteAddressById(id=${userAddressDO.id})}">删除</a>
+     <a  id="updateAddress" class="updateAddress">更新</a>
     </td>
    </tr>
  </div>
@@ -265,6 +269,39 @@ $(document).ready(function(){
 </body>
 	<script type="text/javascript">
 	$(document).ready(function(){
+
+	     $("#tab").on("click","a",function(event) {
+	         //获取地址id号
+              var addressId = $(this).closest("tr").find("td").eq(0).text();
+              //发送ajax请求获取到地址信息
+              $.ajax({
+                    type:"GET",
+                    contentType:"application/x-www-form-urlencoded",
+                    url:"http://localhost:8090/petstore/address/getAddressById",
+                    data:{
+                        "addressId":addressId,
+                    },
+                    xhrFields:{withCrdentials:true},
+                    success:function(data) {
+                      if(data.status == "success"){
+                          //将data中的信息填充到页面中
+
+                          $("#receiver_name").val(data.data.receiverName);
+                          $("#receiver_phone").val(data.data.receiverPhone);
+                          $("#receiver_zip").val(data.data.receiverZip);
+                          $("#receiver_address").val(data.data.receiverAddress);
+
+                      }else{
+                           alert("地址添加失败"+data.responseText)
+                      }
+                    },
+                    error:function(data) {
+                        alert("地址添加失败"+data.responseText)
+                    }
+              });
+
+	     });
+
         addressInit('cmbProvince', 'cmbCity', 'cmbArea');
 		 $("#addAddress").on("click",function(){
 		     var cmbProvince = $('#cmbProvince option:selected').text();//省
@@ -302,6 +339,42 @@ $(document).ready(function(){
             			});
             			return false;
 		 });
+
+		 $("#updateAddress").on("click",function(){
+		      var receiverProvince = $('#cmbProvince option:selected').text();//省
+              var receiverCity = $('#cmbCity option:selected').text();//市
+              var receiverDistrict = $('#cmbArea option:selected').text();//区/县
+              var receiverPhone = $("#receiver_phone").val();
+              var receiverName = $("#receiver_name").val();
+              var receiverAddress = $("#receiver_address").val();
+              var receiverZip = $("#receiver_zip").val();
+              	$.ajax({
+                      type:"POST",
+                      contentType:"application/x-www-form-urlencoded",
+                      url:"http://localhost:8090/petstore/address/updateAddress",
+                      data:{
+                              "receiverName":receiverName,
+                              "receiverPhone":receiverPhone,
+                              "receiverProvince":receiverProvince,
+                              "receiverCity":receiverCity,
+                              "receiverDistrict":receiverDistrict,
+                              "receiverAddress":receiverAddress,
+                              "zip":receiverZip,
+                      },
+                      xhrFields:{withCrdentials:true},
+                      success:function(data){
+                          	if(data.status == "success"){
+                          		alert("更新地址成功");
+                          	    window.location.href="/petstore/user/myAddress"
+                          	}else{
+                          		alert("更新地址失败"+data.data.errMsg);
+                          	   }
+                          	},
+                      error:function(data){
+                          	    alert("更新地址失败"+data.responseTex);
+                            }
+                  });
+		    });
 		});
   	</script>
 </html>

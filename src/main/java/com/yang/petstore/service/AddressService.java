@@ -19,4 +19,8 @@ public interface AddressService {
     UserAddressDO selectAddressById(Integer id);
 
     void deleteByUserId(Integer userId);
+
+    //更新地址信息
+    boolean updateAddres(UserAddressDO userAddressDO);
+
 }

@@ -38,4 +38,11 @@ public class AddressServiceImpl implements AddressService {
     public void deleteByUserId(Integer userId) {
         userAddressDOMapper.deleteByUserId(userId);
     }
+
+    @Override
+    public boolean updateAddres(UserAddressDO userAddressDO) {
+        return userAddressDOMapper.updateByPrimaryKeySelective(userAddressDO) > 0;
+    }
+
+
 }

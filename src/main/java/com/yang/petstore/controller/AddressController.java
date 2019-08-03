@@ -4,6 +4,7 @@ package com.yang.petstore.controller;
 import com.yang.petstore.dao.UserAddressDOMapper;
 import com.yang.petstore.dataobject.UserAddressDO;
 import com.yang.petstore.error.BusinessException;
+import com.yang.petstore.error.EmBusinessError;
 import com.yang.petstore.response.CommonReturnType;
 import com.yang.petstore.service.AddressService;
 import com.yang.petstore.service.Model.UserModel;
@@ -78,4 +79,52 @@ public class AddressController extends BaseController{
         return "address";
     }
 
+    //更新用户地址
+    @ResponseBody
+    @RequestMapping(value = "/updateAddress",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+    CommonReturnType updateAddress(@RequestParam(name = "receiverName")String receiverName,
+                                   @RequestParam(name = "receiverPhone")String receiverPhone,
+                                   @RequestParam(name = "receiverProvince")String receiverProvince ,
+                                   @RequestParam(name = "receiverCity")String receiverCity,
+                                   @RequestParam(name = "receiverDistrict")String receiverDistrict,
+                                   @RequestParam(name = "receiverAddress")String receiverAddress,
+                                   @RequestParam(name = "zip")String zip){
+        //在sesion对象中找到该地址信息，并返回给前端页面
+
+        Integer addressId = (Integer) httpServletRequest.getSession().getAttribute("addressId");
+        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute("LOGIN_USER");
+        UserAddressDO userAddressDO = new UserAddressDO();
+        userAddressDO.setUserId(userModel.getId());
+        userAddressDO.setReceiverName(receiverName);
+        userAddressDO.setReceiverPhone(receiverPhone);
+        userAddressDO.setReceiverProvince(receiverProvince);
+        userAddressDO.setReceiverCity(receiverCity);
+        userAddressDO.setReceiverDistrict(receiverDistrict);
+        userAddressDO.setReceiverAddress(receiverAddress);
+        userAddressDO.setReceiverZip(zip);
+        userAddressDO.setId(addressId);
+
+        if(addressService.updateAddres(userAddressDO))
+        {
+            return  CommonReturnType.create(null);
+        }
+
+        return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+    }
+
+    //根据id查询用户地址
+    @ResponseBody
+    @RequestMapping(value = "/getAddressById",method = {RequestMethod.GET})
+    CommonReturnType getAddressById(Integer addressId){
+        //在sesion对象中找到该地址信息，并返回给前端页面
+        List<UserAddressDO> userAddressDOS = (List<UserAddressDO>)httpServletRequest.getSession().getAttribute("userAddressDOS");
+        for (UserAddressDO userAddressDO:userAddressDOS) {
+            if(userAddressDO.getId() == addressId){
+                httpServletRequest.getSession().setAttribute("addressId",addressId);
+                return CommonReturnType.create(userAddressDO);
+            }
+        }
+
+        return CommonReturnType.create(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+    }
 }
